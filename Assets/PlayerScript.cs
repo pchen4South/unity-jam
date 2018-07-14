@@ -10,6 +10,9 @@ public class PlayerScript : MonoBehaviour {
     public float MoveSpeed;
     public float RotateSpeed;
 
+    public GameObject bulletPrefab;
+    //public Transform bulletSpawn;
+
     private Vector3 _velocity;
 
 	// Use this for initialization
@@ -36,6 +39,9 @@ public class PlayerScript : MonoBehaviour {
         if (Input.GetKey(KeyCode.D))
           transform.Rotate(Vector3.up, RotateSpeed);
 
+        if (Input.GetKey(KeyCode.F))
+            Fire();
+
 
         if (character.isGrounded && _velocity.y < 0)
             _velocity.y = 0f;
@@ -48,5 +54,24 @@ public class PlayerScript : MonoBehaviour {
             _velocity.y += Mathf.Sqrt(500f * -2f * Gravity);
 
         character.Move(_velocity * Time.deltaTime);
+
+
     }
+
+    void Fire()
+    {
+        // Create the Bullet from the Bullet Prefab
+        var bullet = (GameObject)Instantiate(
+            bulletPrefab,
+            transform.position,
+            transform.rotation);
+
+        // Add velocity to the bullet
+        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 6;
+
+        // Destroy the bullet after 2 seconds
+        Destroy(bullet, 2.0f);
+    }
+
+
 }
