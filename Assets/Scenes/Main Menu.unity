@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.43667564, g: 0.48427147, b: 0.56452364, a: 1}
+  m_IndirectSpecularColor: {r: 0.43667546, g: 0.48427135, b: 0.5645225, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10879,6 +10879,26 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 135
       objectReference: {fileID: 0}
+    - target: {fileID: 114851790133790832, guid: df2c0b90f808944819fc7ea82383b64c,
+        type: 2}
+      propertyPath: MoveSpeed
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114851790133790832, guid: df2c0b90f808944819fc7ea82383b64c,
+        type: 2}
+      propertyPath: BulletPrefab
+      value: 
+      objectReference: {fileID: 1905873026910748, guid: 8516d765ad9b8ce4bb59ebe70398f57a,
+        type: 2}
+    - target: {fileID: 1792604423125892, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 114851790133790832, guid: df2c0b90f808944819fc7ea82383b64c,
+        type: 2}
+      propertyPath: fireRate
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
   m_IsPrefabAsset: 0
@@ -11841,6 +11861,26 @@ Prefab:
     - target: {fileID: 4819939376976574, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 114851790133790832, guid: df2c0b90f808944819fc7ea82383b64c,
+        type: 2}
+      propertyPath: BulletPrefab
+      value: 
+      objectReference: {fileID: 1905873026910748, guid: 8516d765ad9b8ce4bb59ebe70398f57a,
+        type: 2}
+    - target: {fileID: 114851790133790832, guid: df2c0b90f808944819fc7ea82383b64c,
+        type: 2}
+      propertyPath: MoveSpeed
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1792604423125892, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 114851790133790832, guid: df2c0b90f808944819fc7ea82383b64c,
+        type: 2}
+      propertyPath: fireRate
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}

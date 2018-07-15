@@ -14,6 +14,9 @@ public class PlayerScript : MonoBehaviour
     public float RotateSpeed = 5f;
     public float JumpStrength = 2f;
     public float Gravity = -100f;
+    private bool allowFire = true;
+    private float nextFire;
+    public float fireRate;
 
     float VerticalVelocity = 0;
 
@@ -47,7 +50,7 @@ public class PlayerScript : MonoBehaviour
         var jumpDown = Input.GetButtonDown(JumpInput);
         var fireDown = Input.GetButton(FireInput);
         var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
-        var verticalAxis = -1 * Input.GetAxis(VerticalInput) * MoveSpeed;
+        var verticalAxis = Input.GetAxis(VerticalInput) * MoveSpeed;
         var isGrounded = Physics.Raycast(transform.position, Vector3.down, GroundCheckDistance);
 
         moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
@@ -58,7 +61,7 @@ public class PlayerScript : MonoBehaviour
         if (moveDelta != Vector3.zero)
             transform.forward = moveDelta;
 
-        if (fireDown)
+        if (fireDown && Time.time > nextFire)
             Fire();
 
         if (isGrounded)
@@ -82,11 +85,12 @@ public class PlayerScript : MonoBehaviour
 
     void Fire()
     {
+        nextFire = Time.time + fireRate;
         // Create the Bullet from the Bullet Prefab
-        var bullet = (GameObject)Instantiate(BulletPrefab, transform.position, transform.rotation);
+        var bullet = (GameObject)Instantiate(BulletPrefab, transform.position + 1.25f * transform.forward, transform.rotation);
 
         // Add velocity to the bullet
-        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 6;
+        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 20;
         // Destroy the bullet after 2 seconds
         Destroy(bullet, 2.0f);
     }
