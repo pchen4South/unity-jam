@@ -46,21 +46,20 @@ public class PlayerScript : MonoBehaviour
         var moveDelta = Vector3.zero;
         var jumpDown = Input.GetButtonDown(JumpInput);
         var fireDown = Input.GetButton(FireInput);
-        var horizontalAxis = Input.GetAxis(HorizontalInput);
-        var verticalAxis = Input.GetAxis(VerticalInput);
+        var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
+        var verticalAxis = -1 * Input.GetAxis(VerticalInput) * MoveSpeed;
         var isGrounded = Physics.Raycast(transform.position, Vector3.down, GroundCheckDistance);
 
-        moveDelta = transform.forward * Time.deltaTime * MoveSpeed * verticalAxis;
-        transform.Rotate(Vector3.up, RotateSpeed * horizontalAxis);
+        moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
 
-<<<<<<< HEAD
-        if (Input.GetKey(KeyCode.F))
-            Fire();
+        //moveDelta = transform.forward * Time.deltaTime * MoveSpeed * verticalAxis;
+        //transform.Rotate(Vector3.up, RotateSpeed * horizontalAxis);
 
-=======
+        if (moveDelta != Vector3.zero)
+            transform.forward = moveDelta;
+
         if (fireDown)
             Fire();
->>>>>>> 9d5318bd9475b876f005aa7fb60a45f2d9d1f2b0
 
         if (isGrounded)
         {
@@ -86,34 +85,10 @@ public class PlayerScript : MonoBehaviour
         // Create the Bullet from the Bullet Prefab
         var bullet = (GameObject)Instantiate(BulletPrefab, transform.position, transform.rotation);
 
-<<<<<<< HEAD
-        character.Move(_velocity * Time.deltaTime);
-
-
-    }
-
-    void Fire()
-    {
-        // Create the Bullet from the Bullet Prefab
-        var bullet = (GameObject)Instantiate(
-            bulletPrefab,
-            transform.position,
-            transform.rotation);
-
-        // Add velocity to the bullet
-        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 6;
-
-        // Destroy the bullet after 2 seconds
-        Destroy(bullet, 2.0f);
-    }
-
-
-}
-=======
         // Add velocity to the bullet
         bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 6;
         // Destroy the bullet after 2 seconds
         Destroy(bullet, 2.0f);
     }
 }
->>>>>>> 9d5318bd9475b876f005aa7fb60a45f2d9d1f2b0
+
