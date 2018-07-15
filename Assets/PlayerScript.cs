@@ -24,7 +24,6 @@ public class PlayerScript : MonoBehaviour
     string VerticalInput = "";
     string FireInput = "";
     string JumpInput = "";
-    
 
     void OnDrawGizmos()
     {
@@ -47,12 +46,17 @@ public class PlayerScript : MonoBehaviour
         var moveDelta = Vector3.zero;
         var jumpDown = Input.GetButtonDown(JumpInput);
         var fireDown = Input.GetButton(FireInput);
-        var horizontalAxis = Input.GetAxis(HorizontalInput);
-        var verticalAxis = Input.GetAxis(VerticalInput);
+        var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
+        var verticalAxis = -1 * Input.GetAxis(VerticalInput) * MoveSpeed;
         var isGrounded = Physics.Raycast(transform.position, Vector3.down, GroundCheckDistance);
 
-        moveDelta = transform.forward * Time.deltaTime * MoveSpeed * verticalAxis;
-        transform.Rotate(Vector3.up, RotateSpeed * horizontalAxis);
+        moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
+
+        //moveDelta = transform.forward * Time.deltaTime * MoveSpeed * verticalAxis;
+        //transform.Rotate(Vector3.up, RotateSpeed * horizontalAxis);
+
+        if (moveDelta != Vector3.zero)
+            transform.forward = moveDelta;
 
         if (fireDown)
             Fire();
@@ -87,3 +91,4 @@ public class PlayerScript : MonoBehaviour
         Destroy(bullet, 2.0f);
     }
 }
+
