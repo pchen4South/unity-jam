@@ -7,7 +7,7 @@ public class PlayerScript : MonoBehaviour
 
     public AbstractWeapon Weapon;
 
-    public float GroundCheckDistance = .1f;
+    public float GroundCheckDistance = .01f;
     public float MoveSpeed = 2f;
     public float RotateSpeed = 5f;
     public float JumpStrength = 2f;
@@ -25,6 +25,8 @@ public class PlayerScript : MonoBehaviour
     string FireInput = "";
     string JumpInput = "";
 
+    public int Health = 1;
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -41,19 +43,19 @@ public class PlayerScript : MonoBehaviour
         JumpInput = "Jump_" + PlayerNumber;
     }
 
-    void Update () 
+    void Update() 
     {
+        var ray = new Ray(transform.position, Vector3.down);
+        var rayHit = new RaycastHit();
         var moveDelta = Vector3.zero;
         var jumpDown = Input.GetButtonDown(JumpInput);
         var fireDown = Input.GetButton(FireInput);
         var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
         var verticalAxis = Input.GetAxis(VerticalInput) * MoveSpeed;
-        var isGrounded = Physics.Raycast(transform.position, Vector3.down, GroundCheckDistance);
+        var didHit = Physics.Raycast(ray, out rayHit, 1000f);
+        var isGrounded = didHit && rayHit.distance < GroundCheckDistance;
 
         moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
-
-        //moveDelta = transform.forward * Time.deltaTime * MoveSpeed * verticalAxis;
-        //transform.Rotate(Vector3.up, RotateSpeed * horizontalAxis);
 
         if (moveDelta != Vector3.zero)
             transform.forward = moveDelta;

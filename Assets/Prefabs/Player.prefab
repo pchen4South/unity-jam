@@ -21,12 +21,11 @@ GameObject:
   - component: {fileID: 4819939376976574}
   - component: {fileID: 33284778370453534}
   - component: {fileID: 23872599659779910}
-  - component: {fileID: 136245969040056510}
   - component: {fileID: 114851790133790832}
   - component: {fileID: 143346210529754902}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,26 +98,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 143346210529754902}
   Weapon: {fileID: 0}
-  GroundCheckDistance: 0.1
-  MoveSpeed: 3
+  GroundCheckDistance: 0.01
+  MoveSpeed: 0.1
   RotateSpeed: 5
   JumpStrength: 20
-  Gravity: -100
+  Gravity: -85
   fireRate: 0
   PlayerNumber: 0
---- !u!136 &136245969040056510
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1792604423125892}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  Health: 1
 --- !u!143 &143346210529754902
 CharacterController:
   m_ObjectHideFlags: 1
@@ -133,6 +120,6 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
