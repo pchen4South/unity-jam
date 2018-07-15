@@ -3,7 +3,8 @@ guid: 2875f81ded24d40aa8bd6bf9389e2769
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PlayerSpawnMesh: {fileID: 4300006, guid: b235179bd2a63d1468dd430670338c55, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

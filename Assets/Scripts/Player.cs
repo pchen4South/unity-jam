@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerScript : MonoBehaviour 
+public class Player : MonoBehaviour 
 {
     [SerializeField]
     CharacterController character;

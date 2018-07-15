@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4819939376976574}
   - component: {fileID: 33284778370453534}
   - component: {fileID: 23872599659779910}
-  - component: {fileID: 114851790133790832}
   - component: {fileID: 143346210529754902}
+  - component: {fileID: 114288909183283028}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -85,7 +85,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1792604423125892}
   m_Mesh: {fileID: 4300006, guid: b235179bd2a63d1468dd430670338c55, type: 3}
---- !u!114 &114851790133790832
+--- !u!114 &114288909183283028
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,7 +99,7 @@ MonoBehaviour:
   character: {fileID: 143346210529754902}
   Weapon: {fileID: 0}
   GroundCheckDistance: 0.01
-  MoveSpeed: 0.1
+  MoveSpeed: 0.12
   RotateSpeed: 5
   JumpStrength: 20
   Gravity: -85

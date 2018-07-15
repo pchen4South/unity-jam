@@ -2,7 +2,7 @@
 
 public abstract class AbstractWeapon : MonoBehaviour 
 {
-	public virtual void Fire(PlayerScript player)
+	public virtual void Fire(Player player)
 	{
 	}
 }
