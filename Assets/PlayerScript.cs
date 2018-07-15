@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerScript : MonoBehaviour 
 {
     [SerializeField]
     CharacterController character;
-    [SerializeField]
-    GameObject BulletPrefab;
+
+    public AbstractWeapon Weapon;
 
     public float GroundCheckDistance = .1f;
     public float MoveSpeed = 2f;
@@ -21,7 +19,6 @@ public class PlayerScript : MonoBehaviour
     float VerticalVelocity = 0;
 
     [Header("Input")]
-    [Range(0, 1)]
     public int PlayerNumber = 0;
     string HorizontalInput = "";
     string VerticalInput = "";
@@ -61,8 +58,8 @@ public class PlayerScript : MonoBehaviour
         if (moveDelta != Vector3.zero)
             transform.forward = moveDelta;
 
-        if (fireDown && Time.time > nextFire)
-            Fire();
+        if (Weapon != null && fireDown && Time.time > nextFire)
+            Weapon.Fire(this);
 
         if (isGrounded)
         {
@@ -82,17 +79,4 @@ public class PlayerScript : MonoBehaviour
         moveDelta.y += VerticalVelocity * Time.deltaTime;
         character.Move(moveDelta);
     }
-
-    void Fire()
-    {
-        nextFire = Time.time + fireRate;
-        // Create the Bullet from the Bullet Prefab
-        var bullet = (GameObject)Instantiate(BulletPrefab, transform.position + 1.25f * transform.forward, transform.rotation);
-
-        // Add velocity to the bullet
-        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 20;
-        // Destroy the bullet after 2 seconds
-        Destroy(bullet, 2.0f);
-    }
 }
-
