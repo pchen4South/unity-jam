@@ -2,45 +2,88 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour {
-
+public class PlayerScript : MonoBehaviour 
+{
     [SerializeField]
-    private CharacterController character;
-    private Rigidbody body;
+    CharacterController character;
+    [SerializeField]
+    GameObject BulletPrefab;
+
+    public float GroundCheckDistance = .1f;
     public float MoveSpeed = 2f;
     public float RotateSpeed = 5f;
     public float JumpStrength = 2f;
+    public float Gravity = -100f;
 
-    public Vector3 Gravity = new Vector3(0, -100, 0);
+    float VerticalVelocity = 0;
 
-    private Vector3 _velocity;
+    [Header("Input")]
+    [Range(0, 1)]
+    public int PlayerNumber = 0;
+    string HorizontalInput = "";
+    string VerticalInput = "";
+    string FireInput = "";
+    string JumpInput = "";
+    
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward * 10f);
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(transform.position, Vector3.down * GroundCheckDistance);
+    }
+
+    void Start()
+    {
+        HorizontalInput = "Horizontal_" + PlayerNumber;
+        VerticalInput = "Vertical_" + PlayerNumber;
+        FireInput = "Fire_" + PlayerNumber;
+        JumpInput = "Jump_" + PlayerNumber;
     }
 
     void Update () 
     {
-        if (Input.GetKey(KeyCode.W))
-            character.Move(transform.forward * Time.deltaTime * MoveSpeed);
-      
-        if (Input.GetKey(KeyCode.A))
-            transform.Rotate(Vector3.up, -RotateSpeed);
+        var moveDelta = Vector3.zero;
+        var jumpDown = Input.GetButtonDown(JumpInput);
+        var fireDown = Input.GetButton(FireInput);
+        var horizontalAxis = Input.GetAxis(HorizontalInput);
+        var verticalAxis = Input.GetAxis(VerticalInput);
+        var isGrounded = Physics.Raycast(transform.position, Vector3.down, GroundCheckDistance);
 
-        if (Input.GetKey(KeyCode.D))
-          transform.Rotate(Vector3.up, RotateSpeed);
+        moveDelta = transform.forward * Time.deltaTime * MoveSpeed * verticalAxis;
+        transform.Rotate(Vector3.up, RotateSpeed * horizontalAxis);
 
+        if (fireDown)
+            Fire();
 
-        if (character.isGrounded && _velocity.y < 0)
-            _velocity.y = 0f;
+        if (isGrounded)
+        {
+            if (jumpDown)
+            {
+                VerticalVelocity = JumpStrength;
+            }
+            else
+            {
+                VerticalVelocity = 0f;
+            }
+        }
+        else
+        {
+            VerticalVelocity += Gravity * Time.deltaTime;
+        }
+        moveDelta.y += VerticalVelocity * Time.deltaTime;
+        character.Move(moveDelta);
+    }
 
-        _velocity += Gravity * Time.deltaTime;
- 
-        if (Input.GetKey(KeyCode.Space) && character.isGrounded)
-            _velocity += new Vector3(0, JumpStrength, 0);
+    void Fire()
+    {
+        // Create the Bullet from the Bullet Prefab
+        var bullet = (GameObject)Instantiate(BulletPrefab, transform.position, transform.rotation);
 
-        character.Move(_velocity * Time.deltaTime);
+        // Add velocity to the bullet
+        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 6;
+        // Destroy the bullet after 2 seconds
+        Destroy(bullet, 2.0f);
     }
 }
