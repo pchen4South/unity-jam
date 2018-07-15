@@ -52873,7 +52873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponPrefabs: []
-  PlayerPrefab: {fileID: 114851790133790832, guid: df2c0b90f808944819fc7ea82383b64c,
+  PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
     type: 2}
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
   playerSpawnLocations:

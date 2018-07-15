@@ -9,7 +9,7 @@ public class GameMode : MonoBehaviour
 	AbstractWeapon[] WeaponPrefabs;
 
 	[SerializeField]
-	PlayerScript PlayerPrefab;
+	Player PlayerPrefab;
 
 	[Header("Configuration")]
 	[SerializeField]
@@ -20,7 +20,7 @@ public class GameMode : MonoBehaviour
 	GameObject[] playerSpawnLocations;
 
 	[Header("State")]
-	List<PlayerScript> players = new List<PlayerScript>();
+	List<Player> players = new List<Player>();
 
 	void OnDrawGizmos()
 	{
@@ -56,7 +56,7 @@ public class GameMode : MonoBehaviour
 		}
 	}
 
-	PlayerScript Spawn(int PlayerNumber)
+	Player Spawn(int PlayerNumber)
 	{
 		var spawnIndex = Random.Range(0, playerSpawnLocations.Length);
 		var spawn = playerSpawnLocations[spawnIndex];
