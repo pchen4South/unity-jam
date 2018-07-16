@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     private bool allowFire = true;
     private float nextFire;
     public float fireRate;
-
     float VerticalVelocity = 0f;
 
     [Header("Input")]
@@ -67,6 +66,17 @@ public class Player : MonoBehaviour
             nextFire = Time.time + fireRate;
             Weapon.Fire(this);
         }
+
+        // Steve: New weapon logic should go here. Deprecate the use of Weapon.Fire completely
+        if (Weapon != null && fireDown)
+        {
+            Weapon.PullTrigger(this);
+        }
+        if (Weapon != null && fireUp)
+        {
+            Weapon.ReleaseTrigger(this);
+        }
+
         if (controller.isGrounded)
         {
             if (jumpDown)

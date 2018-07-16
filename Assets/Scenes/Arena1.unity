@@ -53006,7 +53006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayBackgroundMusic: 1
-  BackgroundMusicVolume: 0.6
+  BackgroundMusicVolume: 0.2
 --- !u!1 &2050198994
 GameObject:
   m_ObjectHideFlags: 0

@@ -90,7 +90,9 @@ public class BeamWeapon : AbstractWeapon
 					{
 						var target = rayHit.collider.gameObject.GetComponent<Player>();	
 
-						target.Health -= 1;
+						// don't damage ourselves!
+						if (target != player)
+							target.Health -= 1;
 					}
 				}
 				else 
