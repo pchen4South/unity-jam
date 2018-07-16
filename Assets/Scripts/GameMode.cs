@@ -11,7 +11,6 @@ public class GameMode : MonoBehaviour
 	[SerializeField]
 	Player PlayerPrefab;
 
-
 	[Header("Game")]
 	[SerializeField]
 	GameSettings GameSettings;
@@ -46,8 +45,8 @@ public class GameMode : MonoBehaviour
 
 	void Start()
 	{
-		Spawn(0);
-		Spawn(1);
+		players.Add(Spawn(0));
+		players.Add(Spawn(1));
 	}
 
 	void OnEnable()
@@ -98,10 +97,12 @@ public class GameMode : MonoBehaviour
 		var spawnIndex = Random.Range(0, playerSpawnLocations.Length);
 		var spawn = playerSpawnLocations[spawnIndex];
 		var player = Instantiate(PlayerPrefab, spawn.transform.position, spawn.transform.rotation, transform);
+		var weapon = Instantiate(WeaponPrefabs[0], player.transform);
 
+		weapon.player = player;
+		player.Weapon = weapon;
 		player.name = "Player " + PlayerNumber;
 		player.PlayerNumber = PlayerNumber;
-		players.Add(player);
 		return player;
 	}
 }
