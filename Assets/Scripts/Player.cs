@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward * 10f);
         Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, Vector3.down * GroundCheckDistance);
+        Gizmos.DrawRay(transform.position, Vector3.down * 10f);
     }
 
     void Start()
@@ -70,11 +70,12 @@ public class Player : MonoBehaviour
             Weapon.ReleaseTrigger(this);
         }
 
-        if (controller.isGrounded)
+        if (isGrounded)
         {
             if (jumpDown)
             {
                 VerticalVelocity = JumpStrength;
+                Debug.Log("Jump pressed");
             }
             else
             {
