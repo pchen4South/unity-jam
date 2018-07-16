@@ -2,8 +2,7 @@
 
 public class Player : MonoBehaviour 
 {
-    [SerializeField]
-    CharacterController character;
+    public CharacterController controller;
 
     public AbstractWeapon Weapon;
 
@@ -50,6 +49,7 @@ public class Player : MonoBehaviour
         var moveDelta = Vector3.zero;
         var jumpDown = Input.GetButtonDown(JumpInput);
         var fireDown = Input.GetButton(FireInput);
+        var fireUp = Input.GetButtonUp(FireInput);
         var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
         var verticalAxis = Input.GetAxis(VerticalInput) * MoveSpeed;
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
@@ -72,7 +72,10 @@ public class Player : MonoBehaviour
             transform.forward = moveDelta;
 
         if (Weapon != null && fireDown && Time.time > nextFire)
-            Weapon.Fire(this);
+            Weapon.PullTrigger(this);
+        
+        if (Weapon != null && fireUp)
+            Weapon.ReleaseTrigger(this);
 
         if (isGrounded)
         {
@@ -90,14 +93,6 @@ public class Player : MonoBehaviour
             VerticalVelocity += Gravity * Time.deltaTime;
         }
         moveDelta.y += VerticalVelocity * Time.deltaTime;
-
-        Debug.Log(moveDelta);
-
-        moveDelta.x += .001f;
-        moveDelta.y += .001f;
-        moveDelta.z += .001f;
-
-        if (moveDelta != Vector3.zero)
-            character.Move(moveDelta);
+        controller.Move(moveDelta);
     }
 }

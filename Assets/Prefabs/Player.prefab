@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae51a3403675bc409623d5204e74615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 143346210529754902}
+  controller: {fileID: 143346210529754902}
   Weapon: {fileID: 0}
   GroundCheckDistance: 0.01
   MoveSpeed: 0.12
