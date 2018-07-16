@@ -11,9 +11,7 @@ public class Player : MonoBehaviour
     public float RotateSpeed = 5f;
     public float JumpStrength = 2f;
     public float Gravity = -100f;
-    private bool allowFire = true;
-    private float nextFire;
-    public float fireRate;
+
     float VerticalVelocity = 0f;
 
     [Header("Input")]
@@ -60,12 +58,6 @@ public class Player : MonoBehaviour
 
         if (moveDelta != Vector3.zero)
             transform.forward = moveDelta;
-
-        if (Weapon != null && fireDown && Time.time > nextFire)
-        {
-            nextFire = Time.time + fireRate;
-            Weapon.Fire(this);
-        }
 
         // Steve: New weapon logic should go here. Deprecate the use of Weapon.Fire completely
         if (Weapon != null && fireDown)
