@@ -79,6 +79,8 @@ public class Player : MonoBehaviour
             VerticalVelocity += Gravity * Time.deltaTime;
         }
         moveDelta.y += VerticalVelocity * Time.deltaTime;
-        character.Move(moveDelta);
+
+        if(moveDelta != null)
+            character.Move(moveDelta);
     }
 }
