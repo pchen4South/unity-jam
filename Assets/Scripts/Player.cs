@@ -53,18 +53,9 @@ public class Player : MonoBehaviour
         var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
         var verticalAxis = Input.GetAxis(VerticalInput) * MoveSpeed;
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
-
-        Debug.Log("didHit: " + didHit);
-        Debug.Log("rayHit: " + rayHit.distance);
-
-
         var isGrounded = didHit && rayHit.distance < GroundCheckDistance;
 
         //isGrounded = true;
-
-        Debug.Log("Isgrounded: " + isGrounded);
-
-        Debug.Log("pos: " + transform.position);
 
         moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
 
@@ -72,12 +63,11 @@ public class Player : MonoBehaviour
             transform.forward = moveDelta;
 
         if (Weapon != null && fireDown && Time.time > nextFire)
-            Weapon.PullTrigger(this);
-        
-        if (Weapon != null && fireUp)
-            Weapon.ReleaseTrigger(this);
-
-        if (isGrounded)
+        {
+            nextFire = Time.time + fireRate;
+            Weapon.Fire(this);
+        }
+        if (character.isGrounded)
         {
             if (jumpDown)
             {
@@ -93,6 +83,22 @@ public class Player : MonoBehaviour
             VerticalVelocity += Gravity * Time.deltaTime;
         }
         moveDelta.y += VerticalVelocity * Time.deltaTime;
-        controller.Move(moveDelta);
+
+        //moveDelta.x += .001f;
+        //moveDelta.y += .001f;
+        //moveDelta.z += .001f;
+
+        if (!float.IsNaN(moveDelta.x) && !float.IsNaN(moveDelta.y) && !float.IsNaN(moveDelta.z))
+        {
+            try
+            {
+                character.Move(moveDelta);
+            }
+            catch {
+                moveDelta = Vector3.zero;
+                character.Move(moveDelta);
+            }
+
+        }
     }
 }
