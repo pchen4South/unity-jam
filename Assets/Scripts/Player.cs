@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
             nextFire = Time.time + fireRate;
             Weapon.Fire(this);
         }
-        if (character.isGrounded)
+        if (controller.isGrounded)
         {
             if (jumpDown)
             {
@@ -92,11 +92,11 @@ public class Player : MonoBehaviour
         {
             try
             {
-                character.Move(moveDelta);
+                controller.Move(moveDelta);
             }
             catch {
                 moveDelta = Vector3.zero;
-                character.Move(moveDelta);
+                controller.Move(moveDelta);
             }
 
         }

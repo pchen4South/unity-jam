@@ -23,14 +23,16 @@ public class GrenadeLauncher : AbstractWeapon
 
     public override void Fire(Player player)
     {
-
+        /*
         Vector3 playerPos = player.transform.position;
         Vector3 playerDirection = player.transform.forward;
         Quaternion playerRotation = player.transform.rotation;
         float spawnDistance = 1.01f;
-
-        Vector3 grenadeSpawn = playerPos + playerDirection * spawnDistance;
-        Instantiate(Ammo, grenadeSpawn, player.transform.rotation * Quaternion.Euler(0, 0, -60));
+        */
+        var wep = player.Weapon;
+        //Vector3 grenadeSpawn = playerPos + playerDirection * spawnDistance;
+        var nade = (GameObject)Instantiate(Ammo, wep.transform.position, wep.transform.rotation);
+        nade.GetComponent<Rigidbody>().velocity = nade.transform.forward * 8;
         
         SFX_Weapon_Fire_GrenadeLauncher.enabled = true;
         SFX_Weapon_Fire_GrenadeLauncher.Play();
