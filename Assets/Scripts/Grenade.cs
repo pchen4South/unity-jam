@@ -24,7 +24,7 @@ public class Grenade : MonoBehaviour {
 
         timeAlive += Time.deltaTime;
 
-        if (timeAlive >= 3) {
+        if (timeAlive >= fuseTime) {
             explosion.Play();
             var theExplosion = (GameObject)Instantiate(Explosion, gameObject.transform.position, gameObject.transform.rotation);
             Destroy(gameObject);

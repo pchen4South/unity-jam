@@ -54,7 +54,8 @@ public class Player : MonoBehaviour
 
         //isGrounded = true;
 
-        moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
+        if( !float.IsNaN(horizontalAxis) && !float.IsNaN(verticalAxis))
+            moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
 
         if (moveDelta != Vector3.zero)
             transform.forward = moveDelta;
