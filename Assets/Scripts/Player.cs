@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     private float nextFire;
     public float fireRate;
 
-    float VerticalVelocity = 0;
+    float VerticalVelocity = 0f;
 
     [Header("Input")]
     public int PlayerNumber = 0;
@@ -53,7 +53,18 @@ public class Player : MonoBehaviour
         var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
         var verticalAxis = Input.GetAxis(VerticalInput) * MoveSpeed;
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
+
+        Debug.Log("didHit: " + didHit);
+        Debug.Log("rayHit: " + rayHit.distance);
+
+
         var isGrounded = didHit && rayHit.distance < GroundCheckDistance;
+
+        //isGrounded = true;
+
+        Debug.Log("Isgrounded: " + isGrounded);
+
+        Debug.Log("pos: " + transform.position);
 
         moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
 
@@ -80,7 +91,13 @@ public class Player : MonoBehaviour
         }
         moveDelta.y += VerticalVelocity * Time.deltaTime;
 
-        if(moveDelta != null)
+        Debug.Log(moveDelta);
+
+        moveDelta.x += .001f;
+        moveDelta.y += .001f;
+        moveDelta.z += .001f;
+
+        if (moveDelta != Vector3.zero)
             character.Move(moveDelta);
     }
 }

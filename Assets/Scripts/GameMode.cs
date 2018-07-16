@@ -47,7 +47,7 @@ public class GameMode : MonoBehaviour
 	void Start()
 	{
 		Spawn(0);
-		Spawn(1);
+		//Spawn(1);
 	}
 
 	void OnEnable()
@@ -99,7 +99,7 @@ public class GameMode : MonoBehaviour
 		var spawn = playerSpawnLocations[spawnIndex];
 		var player = Instantiate(PlayerPrefab, spawn.transform.position, spawn.transform.rotation, transform);
 
-		player.name = "Player " + PlayerNumber;
+		player.name = "Player_ " + PlayerNumber;
 		player.PlayerNumber = PlayerNumber;
 		players.Add(player);
 		return player;

@@ -103,7 +103,7 @@ MonoBehaviour:
   RotateSpeed: 5
   JumpStrength: 20
   Gravity: -85
-  fireRate: 0
+  fireRate: 0.1
   PlayerNumber: 0
   Health: 1
 --- !u!143 &143346210529754902
