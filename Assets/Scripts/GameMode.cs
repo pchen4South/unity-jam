@@ -45,8 +45,9 @@ public class GameMode : MonoBehaviour
 
 	void Start()
 	{
-		players.Add(Spawn(0));
+		
 		players.Add(Spawn(1));
+		/* players.Add(Spawn(1));*/
 	}
 
 	void OnEnable()
@@ -103,6 +104,7 @@ public class GameMode : MonoBehaviour
 		player.Weapon = weapon;
 		player.name = "Player " + PlayerNumber;
 		player.PlayerNumber = PlayerNumber;
+
 		return player;
 	}
 }

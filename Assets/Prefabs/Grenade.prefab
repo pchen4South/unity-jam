@@ -209,7 +209,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fuseTime: 1
-  Explosion: {fileID: 1000010608846784, guid: 8bf1a415ae7d7574f8ba299573ee6dbe, type: 2}
+  Explosion: {fileID: 1864415125318354, guid: 8bf1a415ae7d7574f8ba299573ee6dbe, type: 2}
+  PlayerNumber: 0
 --- !u!136 &136019534310725488
 CapsuleCollider:
   m_ObjectHideFlags: 1

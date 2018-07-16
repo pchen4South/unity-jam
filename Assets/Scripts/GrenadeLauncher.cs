@@ -32,7 +32,8 @@ public class GrenadeLauncher : AbstractWeapon
             var nade = (GameObject)Instantiate(Ammo, wep.transform.position, wep.transform.rotation);
 
             nade.GetComponent<Rigidbody>().velocity = nade.transform.forward * GrenadeTravelSpeed;
-            
+            nade.GetComponent<Grenade>().SetPlayerNumber(player);
+
             SFX_Weapon_Fire_GrenadeLauncher.enabled = true;
             SFX_Weapon_Fire_GrenadeLauncher.Play();
         }

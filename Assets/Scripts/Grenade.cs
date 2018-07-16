@@ -8,7 +8,12 @@ public class Grenade : MonoBehaviour {
     private float timeAlive = 0f;
     public GameObject Explosion;
 
+    [SerializeField]
+    private int PlayerNumber;
 
+    public void SetPlayerNumber(Player player){
+        PlayerNumber = player.PlayerNumber;
+    }
 	// Use this for initialization
 	void Start ()
     {
@@ -27,8 +32,26 @@ public class Grenade : MonoBehaviour {
         if (timeAlive >= fuseTime) {
             explosion.Play();
             var theExplosion = (GameObject)Instantiate(Explosion, gameObject.transform.position, gameObject.transform.rotation);
+            theExplosion.GetComponent<GrenadeExplosion>().PlayerNumber = PlayerNumber;
+
             Destroy(gameObject);
         }
 
 	}
+
+    /// <summary>
+    /// OnCollisionEnter is called when this collider/rigidbody has begun
+    /// touching another rigidbody/collider.
+    /// </summary>
+    /// <param name="other">The Collision data associated with this collision.</param>
+    void OnCollisionEnter(Collision other)
+    {
+        if(other.gameObject.tag != "Player"){
+            var rb = gameObject.GetComponent<Rigidbody>();
+            rb.velocity = Vector3.zero;
+            rb.isKinematic = true;
+        }             
+    }
+
+  
 }

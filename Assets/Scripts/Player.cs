@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
     string JumpInput = "";
 
     public int Health = 1;
-
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -51,11 +50,8 @@ public class Player : MonoBehaviour
         var verticalAxis = Input.GetAxis(VerticalInput) * MoveSpeed;
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
         var isGrounded = didHit && rayHit.distance < GroundCheckDistance;
-
-        //isGrounded = true;
-
-        if( !float.IsNaN(horizontalAxis) && !float.IsNaN(verticalAxis))
-            moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
+        
+        moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
 
         if (moveDelta != Vector3.zero)
             transform.forward = moveDelta;
@@ -88,21 +84,8 @@ public class Player : MonoBehaviour
         }
         moveDelta.y += VerticalVelocity * Time.deltaTime;
 
-        //moveDelta.x += .001f;
-        //moveDelta.y += .001f;
-        //moveDelta.z += .001f;
+        if (moveDelta != Vector3.zero)
+            controller.Move(moveDelta);
 
-        if (!float.IsNaN(moveDelta.x) && !float.IsNaN(moveDelta.y) && !float.IsNaN(moveDelta.z))
-        {
-            try
-            {
-                controller.Move(moveDelta);
-            }
-            catch {
-                moveDelta = Vector3.zero;
-                controller.Move(moveDelta);
-            }
-
-        }
     }
 }
