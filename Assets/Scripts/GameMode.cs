@@ -11,6 +11,15 @@ public class GameMode : MonoBehaviour
 	[SerializeField]
 	Player PlayerPrefab;
 
+
+	[Header("Game")]
+	[SerializeField]
+	GameSettings GameSettings;
+
+	[Header("Sounds")]
+	[SerializeField]
+	AudioSource BackgroundMusic;
+
 	[Header("Configuration")]
 	[SerializeField]
 	DebugConfig debugConfig;
@@ -41,15 +50,43 @@ public class GameMode : MonoBehaviour
 		Spawn(1);
 	}
 
+	void OnEnable()
+	{
+		if (GameSettings.PlayBackgroundMusic)
+		{
+			BackgroundMusic.Play();
+			BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
+		}
+	}
+
+	void OnDisable()
+	{
+		BackgroundMusic.Pause();
+	}
+
 	void Update()
 	{
+		if (GameSettings.PlayBackgroundMusic)
+		{
+			if (!BackgroundMusic.isPlaying)
+			{
+				BackgroundMusic.Play();
+			}
+		}
+		else {
+			if (BackgroundMusic.isPlaying)
+			{
+				BackgroundMusic.Pause();
+			}
+		}
+		BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
+
 		for(var i = 0; i < players.Count; i++)
 		{
 			var player = players[i];
 
 			if (player.Health <= 0)
 			{
-
 				players[i] = Spawn(player.PlayerNumber);
 				Destroy(player.gameObject);
 			}
