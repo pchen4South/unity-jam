@@ -93,7 +93,6 @@ GameObject:
   - component: {fileID: 111083597654563716}
   - component: {fileID: 82324873874034438}
   - component: {fileID: 114215110863174990}
-  - component: {fileID: 136983927681893450}
   m_Layer: 0
   m_Name: GrenadeExplosion
   m_TagString: Untagged
@@ -601,16 +600,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Radius: 2
   Force: 50
---- !u!136 &136983927681893450
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1864415125318354}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 3.5
-  m_Height: 6.380982
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
