@@ -9,9 +9,7 @@ public class Player : MonoBehaviour
 
     public AbstractWeapon Weapon;
 
-    public float GroundCheckDistance = .01f;
     public float MoveSpeed = 2f;
-    public float RotateSpeed = 5f;
     public float JumpStrength = 2f;
     public float Gravity = -100f;
     public LayerMask layerMask;
@@ -26,6 +24,7 @@ public class Player : MonoBehaviour
     string JumpInput = "";
 
     public int Health = 1;
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
