@@ -19,6 +19,8 @@ public class Grenade : MonoBehaviour
 	
 	void Update() 
     {
+        //grow larger over time test
+        //transform.localScale += new Vector3(0.5f,0.5f,0.5f) * Time.deltaTime;
         timeAlive += Time.deltaTime;
 
         if (timeAlive >= fuseTime) 
