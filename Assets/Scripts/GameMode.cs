@@ -54,8 +54,8 @@ public class GameMode : MonoBehaviour
 	{
 		if (GameSettings.PlayBackgroundMusic)
 		{
-			BackgroundMusic.Play();
 			BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
+			BackgroundMusic.Play();
 		}
 	}
 
@@ -104,7 +104,6 @@ public class GameMode : MonoBehaviour
 		player.Weapon = weapon;
 		player.name = "Player " + PlayerNumber;
 		player.PlayerNumber = PlayerNumber;
-
 		return player;
 	}
 }
