@@ -6,26 +6,22 @@ public class Player : MonoBehaviour
     Collider groundCollider;
 
     public CharacterController controller;
-
     public AbstractWeapon Weapon;
 
-    public float GroundCheckDistance = .01f;
     public float MoveSpeed = 2f;
-    public float RotateSpeed = 5f;
     public float JumpStrength = 2f;
     public float Gravity = -100f;
     public LayerMask layerMask;
-
-    float VerticalVelocity = 0f;
-
-    [Header("Input")]
-    public int PlayerNumber = 0;
     string HorizontalInput = "";
     string VerticalInput = "";
     string FireInput = "";
     string JumpInput = "";
 
+    public int PlayerNumber = 0;
     public int Health = 1;
+    public bool rooted = false;
+    float VerticalVelocity = 0f;
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -48,22 +44,24 @@ public class Player : MonoBehaviour
     {
         var ray = new Ray(transform.position, Vector3.down);
         var rayHit = new RaycastHit();
-        var moveDelta = Vector3.zero;
         var jumpDown = Input.GetButtonDown(JumpInput);
         var fireDown = Input.GetButton(FireInput);
         var fireUp = Input.GetButtonUp(FireInput);
-        var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
-        var verticalAxis = Input.GetAxis(VerticalInput) * MoveSpeed;
+        var horizontalAxis = Input.GetAxis(HorizontalInput);
+        var verticalAxis = Input.GetAxis(VerticalInput);
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
         var contacts = Physics.OverlapBox(groundCollider.bounds.center, groundCollider.bounds.extents, groundCollider.transform.rotation, layerMask);
         var isGrounded = contacts.Length > 0;
         var aerialHeight = didHit ? rayHit.distance : 0f;
+        var input = new Vector3(horizontalAxis, 0, verticalAxis);
+        var moveDelta = new Vector3(horizontalAxis * MoveSpeed, 0, verticalAxis * MoveSpeed);
 
-        moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
-
-        if (moveDelta != Vector3.zero)
-            transform.forward = moveDelta;
-
+        // look in direction
+        if (horizontalAxis != 0 || verticalAxis != 0)
+        {
+            transform.forward = input.normalized;
+        }
+        // Weapon inputs
         if (Weapon != null && fireDown)
         {
             Weapon.PullTrigger(this);
@@ -73,6 +71,7 @@ public class Player : MonoBehaviour
             Weapon.ReleaseTrigger(this);
         }
 
+        // Check/Jump
         if (isGrounded)
         {
             if (jumpDown)
@@ -88,10 +87,23 @@ public class Player : MonoBehaviour
         {
             VerticalVelocity += Gravity * Time.deltaTime;
         }
-        moveDelta.y += VerticalVelocity * Time.deltaTime;
 
-        if (moveDelta != Vector3.zero)
-            controller.Move(moveDelta);
+        // Fall with gravity if not rooted
+        if (!rooted)
+        {
+            moveDelta.y += VerticalVelocity * Time.deltaTime;
+        }
+        controller.Move(moveDelta);
+    }
 
+    // TODO: We should call some kind of stateful reset on the weapon to clear modifiers to the player?
+    public void SetWeapon(AbstractWeapon newWeapon)
+    {
+        var oldWeapon = Weapon;
+
+        Weapon = Instantiate(newWeapon, transform);
+        Weapon.player = this;
+        oldWeapon.player = null;
+        Destroy(oldWeapon.gameObject);
     }
 }
