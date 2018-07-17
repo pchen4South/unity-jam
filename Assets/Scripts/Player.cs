@@ -2,6 +2,9 @@
 
 public class Player : MonoBehaviour 
 {
+    [SerializeField]
+    Collider groundCollider;
+
     public CharacterController controller;
 
     public AbstractWeapon Weapon;
@@ -11,6 +14,7 @@ public class Player : MonoBehaviour
     public float RotateSpeed = 5f;
     public float JumpStrength = 2f;
     public float Gravity = -100f;
+    public LayerMask layerMask;
 
     float VerticalVelocity = 0f;
 
@@ -28,6 +32,8 @@ public class Player : MonoBehaviour
         Gizmos.DrawRay(transform.position, transform.forward * 10f);
         Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position, Vector3.down * 10f);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawCube(groundCollider.bounds.center, groundCollider.bounds.extents * 2f);
     }
 
     void Start()
@@ -49,14 +55,15 @@ public class Player : MonoBehaviour
         var horizontalAxis = Input.GetAxis(HorizontalInput) * MoveSpeed;
         var verticalAxis = Input.GetAxis(VerticalInput) * MoveSpeed;
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
-        var isGrounded = didHit && rayHit.distance < GroundCheckDistance;
-        
+        var contacts = Physics.OverlapBox(groundCollider.bounds.center, groundCollider.bounds.extents, groundCollider.transform.rotation, layerMask);
+        var isGrounded = contacts.Length > 0;
+        var aerialHeight = didHit ? rayHit.distance : 0f;
+
         moveDelta = new Vector3(horizontalAxis, 0, verticalAxis);
 
         if (moveDelta != Vector3.zero)
             transform.forward = moveDelta;
 
-        // Steve: New weapon logic should go here. Deprecate the use of Weapon.Fire completely
         if (Weapon != null && fireDown)
         {
             Weapon.PullTrigger(this);
@@ -71,7 +78,6 @@ public class Player : MonoBehaviour
             if (jumpDown)
             {
                 VerticalVelocity = JumpStrength;
-                Debug.Log("Jump pressed");
             }
             else
             {
