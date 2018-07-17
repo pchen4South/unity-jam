@@ -6,10 +6,11 @@ public class JumpWeapon : AbstractWeapon
 
 	[SerializeField]
 	LineRenderer lineRenderer;
+	[SerializeField]
+	AnimationCurve beamDirectionCurve;
 
 	[Header("Properties")]
 	public float MaxRange = 100f;
-	public float FullChargeTime = 1f;
 	public float FiringDuration = 1f;
 
 	[Header("Cached Variables")]
@@ -18,7 +19,6 @@ public class JumpWeapon : AbstractWeapon
 
 	[Header("State")]
 	WeaponState state = WeaponState.Ready;
-	float remainingChargeTime = 0f;
 	float remainingFiringTime = 0f;
 	float firingPower = 0f;
 
@@ -27,7 +27,6 @@ public class JumpWeapon : AbstractWeapon
 		if (state == WeaponState.Ready && !p.isGrounded)
 		{
 			state = WeaponState.Charging;
-			remainingChargeTime = FullChargeTime;
 		}
 	}
 
@@ -55,7 +54,6 @@ public class JumpWeapon : AbstractWeapon
 			case WeaponState.Charging:
 				player.rooted = true;
 				lineRenderer.enabled = false;
-				remainingChargeTime -= Time.deltaTime;
 				break;
 
 			// if firing, update/render the beam and check for meaningful collisions
@@ -63,7 +61,7 @@ public class JumpWeapon : AbstractWeapon
 				if (remainingFiringTime > 0f)
 				{
 					var from = transform.position + transform.forward * .2f;
-					var direction = Vector3.Slerp(transform.forward, Vector3.down, remainingFiringTime / FiringDuration);
+					var direction = Vector3.Slerp(transform.forward, Vector3.down, beamDirectionCurve.Evaluate(remainingFiringTime / FiringDuration));
 
 					ray.origin = from;
 					ray.direction = direction;
