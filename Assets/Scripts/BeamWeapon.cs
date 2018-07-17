@@ -19,7 +19,7 @@ public class BeamWeapon : AbstractWeapon
 
 	[Header("State")]
 	WeaponState state = WeaponState.Ready;
-	float remainingChargeTime = 0f;
+	float chargeTime = 0f;
 	float remainingFiringTime = 0f;
 	float firingPower = 0f;
 
@@ -28,7 +28,7 @@ public class BeamWeapon : AbstractWeapon
 		if (state == WeaponState.Ready)
 		{
 			state = WeaponState.Charging;
-			remainingChargeTime = FullChargeTime;
+			chargeTime = 0;
 		}
 	}
 
@@ -36,9 +36,12 @@ public class BeamWeapon : AbstractWeapon
 	{
 		if (state == WeaponState.Charging)
 		{
+			var time = Mathf.Min(FullChargeTime, chargeTime);
+			var power = time / FullChargeTime;
+
 			state = WeaponState.Firing;
-			remainingFiringTime = FiringDuration;
-			firingPower = (FullChargeTime - Mathf.Max(remainingChargeTime, 0)) / FullChargeTime;
+			remainingFiringTime = time;
+			firingPower = power; 
 		}
 	}
 
@@ -54,7 +57,7 @@ public class BeamWeapon : AbstractWeapon
 			// if charging, increase the charge amount
 			case WeaponState.Charging:
 				lineRenderer.enabled = false;
-				remainingChargeTime -= Time.deltaTime;
+				chargeTime += Time.deltaTime;
 				break;
 
 			// if firing, update/render the beam and check for meaningful collisions
@@ -82,7 +85,7 @@ public class BeamWeapon : AbstractWeapon
 					// knock back player that is firing... this is kinda jank...
 					var knockBack = transform.forward;
 
-					knockBack *= -KnockBackStrength;
+					knockBack *= -KnockBackStrength * firingPower;
 					player.controller.Move(knockBack);
 
 					// deal damage to players

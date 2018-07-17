@@ -96,8 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 835c56a991b874d369ea576c259df549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   lineRenderer: {fileID: 120680944502260978}
   MaxRange: 100
+  KnockBackStrength: 2
   FullChargeTime: 1
   FiringDuration: 1
 --- !u!120 &120680944502260978
