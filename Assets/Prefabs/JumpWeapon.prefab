@@ -36,13 +36,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1822064959603582}
-  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
   m_LocalPosition: {x: 0.163, y: 1.33, z: 0.068}
   m_LocalScale: {x: 0.1, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
 --- !u!23 &23465072938990862
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -100,7 +100,7 @@ MonoBehaviour:
   lineRenderer: {fileID: 120680944502260978}
   MaxRange: 100
   FullChargeTime: 1
-  FiringDuration: 0.3
+  FiringDuration: 0.2
 --- !u!120 &120680944502260978
 LineRenderer:
   m_ObjectHideFlags: 1

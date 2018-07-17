@@ -63,7 +63,7 @@ public class JumpWeapon : AbstractWeapon
 				if (remainingFiringTime > 0f)
 				{
 					var from = transform.position + transform.forward * .2f;
-					var direction = transform.forward;
+					var direction = Vector3.Slerp(transform.forward, Vector3.down, remainingFiringTime / FiringDuration);
 
 					ray.origin = from;
 					ray.direction = direction;
@@ -77,7 +77,7 @@ public class JumpWeapon : AbstractWeapon
 					// draw the beam
 					lineRenderer.SetPosition(0, from);
 					lineRenderer.SetPosition(1, to);
-					lineRenderer.endWidth = firingPower / 2f;
+					lineRenderer.endWidth = Mathf.Lerp(firingPower / 4f, .1f, remainingFiringTime / FiringDuration);
 					lineRenderer.enabled = true;
 
 					// track firing time
