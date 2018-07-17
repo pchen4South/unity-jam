@@ -35,8 +35,8 @@ public class GrenadeExplosion : MonoBehaviour
 		b *= correction;
 		ramptime += Time.deltaTime * 2;
 		alphatime -= Time.deltaTime;		
-		renderer.material.SetVector("_ChannelFactor", new Vector4(r,g,b,0));
-		renderer.material.SetVector("_Range", new Vector4(ramptime,0,0,0));
+		renderer.material.SetVector("_ChannelFactor", new Vector4(r, g, b, 0));
+		renderer.material.SetVector("_Range", new Vector4(ramptime, 0, 0, 0));
 		renderer.material.SetFloat("_ClipRange", alphatime);
 		Destroy(gameObject, despawnTime);
 	}
