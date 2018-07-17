@@ -6,9 +6,6 @@ public class GameMode : MonoBehaviour
 {
 	[Header("Prefabs")]
 	[SerializeField]
-	AbstractWeapon[] WeaponPrefabs;
-
-	[SerializeField]
 	Player PlayerPrefab;
 
 	[Header("Game")]
@@ -20,15 +17,12 @@ public class GameMode : MonoBehaviour
 	AudioSource BackgroundMusic;
 
 	[Header("Configuration")]
-	[SerializeField]
-	DebugConfig debugConfig;
-
-	[Header("Map Items")]
-	[SerializeField]
-	GameObject[] playerSpawnLocations;
+	public DebugConfig debugConfig;
+	public AbstractWeapon[] WeaponPrefabs;
+	public GameObject[] playerSpawnLocations;
 
 	[Header("State")]
-	List<Player> players = new List<Player>();
+	public List<Player> players = new List<Player>();
 
 	void OnDrawGizmos()
 	{
@@ -45,7 +39,6 @@ public class GameMode : MonoBehaviour
 
 	void Start()
 	{
-		
 		players.Add(Spawn(0));
 		players.Add(Spawn(1));
 	}
