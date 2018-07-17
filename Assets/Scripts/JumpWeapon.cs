@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 
-public class BeamWeapon : AbstractWeapon 
+public class JumpWeapon : AbstractWeapon 
 {
 	enum WeaponState { Ready, Charging, Firing };
 
 	[SerializeField]
 	LineRenderer lineRenderer;
+	[SerializeField]
+	AnimationCurve beamDirectionCurve;
 
 	[Header("Properties")]
 	public float MaxRange = 100f;
-	public float KnockBackStrength = .8f;
-	public float FullChargeTime = 1f;
 	public float FiringDuration = 1f;
 
 	[Header("Cached Variables")]
@@ -19,16 +19,14 @@ public class BeamWeapon : AbstractWeapon
 
 	[Header("State")]
 	WeaponState state = WeaponState.Ready;
-	float chargeTime = 0f;
 	float remainingFiringTime = 0f;
 	float firingPower = 0f;
 
 	public override void PullTrigger(Player p)
 	{
-		if (state == WeaponState.Ready)
+		if (state == WeaponState.Ready && !p.isGrounded)
 		{
 			state = WeaponState.Charging;
-			chargeTime = 0;
 		}
 	}
 
@@ -36,12 +34,9 @@ public class BeamWeapon : AbstractWeapon
 	{
 		if (state == WeaponState.Charging)
 		{
-			var time = Mathf.Min(FullChargeTime, chargeTime);
-			var power = time / FullChargeTime;
-
 			state = WeaponState.Firing;
-			remainingFiringTime = time;
-			firingPower = power; 
+			remainingFiringTime = FiringDuration;
+			firingPower = p.aerialHeight;
 		}
 	}
 
@@ -51,13 +46,14 @@ public class BeamWeapon : AbstractWeapon
 		{
 			// if ready, hide the beam
 			case WeaponState.Ready:
+				player.rooted = false;
 				lineRenderer.enabled = false;
 				break;
 
 			// if charging, increase the charge amount
 			case WeaponState.Charging:
+				player.rooted = true;
 				lineRenderer.enabled = false;
-				chargeTime += Time.deltaTime;
 				break;
 
 			// if firing, update/render the beam and check for meaningful collisions
@@ -65,7 +61,7 @@ public class BeamWeapon : AbstractWeapon
 				if (remainingFiringTime > 0f)
 				{
 					var from = transform.position + transform.forward * .2f;
-					var direction = transform.forward;
+					var direction = Vector3.Slerp(transform.forward, Vector3.down, beamDirectionCurve.Evaluate(remainingFiringTime / FiringDuration));
 
 					ray.origin = from;
 					ray.direction = direction;
@@ -73,20 +69,17 @@ public class BeamWeapon : AbstractWeapon
 					var didHit = Physics.Raycast(ray, out rayHit);
 					var to = didHit ? rayHit.point : transform.forward * MaxRange;
 
+					// root the firing player
+					player.rooted = true;
+
 					// draw the beam
 					lineRenderer.SetPosition(0, from);
 					lineRenderer.SetPosition(1, to);
-					lineRenderer.endWidth = firingPower / 2f;
+					lineRenderer.endWidth = Mathf.Lerp(firingPower / 4f, .1f, remainingFiringTime / FiringDuration);
 					lineRenderer.enabled = true;
 
 					// track firing time
 					remainingFiringTime -= Time.deltaTime;
-
-					// knock back player that is firing... this is kinda jank...
-					var knockBack = transform.forward;
-
-					knockBack *= -KnockBackStrength * firingPower;
-					player.controller.Move(knockBack);
 
 					// deal damage to players
 					if (didHit && rayHit.collider.gameObject.tag == "Player")

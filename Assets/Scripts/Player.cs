@@ -20,7 +20,9 @@ public class Player : MonoBehaviour
     public int PlayerNumber = 0;
     public int Health = 1;
     public bool rooted = false;
-    float VerticalVelocity = 0f;
+    public bool isGrounded = false;
+    public float aerialHeight = 0f;
+    public float VerticalVelocity = 0f;
 
     void OnDrawGizmos()
     {
@@ -51,24 +53,16 @@ public class Player : MonoBehaviour
         var verticalAxis = Input.GetAxis(VerticalInput);
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
         var contacts = Physics.OverlapBox(groundCollider.bounds.center, groundCollider.bounds.extents, groundCollider.transform.rotation, layerMask);
-        var isGrounded = contacts.Length > 0;
-        var aerialHeight = didHit ? rayHit.distance : 0f;
         var input = new Vector3(horizontalAxis, 0, verticalAxis);
-        var moveDelta = new Vector3(horizontalAxis * MoveSpeed, 0, verticalAxis * MoveSpeed);
+        var moveDelta = Vector3.zero;
+
+        isGrounded = contacts.Length > 0;
+        aerialHeight = didHit ? rayHit.distance : 0f;
 
         // look in direction
         if (horizontalAxis != 0 || verticalAxis != 0)
         {
             transform.forward = input.normalized;
-        }
-        // Weapon inputs
-        if (Weapon != null && fireDown)
-        {
-            Weapon.PullTrigger(this);
-        }
-        if (Weapon != null && fireUp)
-        {
-            Weapon.ReleaseTrigger(this);
         }
 
         // Check/Jump
@@ -88,15 +82,28 @@ public class Player : MonoBehaviour
             VerticalVelocity += Gravity * Time.deltaTime;
         }
 
-        // Fall with gravity if not rooted
+        // move if not rooted
         if (!rooted)
         {
+            moveDelta.x += horizontalAxis * MoveSpeed;
             moveDelta.y += VerticalVelocity * Time.deltaTime;
+            moveDelta.z += verticalAxis * MoveSpeed;
         }
+
+        // Weapon inputs
+        if (Weapon != null && fireDown)
+        {
+            Weapon.PullTrigger(this);
+        }
+        if (Weapon != null && fireUp)
+        {
+            Weapon.ReleaseTrigger(this);
+        }
+
         controller.Move(moveDelta);
     }
 
-    // TODO: We should call some kind of stateful reset on the weapon to clear modifiers to the player?
+    // TODO: Call some kind of reset on the weapon to clear modifiers to the player?
     public void SetWeapon(AbstractWeapon newWeapon)
     {
         var oldWeapon = Weapon;

@@ -52881,8 +52881,9 @@ MonoBehaviour:
   BackgroundMusic: {fileID: 2031513402}
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
   WeaponPrefabs:
-  - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
+  - {fileID: 114988527901069614, guid: 54fed0c55e1a7420f8ba4de871093388, type: 2}
   - {fileID: 114821612834432382, guid: 4de552a431cc243908d6e896546fe46e, type: 2}
+  - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
   playerSpawnLocations:
   - {fileID: 2050198994}
   - {fileID: 1562765894}
