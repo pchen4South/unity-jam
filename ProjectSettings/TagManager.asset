@@ -6,6 +6,8 @@ TagManager:
   tags:
   - FiredProjectile
   - CanDestroy
+  - Fire
+  - Ground
   layers:
   - Default
   - TransparentFX
