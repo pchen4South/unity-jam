@@ -10873,7 +10873,7 @@ Light:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -52856,6 +52856,7 @@ GameObject:
   - component: {fileID: 2031513400}
   - component: {fileID: 2031513402}
   - component: {fileID: 2031513403}
+  - component: {fileID: 2031513404}
   m_Layer: 0
   m_Name: GameMode
   m_TagString: Untagged
@@ -52874,19 +52875,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed165575a518a4e4b98dce5f8b69dbf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponPrefabs:
-  - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
-  - {fileID: 114821612834432382, guid: 4de552a431cc243908d6e896546fe46e, type: 2}
   PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
     type: 2}
   GameSettings: {fileID: 2031513403}
   BackgroundMusic: {fileID: 2031513402}
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
+  WeaponPrefabs:
+  - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
+  - {fileID: 114821612834432382, guid: 4de552a431cc243908d6e896546fe46e, type: 2}
   playerSpawnLocations:
   - {fileID: 2050198994}
   - {fileID: 1562765894}
   - {fileID: 1510522315}
   - {fileID: 2027728247}
+  players: []
 --- !u!4 &2031513401
 Transform:
   m_ObjectHideFlags: 0
@@ -53008,6 +53010,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayBackgroundMusic: 1
   BackgroundMusicVolume: 0.2
+--- !u!114 &2031513404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2031513399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19f6ab87789f840538007ceb72ac1392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game: {fileID: 2031513400}
 --- !u!1 &2050198994
 GameObject:
   m_ObjectHideFlags: 0
