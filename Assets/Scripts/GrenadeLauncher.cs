@@ -4,38 +4,31 @@ using UnityEngine;
 
 public class GrenadeLauncher : AbstractWeapon
 {
-    // Sound effect when the grenade launcher is first switched to
-    // public AudioSource SFX_Weapon_Switch_GrenadeLauncher;
+    [Header("Cached references")]
+    [SerializeField]
+    AudioSource fireSound;
 
-    // Sound effect for firing the launcher
-    public AudioSource SFX_Weapon_Fire_GrenadeLauncher;
+    [Header("Prefabs")]
+    public Grenade Ammo;
 
-    private float nextFire;
-    public float fireRate = 0.5f;
-    // Currently Equipped Ammo (Grenade)
-    public GameObject Ammo;
-    
+    [Header("Config")]
     public float GrenadeTravelSpeed = 8f;
 
-    private void Start()
-    {
-        //SFX_Weapon_Switch_GrenadeLauncher.Play();
-        SFX_Weapon_Fire_GrenadeLauncher = GetComponent<AudioSource>();
-    }
+    [Header("State")]
+    private float nextFire = 0f;
+    public float fireRate = 0.5f;
 
     public override void PullTrigger(Player player)
     {
-        if(Time.time > nextFire){
-            nextFire = Time.time + fireRate;
+        if (Time.time < nextFire)
+            return;
+        
+        var wep = player.Weapon;
+        var nade = Instantiate(Ammo, wep.transform.position, wep.transform.rotation);
 
-            var wep = player.Weapon;
-            var nade = (GameObject)Instantiate(Ammo, wep.transform.position, wep.transform.rotation);
-
-            nade.GetComponent<Rigidbody>().velocity = nade.transform.forward * GrenadeTravelSpeed;
-            nade.GetComponent<Grenade>().SetPlayerNumber(player);
-
-            SFX_Weapon_Fire_GrenadeLauncher.enabled = true;
-            SFX_Weapon_Fire_GrenadeLauncher.Play();
-        }
+        nade.body.AddForce(nade.transform.forward * GrenadeTravelSpeed, ForceMode.Impulse);
+        nade.PlayerNumber = player.PlayerNumber;
+        fireSound.Play();
+        nextFire = Time.time + fireRate;
     }
 }

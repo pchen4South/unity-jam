@@ -47,7 +47,7 @@ public class GameMode : MonoBehaviour
 	{
 		
 		players.Add(Spawn(0));
-		/* players.Add(Spawn(1));*/
+		players.Add(Spawn(1));
 	}
 
 	void OnEnable()
