@@ -6,24 +6,20 @@ public class Player : MonoBehaviour
     Collider groundCollider;
 
     public CharacterController controller;
-
     public AbstractWeapon Weapon;
 
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
     public float Gravity = -100f;
     public LayerMask layerMask;
-
-    float VerticalVelocity = 0f;
-
-    [Header("Input")]
-    public int PlayerNumber = 0;
     string HorizontalInput = "";
     string VerticalInput = "";
     string FireInput = "";
     string JumpInput = "";
 
+    public int PlayerNumber = 0;
     public int Health = 1;
+    float VerticalVelocity = 0f;
 
     void OnDrawGizmos()
     {
