@@ -12,7 +12,7 @@ public class HadoukenLauncher : AbstractWeapon {
     public Hadouken Ammo;
 
     [Header("Config")]
-    public float GrenadeTravelSpeed = 8f;
+    public float TravelSpeed = 25f;
 
     [Header("State")]
     private float nextFire = 0f;
@@ -24,11 +24,14 @@ public class HadoukenLauncher : AbstractWeapon {
             return;
         
         var wep = player.Weapon;
-        var nade = Instantiate(Ammo, wep.transform.position, wep.transform.rotation);
+        var nade = Instantiate(Ammo, wep.transform.position + wep.transform.forward * 1.025f, wep.transform.rotation);
+        nade.body.AddForce(nade.transform.forward * TravelSpeed, ForceMode.Impulse);
 
-        nade.body.AddForce(nade.transform.forward * GrenadeTravelSpeed, ForceMode.Impulse);
+        /*
         nade.PlayerNumber = player.PlayerNumber;
         fireSound.Play();
+         */
         nextFire = Time.time + fireRate;
+    
     }
 }

@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Hadouken : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    [Header("Cached components")]
+    public Rigidbody body;
+
+    // [Header("Configuration")]
+    // public float fuseTime = 3f;
+    // private float timeAlive = 0f;
+
+    // [Header("Prefabs")]
+    // public GrenadeExplosion Explosion;
+
+    [Header("State")]
+    public int PlayerNumber;
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

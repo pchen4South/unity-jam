@@ -52941,7 +52941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayBackgroundMusic: 1
-  BackgroundMusicVolume: 0.6
+  BackgroundMusicVolume: 0.117
 --- !u!82 &1965197284
 AudioSource:
   m_ObjectHideFlags: 0
@@ -53048,18 +53048,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed165575a518a4e4b98dce5f8b69dbf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponPrefabs:
-  - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
   PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
     type: 2}
   GameSettings: {fileID: 1965197283}
   BackgroundMusic: {fileID: 1965197284}
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
+  WeaponPrefabs:
+  - {fileID: 114369120028403060, guid: 8dec22dd13b22ca4fa75e4233f084386, type: 2}
   playerSpawnLocations:
   - {fileID: 1528594942}
   - {fileID: 373007099}
   - {fileID: 1753328579}
   - {fileID: 2033919237}
+  players: []
 --- !u!4 &1965197286
 Transform:
   m_ObjectHideFlags: 0
