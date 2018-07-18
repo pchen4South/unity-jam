@@ -16,6 +16,9 @@ public class HadoukenLauncher : AbstractWeapon {
 
     [Header("Config")]
     public float TravelSpeed = 25f;
+    public Color BarColor1 = Color.white;
+    public Color BarColor2 = Color.yellow;
+    public Color BarColor3 = Color.red;
 
     [Header("State")]
     private float nextFire = 0f;
@@ -81,8 +84,19 @@ public class HadoukenLauncher : AbstractWeapon {
     void Update()
     {
         var slider = BarInstance.GetComponentInChildren<Slider>();
-        slider.value = chargeTime / 3.0f;
-        Debug.Log("slider: " + slider.value);
+        var img = slider.GetComponentInChildren<Image>();
+
+        var percentCharged = chargeTime / 2.0f;
+        slider.value = percentCharged;
+
+        if(percentCharged < 0.5){
+            img.color = Color.Lerp(BarColor1, BarColor2, (float)percentCharged / 0.5f);
+        }
+        else if (percentCharged > 0.5 && percentCharged < 1){
+            img.color = Color.Lerp(BarColor2, BarColor3, (float)((percentCharged - 0.5f)/ 0.5f));
+        } else if (percentCharged >= 1){
+            img.color = BarColor3;
+        }
 
         if(slider.value > 1)
             slider.value = 1;
