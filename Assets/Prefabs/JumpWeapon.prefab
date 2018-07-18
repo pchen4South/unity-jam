@@ -140,9 +140,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  ChargeBar: {fileID: 114337454257703070, guid: 9055c1b23e5849d4eb16fed06c5ddf5a,
+    type: 2}
   MaxRange: 100
-  FullChargeTime: 1
   FiringDuration: 0.5
+  BarColor1: {r: 1, g: 1, b: 1, a: 1}
+  BarColor2: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  BarColor3: {r: 1, g: 0, b: 0, a: 1}
+  FullChargeTime: 1
 --- !u!120 &120680944502260978
 LineRenderer:
   m_ObjectHideFlags: 1
