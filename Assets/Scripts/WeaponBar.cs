@@ -13,6 +13,7 @@ public class WeaponBar : MonoBehaviour
     [Header("State")]
     private bool IsFlashing = false;
     public Color maxBarColor;
+    public Color FlashColor = Color.white;
     private CanvasGroup cg;
         
     [Header("Config")]
@@ -44,14 +45,14 @@ public class WeaponBar : MonoBehaviour
             IsFlashing = false;
         } else if(slider.value == 1 ){
             if(!IsFlashing){
-                StartCoroutine(FlashBarToWhite());       
+                StartCoroutine(FlashBar());       
             }
         } 
     }
 
-    IEnumerator FlashBarToWhite(){
+    IEnumerator FlashBar(){
         IsFlashing = true;
-        img.color = Color.white;       
+        img.color = FlashColor;       
         yield return new WaitForSeconds(flashTime);
         StartCoroutine(FlashBarToOriginal());
 
