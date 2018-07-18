@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 224077200287248840}
   - component: {fileID: 223641242345670868}
   - component: {fileID: 114239231500083450}
-  - component: {fileID: 114879051620756170}
   - component: {fileID: 114337454257703070}
   m_Layer: 5
   m_Name: WeaponBar
@@ -177,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 1, a: 0.392}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -202,6 +201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22eb82db054998c44820f6591e6c97ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  img: {fileID: 114820315385538400}
+  slider: {fileID: 114169708996566064}
   player: {fileID: 0}
 --- !u!114 &114820315385538400
 MonoBehaviour:
@@ -216,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -230,22 +231,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114879051620756170
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1129297673493344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!222 &222377527830413454
 CanvasRenderer:
   m_ObjectHideFlags: 1

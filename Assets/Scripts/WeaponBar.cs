@@ -1,24 +1,29 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-public class WeaponBar : MonoBehaviour {
-	
+public class WeaponBar : MonoBehaviour 
+{
 	[Header("Prefabs")]
-	public Player player;
     Camera m_Camera;
 	
+    public Image img;
+    public Slider slider;
+	public Player player;
 
-    void Start() {
+    void Start() 
+    {
         m_Camera = Camera.main;
-        var slider = gameObject.GetComponentInChildren<Slider>();
         slider.value = 0;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        Gizmos.DrawRay(transform.position, Vector3.left);
     }
     
     void Update()
     {
-        transform.LookAt(transform.position + m_Camera.transform.rotation * Vector3.forward,
-                         m_Camera.transform.rotation * Vector3.up);
-
 		transform.position = player.transform.position + Vector3.up * 2f;
-        var slider = gameObject.GetComponentInChildren<Slider>();
+        transform.LookAt(m_Camera.transform.position, Vector3.left);
     }
 }
