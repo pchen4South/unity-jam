@@ -7,11 +7,17 @@ public class BeamWeapon : AbstractWeapon
 	[SerializeField]
 	LineRenderer lineRenderer;
 
+	[Header("Prefabs")]
+	public WeaponBar ChargeBar;
+
 	[Header("Properties")]
 	public float MaxRange = 100f;
 	public float KnockBackStrength = .8f;
 	public float FullChargeTime = 1f;
 	public float FiringDuration = 1f;
+	public Color BarColor1 = Color.white;
+    public Color BarColor2 = Color.yellow;
+    public Color BarColor3 = Color.red;
 
 	[Header("Cached Variables")]
 	Ray ray = new Ray();
@@ -22,6 +28,13 @@ public class BeamWeapon : AbstractWeapon
 	float chargeTime = 0f;
 	float remainingFiringTime = 0f;
 	float firingPower = 0f;
+	private WeaponBar BarInstance;
+	private void Start(){
+		var bar = Instantiate(ChargeBar, player.transform.position + player.transform.up * 1.02f , player.transform.rotation, player.transform);
+		bar.player = player;
+		bar.maxBarColor = BarColor3;
+		BarInstance = bar;
+	}
 
 	public override void PullTrigger(Player p)
 	{
@@ -42,6 +55,7 @@ public class BeamWeapon : AbstractWeapon
 			state = WeaponState.Firing;
 			remainingFiringTime = time;
 			firingPower = power; 
+			BarInstance.slider.value = 0;
 		}
 	}
 
@@ -58,6 +72,25 @@ public class BeamWeapon : AbstractWeapon
 			case WeaponState.Charging:
 				lineRenderer.enabled = false;
 				chargeTime += Time.deltaTime;
+				
+				// Weapon bar stuff
+				var img = BarInstance.img;
+        		var percentCharged = (chargeTime <= FullChargeTime ? chargeTime : FullChargeTime) / FullChargeTime;
+				 BarInstance.slider.value = percentCharged;
+
+				if (percentCharged < 0.5)
+				{
+					img.color = Color.Lerp(BarColor1, BarColor2, (float)percentCharged / 0.5f);
+				}
+				else if (percentCharged > 0.5 && percentCharged < 1)
+				{
+					img.color = Color.Lerp(BarColor2, BarColor3, (float)((percentCharged - 0.5f)/ 0.5f));
+				} 
+				else if (percentCharged == 1 && chargeTime == FullChargeTime)
+				{
+					img.color = BarColor3;
+				}
+
 				break;
 
 			// if firing, update/render the beam and check for meaningful collisions
