@@ -392,5 +392,7 @@ MonoBehaviour:
   - {fileID: 114655688512003264, guid: 2037cb67af8609b4d80c6a4401bf1202, type: 2}
   - {fileID: 114010033437337848, guid: c53c7efd77e3f864fadcda9a00d15d56, type: 2}
   - {fileID: 114333810722979406, guid: 934e4ce215112e14d8da46eb8b52807a, type: 2}
+  ChargeBar: {fileID: 114270531370228782, guid: 9055c1b23e5849d4eb16fed06c5ddf5a,
+    type: 2}
   TravelSpeed: 8
   fireRate: 0.5

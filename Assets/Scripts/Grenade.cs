@@ -11,7 +11,7 @@ public class Grenade : MonoBehaviour
 
     [Header("Prefabs")]
     public GrenadeExplosion Explosion;
-
+    
     [Header("State")]
     public int PlayerNumber;
 	

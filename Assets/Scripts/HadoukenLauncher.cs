@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HadoukenLauncher : AbstractWeapon {
 
+    enum WeaponState { Ready, Charging, Firing };
     [Header("Cached references")]
     [SerializeField]
     AudioSource[] fireSound;
 
     [Header("Prefabs")]
     public Hadouken[] Ammo;
+    public WeaponBar ChargeBar;
 
     [Header("Config")]
     public float TravelSpeed = 25f;
@@ -17,23 +20,39 @@ public class HadoukenLauncher : AbstractWeapon {
     [Header("State")]
     private float nextFire = 0f;
     public float fireRate = 0.5f;
+    WeaponState state = WeaponState.Ready;
 
     private float chargeTime = 0f;
 
+    private WeaponBar BarInstance;
+
+    void Start(){
+        var player = this.player;
+        if(ChargeBar != null){
+            var bar = Instantiate(ChargeBar, player.transform.position + player.transform.up * 1.02f , player.transform.rotation, player.transform);
+            bar.player = player;
+            BarInstance = bar;
+        }
+    }
 
     public override void PullTrigger(Player player)
     {
         if (Time.time < nextFire)
             return;
         
-
+        
+        /*
         chargeTime += Time.deltaTime;
+        var slider = BarInstance.GetComponentInChildren<Slider>();
+        slider.value = 0.5f;
+        */
+        
+        chargeTime += Time.deltaTime;
+		
 
-    
     }
 
     public override void ReleaseTrigger(Player player){
-
         var ChargeLevel = 0;
         var wep = player.Weapon;
         
@@ -48,11 +67,25 @@ public class HadoukenLauncher : AbstractWeapon {
             StartCoroutine(DelayFire(0.6f, ChargeLevel, wep, player));
         else
         {
-         ShootFireball(ChargeLevel, wep, player);
+        ShootFireball(ChargeLevel, wep, player);
         }
         
         nextFire = Time.time + fireRate;
         chargeTime = 0f;
+        var slider = BarInstance.GetComponentInChildren<Slider>();
+        slider.value = 0;
+     
+    
+    }
+
+    void Update()
+    {
+        var slider = BarInstance.GetComponentInChildren<Slider>();
+        slider.value = chargeTime / 3.0f;
+        Debug.Log("slider: " + slider.value);
+
+        if(slider.value > 1)
+            slider.value = 1;
     }
 
     IEnumerator DelayFire(float delayTime, int ChargeLevel, AbstractWeapon wep, Player player){
@@ -81,6 +114,8 @@ public class HadoukenLauncher : AbstractWeapon {
             var fireball = Instantiate(Ammo[ChargeLevel], wep.transform.position + wep.transform.forward * 1.02f , wep.transform.rotation);
             fireball.body.AddForce(fireball.transform.forward * TravelSpeed * forceMultiplier, ForceMode.Impulse);
             fireball.PlayerNumber = player.PlayerNumber;
+            var slider = BarInstance.GetComponentInChildren<Slider>();
+            slider.value = 0;
     }
 
 }
