@@ -69,6 +69,7 @@ public class HadoukenLauncher : AbstractWeapon
 
         if (ChargeLevel == 2)
         {
+            player.rooted = true;
             StartCoroutine(DelayFire(0.6f, ChargeLevel, wep, player));
         }
         else
@@ -115,6 +116,7 @@ public class HadoukenLauncher : AbstractWeapon
     {
         yield return new WaitForSeconds(delayTime);
         ShootFireball(ChargeLevel, wep, player);
+        player.rooted = false;
     }
     void ShootFireball(int ChargeLevel, AbstractWeapon wep, Player player)
     {
