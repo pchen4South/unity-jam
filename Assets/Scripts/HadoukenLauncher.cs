@@ -27,7 +27,7 @@ public class HadoukenLauncher : AbstractWeapon
     WeaponState state = WeaponState.Ready;
 
     private float chargeTime = 0f;
-
+    private bool maxChargeReached = false;
     private WeaponBar BarInstance;
 
     void Start()
@@ -39,6 +39,7 @@ public class HadoukenLauncher : AbstractWeapon
             var bar = Instantiate(ChargeBar, player.transform.position + player.transform.up * 1.02f , player.transform.rotation, player.transform);
 
             bar.player = player;
+            bar.maxBarColor = BarColor3;
             BarInstance = bar;
         }
     }
@@ -78,12 +79,19 @@ public class HadoukenLauncher : AbstractWeapon
         nextFire = Time.time + fireRate;
         chargeTime = 0f;
         BarInstance.slider.value = 0;
+        maxChargeReached = false;
     }
 
     void Update()
     {
         var img = BarInstance.img;
         var percentCharged = chargeTime / 2.0f;
+
+
+        if (BarInstance.slider.value > 1)
+        {
+            BarInstance.slider.value = 1;
+        }
 
         BarInstance.slider.value = percentCharged;
         if (percentCharged < 0.5)
@@ -94,15 +102,13 @@ public class HadoukenLauncher : AbstractWeapon
         {
             img.color = Color.Lerp(BarColor2, BarColor3, (float)((percentCharged - 0.5f)/ 0.5f));
         } 
-        else if (percentCharged >= 1)
+        else if (percentCharged == 1 && maxChargeReached == false)
         {
             img.color = BarColor3;
+            maxChargeReached = true;
         }
+        
 
-        if (BarInstance.slider.value > 1)
-        {
-            BarInstance.slider.value = 1;
-        }
     }
 
     IEnumerator DelayFire(float delayTime, int ChargeLevel, AbstractWeapon wep, Player player)
