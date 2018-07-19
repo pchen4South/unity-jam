@@ -16466,6 +16466,52 @@ Mesh:
   m_MeshMetrics[0]: 1
   m_MeshMetrics[1]: 1
   m_MeshOptimized: 0
+--- !u!1001 &314291601
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4303668341587160, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303668341587160, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303668341587160, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303668341587160, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303668341587160, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303668341587160, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303668341587160, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303668341587160, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_RootOrder
+      value: 41
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960429571731718, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &373007099
 GameObject:
   m_ObjectHideFlags: 0
@@ -53393,7 +53439,7 @@ MonoBehaviour:
   BackgroundMusic: {fileID: 1965197284}
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
   WeaponPrefabs:
-  - {fileID: 114369120028403060, guid: 8dec22dd13b22ca4fa75e4233f084386, type: 2}
+  - {fileID: 114753023881708890, guid: 4340d22507abe964f82357d547c140a6, type: 2}
   playerSpawnLocations:
   - {fileID: 1528594942}
   - {fileID: 373007099}
