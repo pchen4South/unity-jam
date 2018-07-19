@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1792604423125892}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4170017126783842}
@@ -141,9 +141,7 @@ MonoBehaviour:
   groundCollider: {fileID: 65229494041329742}
   controller: {fileID: 143346210529754902}
   Weapon: {fileID: 0}
-  GroundCheckDistance: 0.01
   MoveSpeed: 0.12
-  RotateSpeed: 5
   JumpStrength: 20
   Gravity: -85
   layerMask:
@@ -151,6 +149,10 @@ MonoBehaviour:
     m_Bits: 1
   PlayerNumber: 0
   Health: 1
+  rooted: 0
+  isGrounded: 0
+  aerialHeight: 0
+  VerticalVelocity: 0
 --- !u!143 &143346210529754902
 CharacterController:
   m_ObjectHideFlags: 1

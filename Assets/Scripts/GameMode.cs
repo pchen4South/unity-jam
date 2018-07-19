@@ -23,6 +23,7 @@ public class GameMode : MonoBehaviour
 
 	[Header("State")]
 	public List<Player> players = new List<Player>();
+	List<int> spawnIndices = new List<int>();
 
 	void OnDrawGizmos()
 	{
@@ -39,8 +40,18 @@ public class GameMode : MonoBehaviour
 
 	void Start()
 	{
-		players.Add(Spawn(0));
-		players.Add(Spawn(1));
+		
+		for (int i = 0; i < playerSpawnLocations.Length; i++){
+			spawnIndices.Add(i);
+		}
+
+		// player 0 is the dev player
+		// players.Add(Spawn(0));
+		players.Add(Spawn(1, true));
+		players.Add(Spawn(2, true));
+		players.Add(Spawn(3, true));
+		players.Add(Spawn(4, true));
+
 	}
 
 	void OnEnable()
@@ -80,16 +91,26 @@ public class GameMode : MonoBehaviour
 
 			if (player.Health <= 0)
 			{
-				players[i] = Spawn(player.PlayerNumber);
+				players[i] = Spawn(player.PlayerNumber, false);
 				Destroy(player.gameObject);
 			}
 		}
 	}
 
-	Player Spawn(int PlayerNumber)
+	Player Spawn(int PlayerNumber, bool initialSpawn)
 	{
-		var spawnIndex = Random.Range(0, playerSpawnLocations.Length);
-		var spawn = playerSpawnLocations[spawnIndex];
+		GameObject spawn;
+		if(initialSpawn){
+		//edited spawn so each player spawns at a unique location
+			var spawnIndex = Random.Range(0, spawnIndices.Count);
+			spawn = playerSpawnLocations[spawnIndices[spawnIndex]];
+			spawnIndices.RemoveAt(spawnIndex);
+		} else {
+			var spawnIndex = Random.Range(0, playerSpawnLocations.Length);
+			spawn = playerSpawnLocations[spawnIndex];
+		}
+
+		//Debug.Log("Spawning player " + PlayerNumber + " at: " + spawnIndex);
 		var player = Instantiate(PlayerPrefab, spawn.transform.position, spawn.transform.rotation, transform);
 		var weapon = Instantiate(WeaponPrefabs[0], player.transform);
 
