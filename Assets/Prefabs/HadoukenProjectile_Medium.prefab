@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 135768794968715716}
   - component: {fileID: 54777134723441778}
   - component: {fileID: 114010033437337848}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HadoukenProjectile_Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 4712311393318630}
   - component: {fileID: 198799348333621032}
   - component: {fileID: 199997877228557556}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HadoukenParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 4726764924375854}
   - component: {fileID: 198389127153833528}
   - component: {fileID: 199283170724630888}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}

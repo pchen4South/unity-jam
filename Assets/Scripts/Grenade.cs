@@ -14,7 +14,12 @@ public class Grenade : MonoBehaviour
     
     [Header("State")]
     public int PlayerNumber;
-	
+
+    void Start(){
+        Debug.Log("Spraying Nades");
+    }
+
+
 	void Update() 
     {
         //grow larger over time test
@@ -36,6 +41,6 @@ public class Grenade : MonoBehaviour
         {
             body.velocity = Vector3.zero;
             body.isKinematic = true;
-        }             
+        } 
     }
 }

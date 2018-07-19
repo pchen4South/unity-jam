@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4978954622297792}
   - component: {fileID: 33939612821615462}
   - component: {fileID: 23380304517481094}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 54921424930445532}
   - component: {fileID: 136610531769865970}
   - component: {fileID: 114517667255904582}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MachineGunBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,20 +9,20 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1960429571731718}
+  m_RootGameObject: {fileID: 1105998451122090}
   m_IsPrefabAsset: 1
---- !u!1 &1960429571731718
+--- !u!1 &1105998451122090
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4303668341587160}
-  - component: {fileID: 33048309830810774}
-  - component: {fileID: 23284866972517942}
-  - component: {fileID: 82989340613118820}
-  - component: {fileID: 114753023881708890}
+  - component: {fileID: 4748676537387816}
+  - component: {fileID: 33961344165091332}
+  - component: {fileID: 23458827691633624}
+  - component: {fileID: 82696240821624950}
+  - component: {fileID: 114625751796219000}
   m_Layer: 0
   m_Name: SprayGun
   m_TagString: Untagged
@@ -30,12 +30,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4303668341587160
+--- !u!4 &4748676537387816
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960429571731718}
+  m_GameObject: {fileID: 1105998451122090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 0.1, y: 0.2, z: 1}
@@ -43,12 +43,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23284866972517942
+--- !u!23 &23458827691633624
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960429571731718}
+  m_GameObject: {fileID: 1105998451122090}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -78,19 +78,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33048309830810774
+--- !u!33 &33961344165091332
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960429571731718}
+  m_GameObject: {fileID: 1105998451122090}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!82 &82989340613118820
+--- !u!82 &82696240821624950
 AudioSource:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960429571731718}
+  m_GameObject: {fileID: 1105998451122090}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -180,26 +180,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &114753023881708890
+--- !u!114 &114625751796219000
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960429571731718}
+  m_GameObject: {fileID: 1105998451122090}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa3a04d261ab594580739a4f205d143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  fireSound: {fileID: 82989340613118820}
-  Ammo: {fileID: 114004523426484896, guid: c6aec90e2a7f82a4c995c419c7d3aa1c, type: 2}
-  ChargeBar: {fileID: 0}
-  TravelSpeed: 25
-  OverHeatTime: 3
-  OverHeatResetTime: 2
-  FireRatePenalty: 1.5
-  BarColor1: {r: 1, g: 1, b: 1, a: 1}
-  BarColor2: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  BarColor3: {r: 1, g: 0, b: 0, a: 1}
-  fireRate: 0.1
+  fireSound: {fileID: 82696240821624950}
+  Ammo: {fileID: 114134425183445126, guid: 1ef161a8ed26caa40985580dfe8ac4e5, type: 2}
+  TravelSpeed: 10
+  fireRate: 0.33

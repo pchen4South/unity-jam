@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 15457315826890622}
   - component: {fileID: 12578617831968024}
   - component: {fileID: 26545794845797606}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4019046088233402}
   - component: {fileID: 114499855193390850}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Physical explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 15273351314373436}
   - component: {fileID: 12414653650505438}
   - component: {fileID: 26365639375492366}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 4380852548671940}
   - component: {fileID: 108305396151513590}
   - component: {fileID: 114014883733307214}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 111083597654563716}
   - component: {fileID: 82324873874034438}
   - component: {fileID: 114215110863174990}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GrenadeExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
