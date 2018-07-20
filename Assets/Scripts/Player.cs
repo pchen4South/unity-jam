@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
 
     public int PlayerNumber = 0;
     public int Health = 1;
-    public bool rooted = false;
+    public bool canMove = true;
+    public bool canRotate = true;
     public bool isGrounded = false;
     public float aerialHeight = 0f;
     public float VerticalVelocity = 0f;
@@ -60,7 +61,7 @@ public class Player : MonoBehaviour
         aerialHeight = didHit ? rayHit.distance : 0f;
 
         // look in direction
-        if (horizontalAxis != 0 || verticalAxis != 0)
+        if (canRotate && (horizontalAxis != 0 || verticalAxis != 0))
         {
             transform.forward = input.normalized;
         }
@@ -83,7 +84,7 @@ public class Player : MonoBehaviour
         }
 
         // move if not rooted
-        if (!rooted)
+        if (canMove)
         {
             moveDelta.x += horizontalAxis * MoveSpeed;
             moveDelta.y += VerticalVelocity * Time.deltaTime;
