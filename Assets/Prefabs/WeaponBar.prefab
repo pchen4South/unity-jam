@@ -206,6 +206,7 @@ MonoBehaviour:
   slider: {fileID: 114169708996566064}
   player: {fileID: 0}
   maxBarColor: {r: 0, g: 0, b: 0, a: 0}
+  FlashColor: {r: 1, g: 1, b: 1, a: 1}
   flashTime: 0.1
 --- !u!114 &114820315385538400
 MonoBehaviour:
@@ -285,7 +286,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 0.5, y: 0.1}
+  m_SizeDelta: {x: 0.65, y: 0.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224109102535022772
 RectTransform:

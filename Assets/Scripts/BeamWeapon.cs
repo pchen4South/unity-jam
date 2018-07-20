@@ -30,7 +30,7 @@ public class BeamWeapon : AbstractWeapon
 	float firingPower = 0f;
 	private WeaponBar BarInstance;
 	private void Start(){
-		var bar = Instantiate(ChargeBar, player.transform.position + player.transform.up * 1.02f , player.transform.rotation, player.transform);
+		var bar = Instantiate(ChargeBar, player.transform);
 		bar.player = player;
 		bar.maxBarColor = BarColor3;
 		BarInstance = bar;
