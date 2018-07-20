@@ -102,14 +102,16 @@ public class GameMode : MonoBehaviour
 		GameObject spawn;
 		if(initialSpawn)
 		{
-		//edited spawn so each player spawns at a unique location
+			//edited spawn so each player spawns at a unique location
 			var spawnIndex = Random.Range(0, spawnIndices.Count);
+
 			spawn = playerSpawnLocations[spawnIndices[spawnIndex]];
 			spawnIndices.RemoveAt(spawnIndex);
 		} 
 		else 
 		{
 			var spawnIndex = Random.Range(0, playerSpawnLocations.Length);
+
 			spawn = playerSpawnLocations[spawnIndex];
 		}
 
