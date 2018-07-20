@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 120680944502260978}
   - component: {fileID: 23465072938990862}
   - component: {fileID: 33260396427633024}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: JumpWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

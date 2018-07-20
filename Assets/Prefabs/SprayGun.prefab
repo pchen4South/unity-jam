@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23458827691633624}
   - component: {fileID: 82696240821624950}
   - component: {fileID: 114625751796219000}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: SprayGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
