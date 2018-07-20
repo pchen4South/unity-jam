@@ -66,13 +66,13 @@ public class JumpWeapon : AbstractWeapon
 		{
 			// if ready, hide the beam
 			case WeaponState.Ready:
-				player.rooted = false;
+				player.canMove = true;
 				lineRenderer.enabled = false;
 				break;
 
 			// if charging, increase the charge amount
 			case WeaponState.Charging:
-				player.rooted = true;
+				player.canMove = false;
 				lineRenderer.enabled = false;
 
 			   // Weapon bar stuff
@@ -110,7 +110,7 @@ public class JumpWeapon : AbstractWeapon
 					var to = didHit ? rayHit.point : transform.forward * MaxRange;
 
 					// root the firing player
-					player.rooted = true;
+					player.canMove = false;
 
 					// draw the beam
 					lineRenderer.SetPosition(0, from);

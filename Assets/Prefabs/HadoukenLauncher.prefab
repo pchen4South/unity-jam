@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 82979655758207434}
   - component: {fileID: 82371380165213000}
   - component: {fileID: 82687429321259954}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HadoukenLauncher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
