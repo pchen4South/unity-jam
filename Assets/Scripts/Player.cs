@@ -110,7 +110,11 @@ public class Player : MonoBehaviour
 
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
-        oldWeapon.player = null;
-        Destroy(oldWeapon.gameObject);
+
+        if (oldWeapon != null)
+        {
+            oldWeapon.player = null;
+            Destroy(oldWeapon.gameObject);
+        }
     }
 }

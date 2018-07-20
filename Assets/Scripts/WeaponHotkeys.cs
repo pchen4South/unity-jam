@@ -3,21 +3,34 @@
 public class WeaponHotkeys : MonoBehaviour 
 {
 	[SerializeField]
-	GameMode game;
+	Player player;
+	[SerializeField]
+	AbstractWeapon[] WeaponPrefabs;
+
+	void Start()
+	{
+		player.SetWeapon(WeaponPrefabs[0]);
+	}
 
 	void Update()
 	{
-		var weaponCount = game.WeaponPrefabs.Length;
-
-		if (Input.GetKeyDown(KeyCode.Alpha1) && weaponCount > 0)
-			game.players.ForEach(p => p.SetWeapon(game.WeaponPrefabs[0]));
-		if (Input.GetKeyDown(KeyCode.Alpha2) && weaponCount > 1)
-			game.players.ForEach(p => p.SetWeapon(game.WeaponPrefabs[1]));
-		if (Input.GetKeyDown(KeyCode.Alpha3) && weaponCount > 2)
-			game.players.ForEach(p => p.SetWeapon(game.WeaponPrefabs[2]));
-		if (Input.GetKeyDown(KeyCode.Alpha4) && weaponCount > 3)
-			game.players.ForEach(p => p.SetWeapon(game.WeaponPrefabs[3]));
-		if (Input.GetKeyDown(KeyCode.Alpha5) && weaponCount > 4)
-			game.players.ForEach(p => p.SetWeapon(game.WeaponPrefabs[4]));
+		if (Input.GetKeyDown(KeyCode.Alpha1))
+			player.SetWeapon(WeaponPrefabs[0]);
+		if (Input.GetKeyDown(KeyCode.Alpha2))
+			player.SetWeapon(WeaponPrefabs[1]);
+		if (Input.GetKeyDown(KeyCode.Alpha3))
+			player.SetWeapon(WeaponPrefabs[2]);
+		if (Input.GetKeyDown(KeyCode.Alpha4))
+			player.SetWeapon(WeaponPrefabs[3]);
+		if (Input.GetKeyDown(KeyCode.Alpha5))
+			player.SetWeapon(WeaponPrefabs[4]);
+		if (Input.GetKeyDown(KeyCode.Alpha6))
+			player.SetWeapon(WeaponPrefabs[5]);
+		if (Input.GetKeyDown(KeyCode.Alpha7))
+			player.SetWeapon(WeaponPrefabs[6]);
+		if (Input.GetKeyDown(KeyCode.Alpha8))
+			player.SetWeapon(WeaponPrefabs[7]);
+		if (Input.GetKeyDown(KeyCode.Alpha9))
+			player.SetWeapon(WeaponPrefabs[8]);
 	}
 }
