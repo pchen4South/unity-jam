@@ -1,16 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Hook : MonoBehaviour {
+public class Hook : MonoBehaviour 
+{
+	[SerializeField]
+	LineRenderer lineRenderer;
 
-	// Use this for initialization
-	void Start () {
-		
+	public Hookshot weapon;
+	public bool isFree = true;
+
+	public void Update()
+	{
+		lineRenderer.widthMultiplier = .1f;
+		lineRenderer.SetPosition(0, transform.position);
+		lineRenderer.SetPosition(1, weapon.transform.position);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public void OnTriggerEnter(Collider other)
+	{
+		isFree = false;
 	}
 }

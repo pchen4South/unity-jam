@@ -80,7 +80,14 @@ public class Player : MonoBehaviour
         }
         else
         {
-            VerticalVelocity += Gravity * Time.deltaTime;
+            if (canMove)
+            {
+                VerticalVelocity += Gravity * Time.deltaTime;
+            }
+            else
+            {
+                VerticalVelocity = 0f;
+            }
         }
 
         // move if not rooted
