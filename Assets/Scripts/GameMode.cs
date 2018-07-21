@@ -116,10 +116,9 @@ public class GameMode : MonoBehaviour
 		}
 
 		var player = Instantiate(PlayerPrefab, spawn.transform.position, spawn.transform.rotation, transform);
-		var weapon = Instantiate(WeaponPrefabs[0], player.transform);
-
-		weapon.player = player;
-		player.Weapon = weapon;
+		//var weapon = Instantiate(WeaponPrefabs[0], player.transform);
+		//weapon.player = player;
+		//player.Weapon = weapon;
 		player.name = "Player " + PlayerNumber;
 		player.PlayerNumber = PlayerNumber;
 		return player;
