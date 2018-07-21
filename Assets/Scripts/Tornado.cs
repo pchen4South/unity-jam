@@ -9,14 +9,20 @@ public class Tornado : MonoBehaviour {
 
     [Header("Configuration")]
     public float aliveTime = 1.5f;
-    private float timeAlive = 0f;
-
     
+    public float maxSize = 3;
+    public float scaleSpeed = 1.25f;
+
+    private Vector3 targetScale;
+    private Vector3 baseScale;
+    private float timeAlive = 0f;
     [Header("State")]
     public int PlayerNumber;
 
     void Start(){
-        Debug.Log("Tornado");
+         baseScale = transform.localScale;
+         transform.localScale = baseScale;
+         targetScale = baseScale * maxSize;
     }
 
 
@@ -26,6 +32,8 @@ public class Tornado : MonoBehaviour {
         //transform.localScale += new Vector3(0.5f,0.5f,0.5f) * Time.deltaTime;
         timeAlive += Time.deltaTime;
 
+        transform.localScale = Vector3.Lerp (transform.localScale, targetScale, scaleSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.identity;
         if (timeAlive >= aliveTime) 
         {
             //var explosion = Instantiate(Explosion, gameObject.transform.position, gameObject.transform.rotation);

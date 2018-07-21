@@ -69,7 +69,7 @@ Transform:
   m_GameObject: {fileID: 1722883639077114}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 4075241930093684}
   m_Father: {fileID: 0}
@@ -144,7 +144,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 54935119965170108}
-  aliveTime: 1.5
+  aliveTime: 2
+  maxSize: 15
+  scaleSpeed: 1
   PlayerNumber: 0
 --- !u!136 &136412763605330600
 CapsuleCollider:
