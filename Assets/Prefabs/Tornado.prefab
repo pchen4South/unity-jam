@@ -81,7 +81,7 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1722883639077114}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -147,6 +147,7 @@ MonoBehaviour:
   aliveTime: 2
   maxSize: 15
   scaleSpeed: 1
+  floatSpeed: 3
   PlayerNumber: 0
 --- !u!136 &136412763605330600
 CapsuleCollider:
@@ -785,7 +786,7 @@ ParticleSystem:
     serializedVersion: 5
     enabled: 1
     type: 4
-    angle: 45
+    angle: 90
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -933,7 +934,7 @@ ParticleSystem:
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 1
       scalar: 100
       minScalar: 10
       maxCurve:
@@ -1051,7 +1052,7 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.16215515
+          value: 0.19999695
           inSlope: 0
           outSlope: 0
           tangentMode: 0

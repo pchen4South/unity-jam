@@ -12,6 +12,7 @@ public class Tornado : MonoBehaviour {
     
     public float maxSize = 3;
     public float scaleSpeed = 1.25f;
+    public float floatSpeed = 1.25f;
 
     private Vector3 targetScale;
     private Vector3 baseScale;
@@ -34,6 +35,8 @@ public class Tornado : MonoBehaviour {
 
         transform.localScale = Vector3.Lerp (transform.localScale, targetScale, scaleSpeed * Time.deltaTime);
         transform.rotation = Quaternion.identity;
+        transform.position = new Vector3(transform.position.x, transform.position.y + floatSpeed * Time.deltaTime, transform.position.z);
+
         if (timeAlive >= aliveTime) 
         {
             //var explosion = Instantiate(Explosion, gameObject.transform.position, gameObject.transform.rotation);
