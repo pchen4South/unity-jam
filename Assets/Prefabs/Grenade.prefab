@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4906415356802252}
   - component: {fileID: 33577069892520216}
   - component: {fileID: 23635136374146250}
-  - component: {fileID: 136019534310725488}
   - component: {fileID: 54604217938527590}
   - component: {fileID: 114004523426484896}
+  - component: {fileID: 135038747068655948}
   m_Layer: 11
   m_Name: Grenade
   m_TagString: FiredProjectile
@@ -39,7 +39,7 @@ Transform:
   m_GameObject: {fileID: 1253107547275352}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 2, z: 1}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -93,14 +93,14 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1253107547275352}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.2
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &114004523426484896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -117,16 +117,15 @@ MonoBehaviour:
   Explosion: {fileID: 114215110863174990, guid: 8bf1a415ae7d7574f8ba299573ee6dbe,
     type: 2}
   PlayerNumber: 0
---- !u!136 &136019534310725488
-CapsuleCollider:
+--- !u!135 &135038747068655948
+SphereCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1253107547275352}
-  m_Material: {fileID: 13400000, guid: 9f93f63d068b08c459038c40fce897d8, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

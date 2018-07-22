@@ -33,13 +33,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390493452164400}
-  m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.163, y: 1.33, z: 0.068}
   m_LocalScale: {x: 0.1, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114835541831488684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -55,4 +55,4 @@ MonoBehaviour:
   HookPrefab: {fileID: 114843141623925424, guid: b115cbb1a7b244268a5e5131018a3f4e,
     type: 2}
   FiringDuration: 2
-  MoveSpeed: 1
+  MoveSpeed: 100

@@ -15,48 +15,67 @@ public class Hookshot : AbstractWeapon
 	WeaponState state = WeaponState.Ready;
 	WaitForFixedUpdate wait = new WaitForFixedUpdate();
 
+	bool triggerDown = false;
+
 	public override void PullTrigger(Player player)
 	{
+		triggerDown = true;
 		if (state != WeaponState.Ready)
 			return;
 
-		var hook = Instantiate(HookPrefab, transform.position + transform.forward * .4f, player.transform.rotation);
+		RaycastHit rayHit = new RaycastHit();
+		Ray ray = new Ray(transform.position + transform.forward * .5f, player.transform.forward);
+		bool didHit = Physics.Raycast(ray, out rayHit, 100f);
+
+		if (!didHit)
+			return;
+
+		var hook = Instantiate(HookPrefab, ray.origin, player.transform.rotation);
 		
 		hook.weapon = this;
-		StartCoroutine(FireWeapon(hook));
+		StartCoroutine(FireWeapon(hook, destination: rayHit.point));
 	}
 
-	public IEnumerator FireWeapon(Hook hook)
+	public override void ReleaseTrigger(Player player)
 	{
-		float duration = FiringDuration;
+		triggerDown = false;
+	}
+
+	public IEnumerator FireWeapon(Hook hook, Vector3 destination)
+	{
+		Vector3 delta = hook.transform.position - destination;
+		Vector3 origin = player.transform.position;
+		float totalFlightTime = delta.magnitude / MoveSpeed;
+		float remainingFlightTime = totalFlightTime;
 
 		player.canMove = false;
 		player.canRotate = false;
 		state = WeaponState.Firing;
-		while (duration > 0f && hook.isFree)
+		while (remainingFlightTime > 0f)
 		{
-			hook.transform.position += hook.transform.forward * MoveSpeed;
+			hook.transform.position = Vector3.Lerp(destination, player.transform.position, remainingFlightTime / totalFlightTime);
 			yield return wait;
-			duration -= Time.fixedDeltaTime;
+			remainingFlightTime -= Time.fixedDeltaTime;
 		}
-		StartCoroutine(PullToTarget(hook));
+		StartCoroutine(PullToTarget(hook, player.transform.position));
 	}
 
-	public IEnumerator PullToTarget(Hook hook)
+	public IEnumerator PullToTarget(Hook hook, Vector3 origin)
 	{
-		float duration = 2f;
-
 		state = WeaponState.Pulling;
-		while (duration > 0f)
+		
+		Vector3 delta = hook.transform.position - origin;
+		float totalFlightTime = delta.magnitude / MoveSpeed;
+		float remainingFlightTime = totalFlightTime;
+
+		player.canMove = false;
+		player.canRotate = false;
+		state = WeaponState.Firing;
+		while (remainingFlightTime > 0f)
 		{
-			var delta = hook.transform.position - player.transform.position;
-
-			if (delta.sqrMagnitude < 2f)
-				break;
-
-			player.controller.Move(delta.normalized * MoveSpeed);
+			player.transform.position = Vector3.Lerp(hook.transform.position, origin, remainingFlightTime / totalFlightTime);
 			yield return wait;
-			duration -= Time.fixedDeltaTime;
+			remainingFlightTime -= Time.fixedDeltaTime;
 		}
 		player.canMove = true;
 		player.canRotate = true;

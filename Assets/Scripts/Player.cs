@@ -2,6 +2,9 @@
 
 public class Player : MonoBehaviour 
 {
+    // N.B. This must be applied to the character every frame they are grounded to keep them grounded
+    const float GROUNDED_DOWNWARD_VELOCITY = -10f;
+
     [SerializeField]
     Collider groundCollider;
 
@@ -10,7 +13,6 @@ public class Player : MonoBehaviour
 
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
-    public float Gravity = -100f;
     public LayerMask layerMask;
     string HorizontalInput = "";
     string VerticalInput = "";
@@ -25,14 +27,25 @@ public class Player : MonoBehaviour
     public float aerialHeight = 0f;
     public float VerticalVelocity = 0f;
 
+    [Header("Development options")]
+    public bool useCustomGrounding = false;
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward * 10f);
         Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position, Vector3.down * 10f);
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawCube(groundCollider.bounds.center, groundCollider.bounds.extents * 2f);
+        if (useCustomGrounding)
+        {
+            Gizmos.color = isGrounded ? Color.green : Color.gray;
+            Gizmos.DrawCube(groundCollider.bounds.center, groundCollider.bounds.extents * 2f);
+        }
+        else
+        {
+            Gizmos.color = isGrounded ? Color.green : Color.gray;
+            Gizmos.DrawCube(transform.position + transform.up, Vector3.one);
+        }
     }
 
     void Start()
@@ -57,7 +70,14 @@ public class Player : MonoBehaviour
         var input = new Vector3(horizontalAxis, 0, verticalAxis);
         var moveDelta = Vector3.zero;
 
-        isGrounded = contacts.Length > 0;
+        if (useCustomGrounding)
+        {
+            isGrounded = contacts.Length > 0;
+        }
+        else
+        {
+            isGrounded = controller.isGrounded;
+        }
         aerialHeight = didHit ? rayHit.distance : 0f;
 
         // look in direction
@@ -75,14 +95,14 @@ public class Player : MonoBehaviour
             }
             else
             {
-                VerticalVelocity = 0f;
+                VerticalVelocity = GROUNDED_DOWNWARD_VELOCITY;
             }
         }
         else
         {
             if (canMove)
             {
-                VerticalVelocity += Gravity * Time.deltaTime;
+                VerticalVelocity += Physics.gravity.y * Time.deltaTime;
             }
             else
             {

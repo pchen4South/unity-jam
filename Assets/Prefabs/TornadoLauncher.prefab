@@ -190,11 +190,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 90ab6c662be909947b46b31b681b3db6, type: 3}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: a79f0ce6dfc5b44ae998e498473c46d8, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 0.539
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -290,5 +290,5 @@ MonoBehaviour:
   player: {fileID: 0}
   fireSound: {fileID: 82160175192562772}
   Ammo: {fileID: 114374415193606186, guid: d9b496dd3752bd6498a7f246175da782, type: 2}
-  TornadoTravelSpeed: 4
-  fireRate: 0.5
+  TornadoTravelSpeed: 8
+  fireRate: 1

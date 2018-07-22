@@ -21,7 +21,7 @@ public class TornadoLauncher : AbstractWeapon {
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(player.Weapon.transform.position, player.Weapon.transform.forward);
+        Gizmos.DrawRay(transform.position, transform.forward);
     }
 
     public override void PullTrigger(Player player)
@@ -30,7 +30,7 @@ public class TornadoLauncher : AbstractWeapon {
             return;
         
         var weapon = player.Weapon;
-        var tornado = Instantiate(Ammo, weapon.transform.position + weapon.transform.forward * .5f, weapon.transform.rotation);
+        var tornado = Instantiate(Ammo, weapon.transform.position + weapon.transform.forward * 1f, weapon.transform.rotation);
 
         tornado.body.AddForce(weapon.transform.forward * TornadoTravelSpeed, ForceMode.Impulse);
         tornado.PlayerNumber = player.PlayerNumber;
