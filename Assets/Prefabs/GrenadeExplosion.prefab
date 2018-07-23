@@ -520,12 +520,12 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 0.99607843, g: 0.67058825, b: 0.22352941, a: 1}
-  m_Intensity: 6
-  m_Range: 15
+  m_Intensity: 1
+  m_Range: 1
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -588,7 +588,7 @@ MonoBehaviour:
   sound: {fileID: 82324873874034438}
   renderer: {fileID: 23802098195508278}
   loopduration: 1
-  despawnTime: 7
+  despawnTime: 2
   PlayerNumber: 0
 --- !u!114 &114499855193390850
 MonoBehaviour:

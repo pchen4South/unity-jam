@@ -8,18 +8,16 @@ public class Hookshot : AbstractWeapon
 
 	[SerializeField]
 	Hook HookPrefab;
+	[SerializeField]
+	AudioSource audioSource;
 
-	public float FiringDuration = 2f;
-	public float MoveSpeed = .04f;
+	public float MoveSpeed = 100f;
 
 	WeaponState state = WeaponState.Ready;
 	WaitForFixedUpdate wait = new WaitForFixedUpdate();
 
-	bool triggerDown = false;
-
 	public override void PullTrigger(Player player)
 	{
-		triggerDown = true;
 		if (state != WeaponState.Ready)
 			return;
 
@@ -33,21 +31,26 @@ public class Hookshot : AbstractWeapon
 		var hook = Instantiate(HookPrefab, ray.origin, player.transform.rotation);
 		
 		hook.weapon = this;
-		StartCoroutine(FireWeapon(hook, destination: rayHit.point));
+		StartCoroutine(FireWeapon(hook, rayHit.point, rayHit.collider));
 	}
 
-	public override void ReleaseTrigger(Player player)
-	{
-		triggerDown = false;
-	}
-
-	public IEnumerator FireWeapon(Hook hook, Vector3 destination)
+	public IEnumerator FireWeapon(Hook hook, Vector3 destination, Collider targetCollider)
 	{
 		Vector3 delta = hook.transform.position - destination;
 		Vector3 origin = player.transform.position;
 		float totalFlightTime = delta.magnitude / MoveSpeed;
 		float remainingFlightTime = totalFlightTime;
 
+		// immobilize the target if it's another player.
+		if (targetCollider.CompareTag("Player"))
+		{
+			var targetPlayer = targetCollider.GetComponent<Player>();
+
+			targetPlayer.canMove = false;
+			targetPlayer.canRotate = false;
+		}
+
+		audioSource.Play();
 		player.canMove = false;
 		player.canRotate = false;
 		state = WeaponState.Firing;
@@ -57,10 +60,10 @@ public class Hookshot : AbstractWeapon
 			yield return wait;
 			remainingFlightTime -= Time.fixedDeltaTime;
 		}
-		StartCoroutine(PullToTarget(hook, player.transform.position));
+		StartCoroutine(PullToTarget(hook, player.transform.position, targetCollider));
 	}
 
-	public IEnumerator PullToTarget(Hook hook, Vector3 origin)
+	public IEnumerator PullToTarget(Hook hook, Vector3 origin, Collider targetCollider)
 	{
 		state = WeaponState.Pulling;
 		
@@ -68,6 +71,7 @@ public class Hookshot : AbstractWeapon
 		float totalFlightTime = delta.magnitude / MoveSpeed;
 		float remainingFlightTime = totalFlightTime;
 
+		hook.audioSource.Play();
 		player.canMove = false;
 		player.canRotate = false;
 		state = WeaponState.Firing;
@@ -77,6 +81,19 @@ public class Hookshot : AbstractWeapon
 			yield return wait;
 			remainingFlightTime -= Time.fixedDeltaTime;
 		}
+
+		// kill the target if it's a player other than ourself... which it should be...
+		if (targetCollider.CompareTag("Player"))
+		{
+			var targetPlayer = targetCollider.GetComponent<Player>();
+
+			if (targetPlayer.PlayerNumber != player.PlayerNumber)
+			{
+				targetPlayer.Health = 0;
+			}
+		}
+
+		audioSource.Stop();
 		player.canMove = true;
 		player.canRotate = true;
 		state = WeaponState.Ready;

@@ -5,6 +5,8 @@ public class Hook : MonoBehaviour
 	[SerializeField]
 	LineRenderer lineRenderer;
 
+	public AudioSource audioSource;
+
 	public Hookshot weapon;
 
 	public void Update()

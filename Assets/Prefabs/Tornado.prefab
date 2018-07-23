@@ -103,7 +103,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!82 &82831685299773374
 AudioSource:
   m_ObjectHideFlags: 1
@@ -216,22 +216,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: -0.0014724731
       value: 0.5
-      inSlope: 0
-      outSlope: 0
+      inSlope: 3.9039605
+      outSlope: 3.9039605
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.049928367
     - serializedVersion: 3
       time: 1
       value: 2
-      inSlope: 2
-      outSlope: 2
+      inSlope: -0.20591192
+      outSlope: -0.20591192
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.06985295
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2

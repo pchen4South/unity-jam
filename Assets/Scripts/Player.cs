@@ -5,15 +5,11 @@ public class Player : MonoBehaviour
     // N.B. This must be applied to the character every frame they are grounded to keep them grounded
     const float GROUNDED_DOWNWARD_VELOCITY = -10f;
 
-    [SerializeField]
-    Collider groundCollider;
-
     public CharacterController controller;
     public AbstractWeapon Weapon;
 
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
-    public LayerMask layerMask;
     string HorizontalInput = "";
     string VerticalInput = "";
     string FireInput = "";
@@ -23,12 +19,9 @@ public class Player : MonoBehaviour
     public int Health = 1;
     public bool canMove = true;
     public bool canRotate = true;
-    public bool isGrounded = false;
     public float aerialHeight = 0f;
     public float VerticalVelocity = 0f;
-
-    [Header("Development options")]
-    public bool useCustomGrounding = false;
+    public bool isGrounded = true;
 
     void OnDrawGizmos()
     {
@@ -36,16 +29,8 @@ public class Player : MonoBehaviour
         Gizmos.DrawRay(transform.position, transform.forward * 10f);
         Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position, Vector3.down * 10f);
-        if (useCustomGrounding)
-        {
-            Gizmos.color = isGrounded ? Color.green : Color.gray;
-            Gizmos.DrawCube(groundCollider.bounds.center, groundCollider.bounds.extents * 2f);
-        }
-        else
-        {
-            Gizmos.color = isGrounded ? Color.green : Color.gray;
-            Gizmos.DrawCube(transform.position + transform.up, Vector3.one);
-        }
+        Gizmos.color = controller.isGrounded ? Color.green : Color.gray;
+        Gizmos.DrawCube(transform.position + transform.up * 3f, Vector3.one * .2f);
     }
 
     void Start()
@@ -66,18 +51,10 @@ public class Player : MonoBehaviour
         var horizontalAxis = Input.GetAxis(HorizontalInput);
         var verticalAxis = Input.GetAxis(VerticalInput);
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
-        var contacts = Physics.OverlapBox(groundCollider.bounds.center, groundCollider.bounds.extents, groundCollider.transform.rotation, layerMask);
         var input = new Vector3(horizontalAxis, 0, verticalAxis);
         var moveDelta = Vector3.zero;
 
-        if (useCustomGrounding)
-        {
-            isGrounded = contacts.Length > 0;
-        }
-        else
-        {
-            isGrounded = controller.isGrounded;
-        }
+        isGrounded = controller.isGrounded;
         aerialHeight = didHit ? rayHit.distance : 0f;
 
         // look in direction
