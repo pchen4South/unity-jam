@@ -14,13 +14,14 @@ public class Hookshot : AbstractWeapon
 	AudioSource hookAudio;
 
 	public float MoveSpeed = 100f;
+	public float chainFadeDuration = .4f;
 	public float chainVolume = .6f;
 	public float hookVolume = .7f;
 
 	WeaponState state = WeaponState.Ready;
 	IEnumerator chainFadeOut;
 
-	bool triggerUp = false;
+	bool triggerUp = true;
 
 	public override void PullTrigger(Player player)
 	{
@@ -119,7 +120,7 @@ public class Hookshot : AbstractWeapon
 		player.canMove = true;
 		player.canRotate = true;
 		state = WeaponState.Ready;
-		chainFadeOut = chainAudio.FadeOutOver(.4f);
+		chainFadeOut = chainAudio.FadeOutOver(chainFadeDuration);
 		StartCoroutine(chainFadeOut);
 		Destroy(hook.gameObject);
 	}
