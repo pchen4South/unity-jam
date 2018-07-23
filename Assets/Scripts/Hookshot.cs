@@ -20,7 +20,7 @@ public class Hookshot : AbstractWeapon
 	WeaponState state = WeaponState.Ready;
 	IEnumerator chainFadeOut;
 
-	bool triggerUp = false;
+	bool triggerUp = true;
 
 	public override void PullTrigger(Player player)
 	{
