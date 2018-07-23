@@ -9,16 +9,22 @@ public class Hookshot : AbstractWeapon
 	[SerializeField]
 	Hook HookPrefab;
 	[SerializeField]
-	AudioSource audioSource;
+	AudioSource chainAudio;
+	[SerializeField]
+	AudioSource hookAudio;
 
 	public float MoveSpeed = 100f;
+	public float chainVolume = .6f;
+	public float hookVolume = .7f;
 
 	WeaponState state = WeaponState.Ready;
-	WaitForFixedUpdate wait = new WaitForFixedUpdate();
+	IEnumerator chainFadeOut;
+
+	bool triggerUp = false;
 
 	public override void PullTrigger(Player player)
 	{
-		if (state != WeaponState.Ready)
+		if (!triggerUp || state != WeaponState.Ready)
 			return;
 
 		RaycastHit rayHit = new RaycastHit();
@@ -31,7 +37,14 @@ public class Hookshot : AbstractWeapon
 		var hook = Instantiate(HookPrefab, ray.origin, player.transform.rotation);
 		
 		hook.weapon = this;
+		triggerUp = false;
 		StartCoroutine(FireWeapon(hook, rayHit.point, rayHit.collider));
+	}
+
+	public override void ReleaseTrigger(Player player)
+	{
+		// player must release the trigger for the hookshot to fire again
+		triggerUp = true;
 	}
 
 	public IEnumerator FireWeapon(Hook hook, Vector3 destination, Collider targetCollider)
@@ -50,16 +63,24 @@ public class Hookshot : AbstractWeapon
 			targetPlayer.canRotate = false;
 		}
 
-		audioSource.Play();
+		// stop the fadeout on our chain sound if it's still active
+		if (chainFadeOut != null)
+		{
+			StopCoroutine(chainFadeOut);
+		}
+		chainAudio.volume = chainVolume;
+		chainAudio.Play();
 		player.canMove = false;
 		player.canRotate = false;
 		state = WeaponState.Firing;
+
 		while (remainingFlightTime > 0f)
 		{
 			hook.transform.position = Vector3.Lerp(destination, player.transform.position, remainingFlightTime / totalFlightTime);
-			yield return wait;
+			yield return null;
 			remainingFlightTime -= Time.fixedDeltaTime;
 		}
+
 		StartCoroutine(PullToTarget(hook, player.transform.position, targetCollider));
 	}
 
@@ -71,14 +92,16 @@ public class Hookshot : AbstractWeapon
 		float totalFlightTime = delta.magnitude / MoveSpeed;
 		float remainingFlightTime = totalFlightTime;
 
-		hook.audioSource.Play();
+		hookAudio.volume = hookVolume;
+		hookAudio.Play();
 		player.canMove = false;
 		player.canRotate = false;
 		state = WeaponState.Firing;
+
 		while (remainingFlightTime > 0f)
 		{
 			player.transform.position = Vector3.Lerp(hook.transform.position, origin, remainingFlightTime / totalFlightTime);
-			yield return wait;
+			yield return null;
 			remainingFlightTime -= Time.fixedDeltaTime;
 		}
 
@@ -93,10 +116,11 @@ public class Hookshot : AbstractWeapon
 			}
 		}
 
-		audioSource.Stop();
 		player.canMove = true;
 		player.canRotate = true;
 		state = WeaponState.Ready;
+		chainFadeOut = chainAudio.FadeOutOver(.4f);
+		StartCoroutine(chainFadeOut);
 		Destroy(hook.gameObject);
 	}
 }
