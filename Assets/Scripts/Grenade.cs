@@ -15,15 +15,8 @@ public class Grenade : MonoBehaviour
     [Header("State")]
     public int PlayerNumber;
 
-    void Start(){
-        Debug.Log("Spraying Nades");
-    }
-
-
 	void Update() 
     {
-        //grow larger over time test
-        //transform.localScale += new Vector3(0.5f,0.5f,0.5f) * Time.deltaTime;
         timeAlive += Time.deltaTime;
 
         if (timeAlive >= fuseTime) 

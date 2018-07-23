@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SprayGun : AbstractWeapon {
-
+public class SprayGun : AbstractWeapon 
+{
     [Header("Cached references")]
     [SerializeField]
     AudioSource fireSound;

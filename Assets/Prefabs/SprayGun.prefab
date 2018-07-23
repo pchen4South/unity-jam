@@ -194,5 +194,5 @@ MonoBehaviour:
   player: {fileID: 0}
   fireSound: {fileID: 82696240821624950}
   Ammo: {fileID: 114134425183445126, guid: 1ef161a8ed26caa40985580dfe8ac4e5, type: 2}
-  TravelSpeed: 10
-  fireRate: 0.5
+  TravelSpeed: 75
+  fireRate: 0.1
