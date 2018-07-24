@@ -17,17 +17,11 @@ public class SprayGun : AbstractWeapon
     [Header("State")]
     private float nextFire = 0f;
     public float fireRate = 0.1f;
-    void Start()
-    {
-        var player = this.player;
-
-    }
 
     public override void PullTrigger(Player player)
     {
 		if (Time.time < nextFire)
             return;
-
 
 		nextFire = Time.time + fireRate;	
 		
@@ -39,7 +33,6 @@ public class SprayGun : AbstractWeapon
 		var nade2 = Instantiate(Ammo, weapon.transform.position + weapon.transform.forward * .5f, Quaternion.Euler(vector));
 		var nade3 = Instantiate(Ammo, weapon.transform.position + weapon.transform.forward * .5f, Quaternion.Euler(vector2));
 
-
         nade.body.AddForce(weapon.transform.forward * TravelSpeed, ForceMode.Impulse);
 		nade2.body.AddForce(vector * TravelSpeed, ForceMode.Impulse);
 		nade3.body.AddForce(vector2 * TravelSpeed, ForceMode.Impulse);
@@ -49,5 +42,4 @@ public class SprayGun : AbstractWeapon
         fireSound.Play();
         nextFire = Time.time + fireRate;
     }
-
 }
