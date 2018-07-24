@@ -29,7 +29,6 @@ public class MachineGun : AbstractWeapon
     WeaponState state = WeaponState.NotFiring;
 
     private float firingTime = 0f;
-    private bool maxChargeReached = false;
     private WeaponBar BarInstance;
 
     void Start()
