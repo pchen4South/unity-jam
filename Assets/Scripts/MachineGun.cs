@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MachineGun : AbstractWeapon {
-
+public class MachineGun : AbstractWeapon 
+{
     enum WeaponState { NotFiring, Firing, OverHeating };
-    // enum HeatState { NoHeat, Heated, MaxHeat };
 
     [Header("Cached references")]
     [SerializeField]
@@ -28,7 +27,6 @@ public class MachineGun : AbstractWeapon {
     private float nextFire = 0f;
     public float fireRate = 0.1f;
     WeaponState state = WeaponState.NotFiring;
-    // HeatState heat = HeatState.NoHeat;
 
     private float firingTime = 0f;
     private bool maxChargeReached = false;
@@ -53,39 +51,27 @@ public class MachineGun : AbstractWeapon {
         if (Time.time < nextFire)
             return;
         
-
         var weapon = player.Weapon;        
         var bullet = Instantiate(Ammo, weapon.transform.position + weapon.transform.forward * .5f, weapon.transform.rotation);
 
-
-        // float scaleLimit = 2f;             
-        // float randomRadius = Random.Range( 0, scaleLimit );         
-        // float randomAngle = Random.Range ( 0, 2 * Mathf.PI );
-         
-        //  //Calculating the random direction
-        //  Vector3 randomCone = new Vector3(
-        //      randomRadius * Mathf.Cos( randomAngle ),
-        //      weapon.transform.forward.y,
-        //      weapon.transform.forward.z
-        //  );
-
-        //var spray = Vector3.Slerp (transform.TransformDirection(weapon.transform.forward), randomCone, 1f);
-
         bullet.body.AddForce( TravelSpeed * bullet.transform.forward, ForceMode.Impulse);
-        //bullet.body.AddForce( TravelSpeed * spray, ForceMode.Impulse);
         bullet.PlayerNumber = player.PlayerNumber;
         fireSound.Play();
 
-        if(firingTime >= OverHeatTime / 2){
+        if(firingTime >= OverHeatTime / 2)
+        {
             nextFire = Time.time + fireRate * FireRatePenalty ;
-        } else {
+        } 
+        else 
+        {
             nextFire = Time.time + fireRate;
         }
     }
     public override void PullTrigger(Player player)
     {
         // increase meter or hold at max
-        if (state == WeaponState.NotFiring){
+        if (state == WeaponState.NotFiring)
+        {
             // if (heat != HeatState.MaxHeat)
             if (state != WeaponState.OverHeating)
             {
@@ -98,17 +84,18 @@ public class MachineGun : AbstractWeapon {
 
     public override void ReleaseTrigger(Player player)
     {
-        var wep = player.Weapon;
-        if (state == WeaponState.OverHeating){
-            //pause x seconds then reset heat to 0
+        if (state == WeaponState.OverHeating)
+        {
             StartCoroutine(OverHeatReset());
-        } else {
-
+        } 
+        else 
+        {
             state = WeaponState.NotFiring;
         }
     }
 
-    IEnumerator OverHeatReset(){
+    IEnumerator OverHeatReset()
+    {
         yield return new WaitForSeconds(OverHeatResetTime);
         firingTime = 0;
         BarInstance.slider.value = 0;
@@ -119,14 +106,18 @@ public class MachineGun : AbstractWeapon {
     {
         var percentHeat = (firingTime <= OverHeatTime ? firingTime : OverHeatTime) / OverHeatTime;
 
-        switch(state){
-            
+        switch(state)
+        {
             case WeaponState.NotFiring:
-                if (firingTime != 0){
+                if (firingTime != 0)
+                {
                     //reduce heat by y amount per unit time
-                    if (firingTime > 0){
+                    if (firingTime > 0)
+                    {
                         firingTime -= Time.deltaTime * 1.5f;
-                    } else {
+                    } 
+                    else 
+                    {
                         firingTime = 0;
                     }
                     BarInstance.slider.value = percentHeat;
@@ -136,6 +127,7 @@ public class MachineGun : AbstractWeapon {
                 firingTime += Time.deltaTime;
                 // Weapon bar stuff
 				var img = BarInstance.img;				
+
                 BarInstance.slider.value = percentHeat;
 
 				if (percentHeat < 0.5)
@@ -155,8 +147,6 @@ public class MachineGun : AbstractWeapon {
                     state = WeaponState.OverHeating;
 				}
             break;
-
        }
     }
-
 }

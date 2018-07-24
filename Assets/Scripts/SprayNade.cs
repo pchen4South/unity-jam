@@ -33,6 +33,7 @@ public class SprayNade : MonoBehaviour
         if (!(other.gameObject.tag == "Player" && other.gameObject.GetComponent<Player>().PlayerNumber == PlayerNumber))
         {
             var explosion = Instantiate(Explosion, gameObject.transform.position, gameObject.transform.rotation);
+
             explosion.PlayerNumber = PlayerNumber;
             Destroy(gameObject);
         } 
