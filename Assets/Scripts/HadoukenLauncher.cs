@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class HadoukenLauncher : AbstractWeapon 
 {
-    enum WeaponState { Ready, Charging, Firing };
-
     [Header("Cached references")]
     [SerializeField]
     AudioSource[] fireSound;
@@ -24,7 +22,6 @@ public class HadoukenLauncher : AbstractWeapon
     [Header("State")]
     private float nextFire = 0f;
     public float fireRate = 0.5f;
-    WeaponState state = WeaponState.Ready;
 
     private float chargeTime = 0f;
     private bool maxChargeReached = false;
@@ -88,7 +85,6 @@ public class HadoukenLauncher : AbstractWeapon
         var img = BarInstance.img;
         var percentCharged = chargeTime / 2.0f;
 
-
         if (BarInstance.slider.value > 1)
         {
             BarInstance.slider.value = 1;
@@ -118,6 +114,7 @@ public class HadoukenLauncher : AbstractWeapon
         ShootFireball(ChargeLevel, wep, player);
         player.canMove = true;
     }
+
     void ShootFireball(int ChargeLevel, AbstractWeapon wep, Player player)
     {
         var forceMultiplier = 0f;

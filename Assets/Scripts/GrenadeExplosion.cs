@@ -4,8 +4,8 @@ using UnityEngine;
 public class GrenadeExplosion : MonoBehaviour 
 {
 	[Header("Cached references")]
-	public AudioSource sound;
-	public Renderer renderer;
+	public AudioSource Sound;
+	public Renderer Renderer;
 
 	[Header("Configuration")]
 	private float ramptime = 0;
@@ -18,8 +18,6 @@ public class GrenadeExplosion : MonoBehaviour
 
 	void Start()
 	{
-		// TODO: probably is best to create copy of the base material on start?
-		// Stupid unity...
 		CheckExplosionRadius();
 	}
 
@@ -35,9 +33,9 @@ public class GrenadeExplosion : MonoBehaviour
 		b *= correction;
 		ramptime += Time.deltaTime * 2;
 		alphatime -= Time.deltaTime;		
-		renderer.material.SetVector("_ChannelFactor", new Vector4(r, g, b, 0));
-		renderer.material.SetVector("_Range", new Vector4(ramptime, 0, 0, 0));
-		renderer.material.SetFloat("_ClipRange", alphatime);
+		Renderer.material.SetVector("_ChannelFactor", new Vector4(r, g, b, 0));
+		Renderer.material.SetVector("_Range", new Vector4(ramptime, 0, 0, 0));
+		Renderer.material.SetFloat("_ClipRange", alphatime);
 		Destroy(gameObject, despawnTime);
 	}
 
@@ -45,7 +43,7 @@ public class GrenadeExplosion : MonoBehaviour
 	{
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
 
-		sound.Play();
+		Sound.Play();
 		foreach (Collider col in hitColliders)
 		{
 			if(col.gameObject.tag == "Player")
