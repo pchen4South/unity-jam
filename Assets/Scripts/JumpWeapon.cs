@@ -35,10 +35,7 @@ public class JumpWeapon : AbstractWeapon
 
 
 	private void Start(){
-		var bar = Instantiate(ChargeBar, player.transform.position + player.transform.up * 1.02f , player.transform.rotation, player.transform);
-		bar.player = player;
-		bar.maxBarColor = BarColor3;
-		BarInstance = bar;
+
 	}
 	public override void PullTrigger(Player p)
 	{
@@ -74,25 +71,6 @@ public class JumpWeapon : AbstractWeapon
 			case WeaponState.Charging:
 				player.canMove = false;
 				lineRenderer.enabled = false;
-
-			   // Weapon bar stuff
-				chargeTime += Time.deltaTime;
-				var img = BarInstance.img;
-        		var percentCharged = (chargeTime <= FullChargeTime ? chargeTime : FullChargeTime) / FullChargeTime;
-				 BarInstance.slider.value = percentCharged;
-
-				if (percentCharged < 0.5)
-				{
-					img.color = Color.Lerp(BarColor1, BarColor2, (float)percentCharged / 0.5f);
-				}
-				else if (percentCharged > 0.5 && percentCharged < 1)
-				{
-					img.color = Color.Lerp(BarColor2, BarColor3, (float)((percentCharged - 0.5f)/ 0.5f));
-				} 
-				else if (percentCharged == 1 && chargeTime == FullChargeTime)
-				{
-					img.color = BarColor3;
-				}
 
 				break;
 
