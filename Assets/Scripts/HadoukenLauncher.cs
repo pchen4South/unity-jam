@@ -97,15 +97,13 @@ public class HadoukenLauncher : AbstractWeapon
         }
         else if (percentCharged > 0.5 && percentCharged < 1)
         {
-            img.color = Color.Lerp(BarColor2, BarColor3, (float)((percentCharged - 0.5f)/ 0.5f));
+            img.color = Color.Lerp(BarColor2, BarColor3, (float)((percentCharged - 0.5f) / 0.5f));
         } 
         else if (percentCharged == 1 && maxChargeReached == false)
         {
             img.color = BarColor3;
             maxChargeReached = true;
         }
-        
-
     }
 
     IEnumerator DelayFire(float delayTime, int ChargeLevel, AbstractWeapon wep, Player player)

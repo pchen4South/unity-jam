@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class GameMode : MonoBehaviour 
 {
+	[System.Serializable]
+	class PlayerState
+	{
+		public int weaponIndex = 0;
+		public int killCount = 0;
+		public int deathCount = 0;
+		public Player player;
+		public PlayerState(Player Player)
+		{
+			player = Player;
+		}
+	}
+
 	[Header("Prefabs")]
 	[SerializeField]
 	Player PlayerPrefab;
@@ -19,109 +32,115 @@ public class GameMode : MonoBehaviour
 	[Header("Configuration")]
 	public DebugConfig debugConfig;
 	public AbstractWeapon[] WeaponPrefabs;
-	public GameObject[] playerSpawnLocations;
 
 	[Header("State")]
-	public List<Player> players = new List<Player>();
-	List<int> spawnIndices = new List<int>();
-
-	void OnDrawGizmos()
-	{
-		Gizmos.color = debugConfig.PlayerSpawnColor;
-		foreach(var s in playerSpawnLocations)
-		{
-			var position = s.transform.position;
-			var rotation = s.transform.rotation;
-			var scale = new Vector3(.5f, .5f, .5f);
-
-			Gizmos.DrawWireMesh(debugConfig.PlayerSpawnMesh, 0, position, rotation, scale);
-		}
-	}
+	List<PlayerState> playerStates = new List<PlayerState>();
+	GameObject[] spawnPoints;
 
 	void Start()
 	{
-		
-		for (int i = 0; i < playerSpawnLocations.Length; i++){
-			spawnIndices.Add(i);
-		}
+		var debugPlayer = GameObject.FindObjectOfType<Player>();
 
-		// player 0 is the dev player
-		// players.Add(Spawn(0));
-		/* 
-		players.Add(Spawn(1, true));
-		players.Add(Spawn(2, true));
-		players.Add(Spawn(3, true));
-		players.Add(Spawn(4, true));
-		*/
-	}
+		playerStates.Add(new PlayerState(debugPlayer));
 
-	void OnEnable()
-	{
-		if (GameSettings.PlayBackgroundMusic)
+		// crawl the map collecting references to all spawn points
+		spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+
+		for (var i = 1; i <= 1; i++)
 		{
-			BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
-			BackgroundMusic.Play();
+			Spawn(i);
 		}
-	}
 
-	void OnDisable()
-	{
-		BackgroundMusic.Pause();
+		StartCoroutine(UpdateSettings());
 	}
 
 	void Update()
 	{
-		if (GameSettings.PlayBackgroundMusic)
-		{
-			if (!BackgroundMusic.isPlaying)
-			{
-				BackgroundMusic.Play();
-			}
-		}
-		else {
-			if (BackgroundMusic.isPlaying)
-			{
-				BackgroundMusic.Pause();
-			}
-		}
-		BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
+		var gunCount = WeaponPrefabs.Length;
 
-		for(var i = 0; i < players.Count; i++)
+		for(var i = 0; i < playerStates.Count; i++)
 		{
-			var player = players[i];
+			var playerState = playerStates[i];
 
-			if (player.Health <= 0)
+			if (playerState.player.Health <= 0)
 			{
-				players[i] = Spawn(player.PlayerNumber, false);
-				Destroy(player.gameObject);
+				var attackerIndex = playerState.player.lastAttackerIndex;
+				var attackerState = playerStates[attackerIndex];
+
+				attackerState.killCount += 1;
+				playerState.deathCount += 1;
+
+				if (attackerState.weaponIndex + 1 >= gunCount)
+				{
+					Debug.Log("Game over. Player " + attackerState.player.PlayerNumber + " wins!");
+					foreach(var ps in playerStates)
+					{
+						ps.deathCount = 0;
+						ps.killCount = 0;
+						ps.weaponIndex = 0;
+						Respawn(ps.player);
+						ps.player.SetWeapon(WeaponPrefabs[ps.weaponIndex]);
+					}
+				}
+				else
+				{
+					attackerState.weaponIndex += 1;
+					attackerState.player.SetWeapon(WeaponPrefabs[attackerState.weaponIndex]);
+					Respawn(playerState.player);
+				}
 			}
 		}
 	}
 
-	Player Spawn(int PlayerNumber, bool initialSpawn)
+	Player Spawn(int PlayerNumber)
 	{
-		GameObject spawn;
-		if(initialSpawn)
-		{
-			//edited spawn so each player spawns at a unique location
-			var spawnIndex = Random.Range(0, spawnIndices.Count);
+		var player = Instantiate(PlayerPrefab);
 
-			spawn = playerSpawnLocations[spawnIndices[spawnIndex]];
-			spawnIndices.RemoveAt(spawnIndex);
-		} 
-		else 
-		{
-			var spawnIndex = Random.Range(0, playerSpawnLocations.Length);
-
-			spawn = playerSpawnLocations[spawnIndex];
-		}
-
-		var player = Instantiate(PlayerPrefab, spawn.transform.position, spawn.transform.rotation, transform);
-		//var weapon = Instantiate(WeaponPrefabs[0], player.transform);
-		//weapon.player = player;
-		//player.Weapon = weapon;
-		player.name = "Player " + PlayerNumber;
+		playerStates.Add(new PlayerState(player));
 		player.PlayerNumber = PlayerNumber;
+		player.name = "Player " + PlayerNumber;
+        player.HorizontalInput = "Horizontal_" + PlayerNumber;
+        player.VerticalInput = "Vertical_" + PlayerNumber;
+        player.FireInput = "Fire_" + PlayerNumber;
+        player.JumpInput = "Jump_" + PlayerNumber;
+		return Respawn(player);
+	}
+
+	Player Respawn(Player player)
+	{
+		var spawnIndex = Random.Range(0, spawnPoints.Length);
+		var spawn = spawnPoints[spawnIndex];
+		
+		player.transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
+		player.Health = 3;
+		player.canMove = true;
+		player.canRotate = true;
+		player.VerticalVelocity = 0f;
 		return player;
+	}
+
+	IEnumerator UpdateSettings()
+	{
+		var wait = new WaitForSeconds(1f);
+
+		while (true)
+		{
+			if (GameSettings.PlayBackgroundMusic)
+			{
+				if (!BackgroundMusic.isPlaying)
+				{
+					BackgroundMusic.Play();
+				}
+			}
+			else {
+				if (BackgroundMusic.isPlaying)
+				{
+					BackgroundMusic.Pause();
+				}
+			}
+			BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
+
+			yield return wait;
+		}
 	}
 }

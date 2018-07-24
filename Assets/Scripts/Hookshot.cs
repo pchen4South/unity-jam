@@ -113,7 +113,7 @@ public class Hookshot : AbstractWeapon
 
 			if (targetPlayer.PlayerNumber != player.PlayerNumber)
 			{
-				targetPlayer.Health = 0;
+				targetPlayer.Damage(targetPlayer.Health, player.PlayerNumber);
 			}
 		}
 

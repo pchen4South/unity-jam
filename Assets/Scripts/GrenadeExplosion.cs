@@ -52,7 +52,7 @@ public class GrenadeExplosion : MonoBehaviour
 
 				if (player.PlayerNumber != PlayerNumber)
 				{
-					player.Health = 0;
+					player.Damage(player.Health, PlayerNumber);
 				}
 			}
 		}

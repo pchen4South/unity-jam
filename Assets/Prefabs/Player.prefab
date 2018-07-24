@@ -2522,6 +2522,10 @@ MonoBehaviour:
   animator: {fileID: 95275682278858346}
   MoveSpeed: 0.16
   JumpStrength: 20
+  HorizontalInput: Horizontal_0
+  VerticalInput: Vertical_0
+  FireInput: Fire_0
+  JumpInput: Jump_0
   PlayerNumber: 0
   Health: 1
   canMove: 1

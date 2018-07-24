@@ -11,6 +11,7 @@ public class BeamWeapon : AbstractWeapon
 	public WeaponBar ChargeBar;
 
 	[Header("Properties")]
+	public float MaxDamage = 3;
 	public float MaxRange = 100f;
 	public float KnockBackStrength = .8f;
 	public float FullChargeTime = 1f;
@@ -125,10 +126,13 @@ public class BeamWeapon : AbstractWeapon
 					if (didHit && rayHit.collider.gameObject.tag == "Player")
 					{
 						var target = rayHit.collider.gameObject.GetComponent<Player>();	
+						var damage = (int)Mathf.Lerp(0, MaxDamage, firingPower);
 
 						// don't damage ourselves!
 						if (target != player)
-							target.Health -= 1;
+						{
+							target.Damage(damage, player.PlayerNumber);
+						}
 					}
 				}
 				else 

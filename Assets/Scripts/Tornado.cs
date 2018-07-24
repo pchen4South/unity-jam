@@ -37,6 +37,6 @@ public class Tornado : MonoBehaviour
         if (player.PlayerNumber == PlayerNumber)
             return;
 
-        player.Health -= 1;
+        player.Damage(player.Health, PlayerNumber);
     }
 }

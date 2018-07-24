@@ -90,7 +90,7 @@ public class JumpWeapon : AbstractWeapon
 						// don't damage ourselves!
 						if (target != player)
 						{
-							target.Health -= 1;
+							target.Damage(target.Health, player.PlayerNumber);
 						}
 					}
 				}

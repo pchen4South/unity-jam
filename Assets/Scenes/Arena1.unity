@@ -10836,7 +10836,6 @@ GameObject:
   m_Component:
   - component: {fileID: 170076735}
   - component: {fileID: 170076734}
-  - component: {fileID: 170076736}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -10873,10 +10872,10 @@ Light:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -10894,20 +10893,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &170076736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 170076733}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e03b72c7d58c427798c975cb3ded22f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WanderSpeed: 15
-  Point: {x: 0, y: 0, z: 0}
-  Axis: {x: 0, y: 0, z: 1}
 --- !u!43 &203792817
 Mesh:
   m_ObjectHideFlags: 0
@@ -35446,7 +35431,7 @@ GameObject:
   - component: {fileID: 1510522316}
   m_Layer: 9
   m_Name: Spawn2
-  m_TagString: EditorOnly
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35474,7 +35459,7 @@ GameObject:
   - component: {fileID: 1562765895}
   m_Layer: 9
   m_Name: Spawn1
-  m_TagString: EditorOnly
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52915,7 +52900,7 @@ GameObject:
   - component: {fileID: 2027728248}
   m_Layer: 9
   m_Name: Spawn3
-  m_TagString: EditorOnly
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52972,12 +52957,6 @@ MonoBehaviour:
   - {fileID: 114821612834432382, guid: 4de552a431cc243908d6e896546fe46e, type: 2}
   - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
   - {fileID: 114369120028403060, guid: 8dec22dd13b22ca4fa75e4233f084386, type: 2}
-  playerSpawnLocations:
-  - {fileID: 2050198994}
-  - {fileID: 1562765894}
-  - {fileID: 1510522315}
-  - {fileID: 2027728247}
-  players: []
 --- !u!4 &2031513401
 Transform:
   m_ObjectHideFlags: 0
@@ -53109,7 +53088,7 @@ GameObject:
   - component: {fileID: 2050198995}
   m_Layer: 9
   m_Name: Spawn0
-  m_TagString: EditorOnly
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

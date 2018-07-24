@@ -8,15 +8,14 @@ public class Player : MonoBehaviour
 
     public CharacterController controller;
     public AbstractWeapon Weapon;
-
     public Animator animator;
 
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
-    string HorizontalInput = "";
-        string VerticalInput = "";
-    string FireInput = "";
-    string JumpInput = "";
+    public string HorizontalInput = "";
+    public string VerticalInput = "";
+    public string FireInput = "";
+    public string JumpInput = "";
 
     public int PlayerNumber = 0;
     public int Health = 1;
@@ -25,10 +24,10 @@ public class Player : MonoBehaviour
     public float aerialHeight = 0f;
     public float VerticalVelocity = 0f;
     public bool isGrounded = true;
+    public int lastAttackerIndex;
 
     [Header("Animation")]
     private float Turn;
-
 
     void OnDrawGizmos()
     {
@@ -38,14 +37,6 @@ public class Player : MonoBehaviour
         Gizmos.DrawRay(transform.position, Vector3.down * 10f);
         Gizmos.color = controller.isGrounded ? Color.green : Color.gray;
         Gizmos.DrawCube(transform.position + transform.up * 3f, Vector3.one * .2f);
-    }
-
-    void Start()
-    {
-        HorizontalInput = "Horizontal_" + PlayerNumber;
-        VerticalInput = "Vertical_" + PlayerNumber;
-        FireInput = "Fire_" + PlayerNumber;
-        JumpInput = "Jump_" + PlayerNumber;
     }
 
     void Update() 
@@ -114,9 +105,7 @@ public class Player : MonoBehaviour
 
         controller.Move(moveDelta);
 
-        
         //Animation stuff
-
         if(animator != null){
             /*
             float turn = 0f;
@@ -131,14 +120,16 @@ public class Player : MonoBehaviour
             }
             */
             float move = 0f;
+
             if(Math.Abs(horizontalAxis) > 0 || Math.Abs(verticalAxis) > 0)
+            {
                 move = 1f;
+            }
             animator.SetFloat("Forward", move);
             //animator.SetFloat("Turn", turn);
             animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
             animator.SetBool("OnGround", isGrounded);
         }
-
     }
 
     // TODO: Call some kind of reset on the weapon to clear modifiers to the player?
@@ -154,5 +145,15 @@ public class Player : MonoBehaviour
             oldWeapon.player = null;
             Destroy(oldWeapon.gameObject);
         }
+    }
+
+    public void Damage(int amountOfDamage, int attackerIndex)
+    {
+        // TODO: This probably should be some kind of state so that controls stop working etc
+        if (Health <= 0)
+            return;
+
+        Health -= amountOfDamage;
+        lastAttackerIndex = attackerIndex;
     }
 }
