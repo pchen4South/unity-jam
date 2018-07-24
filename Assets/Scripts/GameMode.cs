@@ -47,11 +47,12 @@ public class GameMode : MonoBehaviour
 
 		// player 0 is the dev player
 		// players.Add(Spawn(0));
+		/* 
 		players.Add(Spawn(1, true));
 		players.Add(Spawn(2, true));
 		players.Add(Spawn(3, true));
 		players.Add(Spawn(4, true));
-
+		*/
 	}
 
 	void OnEnable()

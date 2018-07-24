@@ -53,7 +53,7 @@ public class JumpWeapon : AbstractWeapon
 			state = WeaponState.Firing;
 			remainingFiringTime = FiringDuration;
 			firingPower = p.aerialHeight;
-			BarInstance.slider.value = 0;
+			//BarInstance.slider.value = 0;
 		}
 	}
 
