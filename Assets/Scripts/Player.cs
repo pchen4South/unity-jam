@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour 
 {
@@ -124,7 +123,7 @@ public class Player : MonoBehaviour
             */
             float move = 0f;
 
-            if(Math.Abs(horizontalAxis) > 0 || Math.Abs(verticalAxis) > 0)
+            if(Mathf.Abs(horizontalAxis) > 0 || Mathf.Abs(verticalAxis) > 0)
             {
                 move = 1f;
             }

@@ -58,6 +58,7 @@ public class GameMode : MonoBehaviour
 
 		for (var i = 0; i < playerStates.Count; i++)
 		{
+			playerStates[i].player.SetWeapon(WeaponPrefabs[playerStates[i].weaponIndex]);
 			playerStates[i].player.color = GameSettings.playerColors[i];
 		}
 	}

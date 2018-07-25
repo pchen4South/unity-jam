@@ -272,11 +272,12 @@ MonoBehaviour:
   BackgroundMusic: {fileID: 351282387}
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
   WeaponPrefabs:
+  - {fileID: 114567695502160530, guid: f408a2dde47e742d384c9a690ed04448, type: 2}
   - {fileID: 114835541831488684, guid: 73412a9a3b2b24366b542efd8bc97d94, type: 2}
-  - {fileID: 114491167776190760, guid: f8a79835d29f6194cb01f3ce90ff45ad, type: 2}
   - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 2}
   - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
   - {fileID: 114625751796219000, guid: 4340d22507abe964f82357d547c140a6, type: 2}
+  - {fileID: 114491167776190760, guid: f8a79835d29f6194cb01f3ce90ff45ad, type: 2}
   - {fileID: 114821612834432382, guid: 4de552a431cc243908d6e896546fe46e, type: 2}
 --- !u!4 &351282386
 Transform:
@@ -567,6 +568,52 @@ Mesh:
   m_MeshMetrics[0]: 1
   m_MeshMetrics[1]: 1
   m_MeshOptimized: 0
+--- !u!1001 &605642692
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1204618045206752, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!43 &611599083
 Mesh:
   m_ObjectHideFlags: 0
@@ -2020,11 +2067,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &1180991052 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 137273324432325058, guid: df2c0b90f808944819fc7ea82383b64c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1747079094}
 --- !u!1 &1380431786
 GameObject:
   m_ObjectHideFlags: 0
@@ -2796,7 +2838,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh17938
+  m_Name: pb_Mesh34650
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -2983,13 +3025,13 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4819939376976574, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
-    - target: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
+    - target: {fileID: 114877347624662624, guid: df2c0b90f808944819fc7ea82383b64c,
         type: 2}
-      propertyPath: meshRenderer
-      value: 
-      objectReference: {fileID: 1180991052}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
   m_IsPrefabAsset: 0
