@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public CharacterController controller;
     public AbstractWeapon Weapon;
     public Animator animator;
+    public Color color = Color.red;
 
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
