@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17342,7 +17342,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4819939376976574, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4819939376976574, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_LocalPosition.z
@@ -23791,6 +23791,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayBackgroundMusic: 1
   BackgroundMusicVolume: 0.117
+  playerColors:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
 --- !u!82 &1965197284
 AudioSource:
   m_ObjectHideFlags: 0
@@ -23899,6 +23908,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
     type: 2}
+  GraphPrefab: {fileID: 114828885761802702, guid: 91096ca2c46534fc69c46b40c76881b7,
+    type: 2}
   GameSettings: {fileID: 1965197283}
   BackgroundMusic: {fileID: 1965197284}
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
@@ -23907,7 +23918,6 @@ MonoBehaviour:
   - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
   - {fileID: 114369120028403060, guid: 8dec22dd13b22ca4fa75e4233f084386, type: 2}
   - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 2}
-  - {fileID: 0}
 --- !u!4 &1965197286
 Transform:
   m_ObjectHideFlags: 0
