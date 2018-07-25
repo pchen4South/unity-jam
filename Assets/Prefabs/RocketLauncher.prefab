@@ -194,5 +194,5 @@ MonoBehaviour:
   player: {fileID: 0}
   fireSound: {fileID: 82516203704464290}
   Ammo: {fileID: 114999885702512854, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
-  RocketMoveSpeed: 0.6
+  RocketMoveSpeed: 5
   fireRate: 0.5
