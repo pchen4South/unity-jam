@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     // N.B. This must be applied to the character every frame they are grounded to keep them grounded
     const float GROUNDED_DOWNWARD_VELOCITY = -10f;
 
+    public SkinnedMeshRenderer meshRenderer;
     public CharacterController controller;
     public AbstractWeapon Weapon;
     public Animator animator;
@@ -107,7 +108,8 @@ public class Player : MonoBehaviour
         controller.Move(moveDelta);
 
         //Animation stuff
-        if(animator != null){
+        if(animator != null)
+        {
             /*
             float turn = 0f;
 
@@ -131,6 +133,8 @@ public class Player : MonoBehaviour
             animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
             animator.SetBool("OnGround", isGrounded);
         }
+
+        meshRenderer.material.color = color;
     }
 
     // TODO: Call some kind of reset on the weapon to clear modifiers to the player?

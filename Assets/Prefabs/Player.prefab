@@ -2517,9 +2517,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae51a3403675bc409623d5204e74615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 137273324432325058}
   controller: {fileID: 143346210529754902}
   Weapon: {fileID: 0}
   animator: {fileID: 95275682278858346}
+  color: {r: 1, g: 0, b: 0, a: 1}
   MoveSpeed: 0.16
   JumpStrength: 20
   HorizontalInput: Horizontal_0
@@ -2533,6 +2535,7 @@ MonoBehaviour:
   aerialHeight: 0
   VerticalVelocity: 0
   isGrounded: 0
+  lastAttackerIndex: 0
 --- !u!114 &114877347624662624
 MonoBehaviour:
   m_ObjectHideFlags: 1
