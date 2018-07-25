@@ -2,28 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class PlayerState
+{
+	public int weaponIndex = 0;
+	public int killCount = 0;
+	public int deathCount = 0;
+	public Player player;
+	public PlayerState(Player Player)
+	{
+		player = Player;
+	}
+}
+
 public class GameMode : MonoBehaviour 
 {
-	[System.Serializable]
-	class PlayerState
-	{
-		public int weaponIndex = 0;
-		public int killCount = 0;
-		public int deathCount = 0;
-		public Player player;
-		public PlayerState(Player Player)
-		{
-			player = Player;
-		}
-	}
-
 	[Header("Prefabs")]
 	[SerializeField]
 	Player PlayerPrefab;
+	[SerializeField]
+	Graph GraphPrefab;
 
 	[Header("Game")]
 	[SerializeField]
 	GameSettings GameSettings;
+	Graph graph;
 
 	[Header("Sounds")]
 	[SerializeField]
@@ -46,12 +49,17 @@ public class GameMode : MonoBehaviour
 		// crawl the map collecting references to all spawn points
 		spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
-		for (var i = 1; i <= 1; i++)
+		graph = Instantiate(GraphPrefab);
+
+		for (var i = 1; i <= 4; i++)
 		{
 			Spawn(i);
 		}
 
-		StartCoroutine(UpdateSettings());
+		for (var i = 0; i < playerStates.Count; i++)
+		{
+			playerStates[i].player.color = GameSettings.playerColors[i];
+		}
 	}
 
 	void Update()
@@ -90,6 +98,30 @@ public class GameMode : MonoBehaviour
 				}
 			}
 		}
+
+		// Update the graphs for gun status
+		for (var i = 0; i < playerStates.Count; i++)
+		{
+			var ps = playerStates[i];
+			var normalizedScale = (float)ps.weaponIndex / (float)gunCount;
+
+			graph.UpdateBar(i, ps.player.color, normalizedScale);
+		}
+
+		if (GameSettings.PlayBackgroundMusic)
+		{
+			if (!BackgroundMusic.isPlaying)
+			{
+				BackgroundMusic.Play();
+			}
+		}
+		else {
+			if (BackgroundMusic.isPlaying)
+			{
+				BackgroundMusic.Pause();
+			}
+		}
+		BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
 	}
 
 	Player Spawn(int PlayerNumber)
@@ -117,30 +149,5 @@ public class GameMode : MonoBehaviour
 		player.canRotate = true;
 		player.VerticalVelocity = 0f;
 		return player;
-	}
-
-	IEnumerator UpdateSettings()
-	{
-		var wait = new WaitForSeconds(1f);
-
-		while (true)
-		{
-			if (GameSettings.PlayBackgroundMusic)
-			{
-				if (!BackgroundMusic.isPlaying)
-				{
-					BackgroundMusic.Play();
-				}
-			}
-			else {
-				if (BackgroundMusic.isPlaying)
-				{
-					BackgroundMusic.Pause();
-				}
-			}
-			BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
-
-			yield return wait;
-		}
 	}
 }

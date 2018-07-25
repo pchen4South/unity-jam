@@ -6,4 +6,5 @@ public class GameSettings : MonoBehaviour
 	public bool PlayBackgroundMusic = true;
 	[Range(0f, 1f)]
 	public float BackgroundMusicVolume = .6f;
+	public Color[] playerColors = new Color[8];
 }

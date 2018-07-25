@@ -6,6 +6,10 @@ MonoImporter:
   defaultReferences:
   - PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
       type: 2}
+  - GraphPrefab: {fileID: 114828885761802702, guid: 91096ca2c46534fc69c46b40c76881b7,
+      type: 2}
+  - GameSettings: {instanceID: 0}
+  - BackgroundMusic: {instanceID: 0}
   - debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
