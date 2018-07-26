@@ -273,7 +273,7 @@ MonoBehaviour:
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
   WeaponPrefabs:
   - {fileID: 114567695502160530, guid: f408a2dde47e742d384c9a690ed04448, type: 2}
-  - {fileID: 114835541831488684, guid: 73412a9a3b2b24366b542efd8bc97d94, type: 2}
+  - {fileID: 114491167776190760, guid: f8a79835d29f6194cb01f3ce90ff45ad, type: 2}
   - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 2}
   - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
   - {fileID: 114625751796219000, guid: 4340d22507abe964f82357d547c140a6, type: 2}
