@@ -12,6 +12,7 @@ public class Mallet : AbstractWeapon {
     public Color BarColor1 = Color.white;
     public Color BarColor2 = Color.yellow;
     public Color BarColor3 = Color.red;
+    public Rigidbody body;
 
     [Header("Prefabs")]
     public ParticleSystem Dust;
@@ -107,6 +108,15 @@ public class Mallet : AbstractWeapon {
         }
 
         chargeTime = 0f;
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Player" 
+            && other.gameObject.GetComponent<Player>().PlayerNumber != player.PlayerNumber)
+        {
+            other.gameObject.GetComponent<Player>().Health -= 1;
+        }
     }
 
     public void HammerSpinStarted()
