@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
 
     [Header("Animation")]
     private float Turn;
+    public bool IsDead = false;
 
     void OnDrawGizmos()
     {
@@ -131,9 +132,18 @@ public class Player : MonoBehaviour
             //animator.SetFloat("Turn", turn);
             animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
             animator.SetBool("OnGround", isGrounded);
+
+            if (Health <= 0) {
+                animator.SetBool("PlayDeathAnimation", true);
+               // animator.Play("Dying");
+            }
         }
 
         meshRenderer.material.color = color;
+    }
+
+    public void DeathAnimationFinished() {
+        IsDead = true;
     }
 
     // TODO: Call some kind of reset on the weapon to clear modifiers to the player?

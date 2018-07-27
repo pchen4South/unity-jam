@@ -118,7 +118,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh17370
+  m_Name: pb_Mesh19106
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -17029,6 +17029,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1142440818818932, guid: 013d2a4b8b9a60c4485b35c059e9b6ca, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 013d2a4b8b9a60c4485b35c059e9b6ca, type: 2}
   m_IsPrefabAsset: 0
@@ -17474,15 +17478,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4819939376976574, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.57
       objectReference: {fileID: 0}
     - target: {fileID: 4819939376976574, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4819939376976574, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4819939376976574, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_LocalRotation.x
@@ -19015,6 +19019,14 @@ Prefab:
       value: -0.013012144
       objectReference: {fileID: 0}
     - target: {fileID: 1834896337600544, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344923623915812, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1792604423125892, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
