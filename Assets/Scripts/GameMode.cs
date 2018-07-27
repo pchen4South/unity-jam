@@ -50,7 +50,7 @@ public class GameMode : MonoBehaviour
 		spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
 		graph = Instantiate(GraphPrefab);
-
+        /*
 		for (var i = 1; i <= 4; i++)
 		{
 			Spawn(i);
@@ -60,7 +60,7 @@ public class GameMode : MonoBehaviour
 		{
 			playerStates[i].player.SetWeapon(WeaponPrefabs[playerStates[i].weaponIndex]);
 			playerStates[i].player.color = GameSettings.playerColors[i];
-		}
+		}*/
 	}
 
 	void Update()
