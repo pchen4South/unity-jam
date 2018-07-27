@@ -14,7 +14,8 @@ public class Mallet : AbstractWeapon {
     public ParticleSystem Dust;
     public ParticleSystem Trail;
     public ParticleSystem Spin;
-
+    public AudioSource malletSwing;
+    public AudioSource malletSpin;
     [Header("State")]
     private bool swingingHammer = false;
     private float hammerSwingingTime = 0;
@@ -78,8 +79,8 @@ public class Mallet : AbstractWeapon {
 
     public void HammerSpinStarted()
     {
-
         SpinAnimation = Instantiate(Spin, player.transform);
+        malletSpin.Play();
     }
 
     public void HammerSpinEnded() {
@@ -98,7 +99,7 @@ public class Mallet : AbstractWeapon {
     }
 
     public void MalletSwingStarted() {
-
+        malletSwing.Play();
         Instantiate(Trail, this.transform);
     }
 
