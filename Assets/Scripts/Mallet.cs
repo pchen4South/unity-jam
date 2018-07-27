@@ -79,7 +79,7 @@ public class Mallet : AbstractWeapon {
     public void HammerSpinStarted()
     {
 
-        SpinAnimation = Instantiate(Spin, this.transform);
+        SpinAnimation = Instantiate(Spin, player.transform);
     }
 
     public void HammerSpinEnded() {

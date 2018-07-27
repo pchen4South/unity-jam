@@ -220,11 +220,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   animator: {fileID: 95927876546283104}
-  chargeDelay: 0.1
+  chargeDelay: 0.25
   maxChargeTime: 1
   Dust: {fileID: 198273591733458794, guid: 9e1f4275765f1f24c92b7c98a3f684c5, type: 2}
   Trail: {fileID: 198361692598319752, guid: 9796e2785222e534d8eab6a8f8056744, type: 2}
-  Spin: {fileID: 198212402258521642, guid: bc93f6711ae83a84195438a1e875b5a7, type: 2}
+  Spin: {fileID: 198485102551840336, guid: 6e13598e968713f469bc60400e760acc, type: 2}
 --- !u!136 &136807124155540080
 CapsuleCollider:
   m_ObjectHideFlags: 1
