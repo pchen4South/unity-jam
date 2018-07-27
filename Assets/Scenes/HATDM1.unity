@@ -113,6 +113,49 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &45663077
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487315706521264, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 95272432219958554, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+  m_SourcePrefab: {fileID: 100100000, guid: 1df45094f483b44d2aeb85bfad0146de, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &180929697
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +316,7 @@ MonoBehaviour:
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
   WeaponPrefabs:
   - {fileID: 114567695502160530, guid: f408a2dde47e742d384c9a690ed04448, type: 2}
-  - {fileID: 114835541831488684, guid: 73412a9a3b2b24366b542efd8bc97d94, type: 2}
+  - {fileID: 114491167776190760, guid: f8a79835d29f6194cb01f3ce90ff45ad, type: 2}
   - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 2}
   - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
   - {fileID: 114625751796219000, guid: 4340d22507abe964f82357d547c140a6, type: 2}
