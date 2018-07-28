@@ -71,7 +71,7 @@ public class GameMode : MonoBehaviour
 		{
 			var playerState = playerStates[i];
 
-			if (playerState.player.Health <= 0)
+			if (playerState.player.Health <= 0 && playerState.player.IsDead)
 			{
 				var attackerIndex = playerState.player.lastAttackerIndex;
 				var attackerState = playerStates[attackerIndex];
@@ -149,6 +149,7 @@ public class GameMode : MonoBehaviour
 		player.canMove = true;
 		player.canRotate = true;
 		player.VerticalVelocity = 0f;
+        player.IsDead = false;
 		return player;
 	}
 }

@@ -135,7 +135,6 @@ public class Player : MonoBehaviour
 
             if (Health <= 0) {
                 animator.SetBool("PlayDeathAnimation", true);
-               // animator.Play("Dying");
             }
         }
 
@@ -143,6 +142,7 @@ public class Player : MonoBehaviour
     }
 
     public void DeathAnimationFinished() {
+        animator.SetBool("PlayDeathAnimation", false);
         IsDead = true;
     }
 
