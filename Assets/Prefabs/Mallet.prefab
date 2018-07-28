@@ -434,6 +434,8 @@ MonoBehaviour:
   BarColor1: {r: 1, g: 1, b: 1, a: 1}
   BarColor2: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   BarColor3: {r: 1, g: 0, b: 0, a: 1}
+  body: {fileID: 54375319857538498}
+  hitbox: {fileID: 136875424770525782}
   Dust: {fileID: 198273591733458794, guid: 9e1f4275765f1f24c92b7c98a3f684c5, type: 2}
   Trail: {fileID: 198361692598319752, guid: 9796e2785222e534d8eab6a8f8056744, type: 2}
   Spin: {fileID: 198485102551840336, guid: 6e13598e968713f469bc60400e760acc, type: 2}

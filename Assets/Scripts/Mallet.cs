@@ -13,6 +13,7 @@ public class Mallet : AbstractWeapon {
     public Color BarColor2 = Color.yellow;
     public Color BarColor3 = Color.red;
     public Rigidbody body;
+    public CapsuleCollider hitbox;
 
     [Header("Prefabs")]
     public ParticleSystem Dust;
@@ -32,6 +33,8 @@ public class Mallet : AbstractWeapon {
 
     void Start () {
         var player = this.player;
+
+        hitbox.enabled = false;
 
         if (ChargeBar != null)
         {
@@ -121,17 +124,20 @@ public class Mallet : AbstractWeapon {
 
     public void HammerSpinStarted()
     {
+        hitbox.enabled = true;
         SpinAnimation = Instantiate(Spin, player.transform);
         malletSpin.Play();
     }
 
     public void HammerSpinEnded() {
+        hitbox.enabled = false;
         animator.SetBool("hammerSpin", false);
         state = WeaponState.Resting;
     }
 
     public void MalletSwingEnded()
     {
+        hitbox.enabled = false;
         animator.SetBool("swingHammer", false);
         state = WeaponState.Resting;
     }
@@ -141,6 +147,7 @@ public class Mallet : AbstractWeapon {
     }
 
     public void MalletSwingStarted() {
+        hitbox.enabled = true;
         malletSwing.Play();
         Instantiate(Trail, this.transform);
     }
