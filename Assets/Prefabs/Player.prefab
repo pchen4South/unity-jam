@@ -1203,6 +1203,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1892822411069572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4492613305076054}
+  - component: {fileID: 54762338627949584}
+  m_Layer: 10
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1924200402868928
 GameObject:
   m_ObjectHideFlags: 1
@@ -1892,6 +1908,19 @@ Transform:
   m_Father: {fileID: 4819939376976574}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4492613305076054
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1892822411069572}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.361, z: -0.146}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4819939376976574}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4505270641255516
 Transform:
   m_ObjectHideFlags: 1
@@ -2200,6 +2229,7 @@ Transform:
   - {fileID: 4474772936947194}
   - {fileID: 4119775123843462}
   - {fileID: 4344923623915812}
+  - {fileID: 4492613305076054}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2488,6 +2518,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!54 &54762338627949584
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1892822411069572}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!95 &95275682278858346
 Animator:
   serializedVersion: 3
@@ -2517,6 +2562,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae51a3403675bc409623d5204e74615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BalloonPrefab: {fileID: 114378841969533814, guid: ad3dc4b552ed1425ba975af3c729c28e,
+    type: 2}
+  head: {fileID: 54762338627949584}
   meshRenderer: {fileID: 137273324432325058}
   controller: {fileID: 143346210529754902}
   Weapon: {fileID: 0}
@@ -2542,7 +2590,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1792604423125892}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19f6ab87789f840538007ceb72ac1392, type: 3}
   m_Name: 
