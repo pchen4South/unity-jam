@@ -159,7 +159,6 @@ public class Player : MonoBehaviour
         var oldWeapon = Weapon;
 
         Weapon = Instantiate(newWeapon, transform);
-        Debug.Log("weapon transform: " + newWeapon.transform.position);
         Weapon.player = this;
 
         if (oldWeapon != null)

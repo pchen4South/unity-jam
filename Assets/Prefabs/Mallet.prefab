@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33937509289580822}
   - component: {fileID: 23941091917131446}
   - component: {fileID: 136884199233512982}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Mallet Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 33900636951200342}
   - component: {fileID: 23734389929315308}
   - component: {fileID: 136807124155540080}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Mallet Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 82353048071714828}
   - component: {fileID: 54375319857538498}
   - component: {fileID: 136875424770525782}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Mallet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,6 +434,8 @@ MonoBehaviour:
   BarColor1: {r: 1, g: 1, b: 1, a: 1}
   BarColor2: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   BarColor3: {r: 1, g: 0, b: 0, a: 1}
+  body: {fileID: 54375319857538498}
+  hitbox: {fileID: 136875424770525782}
   Dust: {fileID: 198273591733458794, guid: 9e1f4275765f1f24c92b7c98a3f684c5, type: 2}
   Trail: {fileID: 198361692598319752, guid: 9796e2785222e534d8eab6a8f8056744, type: 2}
   Spin: {fileID: 198485102551840336, guid: 6e13598e968713f469bc60400e760acc, type: 2}
