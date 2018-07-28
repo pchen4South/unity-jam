@@ -160,7 +160,7 @@ Transform:
   m_GameObject: {fileID: 1864415125318354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.30102667, y: 0.30102664, z: 0.32588926}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4041449982872262}
   - {fileID: 4380852548671940}
@@ -589,6 +589,7 @@ MonoBehaviour:
   Renderer: {fileID: 23802098195508278}
   loopduration: 1
   despawnTime: 2
+  PlayersHit: 
   PlayerNumber: 0
 --- !u!114 &114499855193390850
 MonoBehaviour:
