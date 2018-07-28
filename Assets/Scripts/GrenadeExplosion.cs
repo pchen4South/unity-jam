@@ -1,5 +1,8 @@
 // script to render explosion
 using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class GrenadeExplosion : MonoBehaviour 
 {
@@ -12,11 +15,19 @@ public class GrenadeExplosion : MonoBehaviour
 	private float alphatime = 1;	
 	public float loopduration = 1;
 	public float despawnTime = 7f;
+    public List<int> PlayersHit = new List<int>();
 
 	[Header("State")]
 	public int PlayerNumber;
 
-	void Start()
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, 2f);
+    }
+
+    void Start()
 	{
 		CheckExplosionRadius();
 	}
@@ -41,7 +52,9 @@ public class GrenadeExplosion : MonoBehaviour
 
 	void CheckExplosionRadius()
 	{
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
+
+    
 
 		Sound.Play();
 		foreach (Collider col in hitColliders)
@@ -49,10 +62,12 @@ public class GrenadeExplosion : MonoBehaviour
 			if(col.gameObject.tag == "Player")
 			{
 				var player = col.gameObject.GetComponent<Player>();
+                var pNum = player.PlayerNumber;
 
-				if (player.PlayerNumber != PlayerNumber)
+                if (pNum != PlayerNumber && !PlayersHit.Contains(pNum))
 				{
-					player.Damage(player.Health, PlayerNumber);
+                    PlayersHit.Add(pNum);
+					player.Damage(1, PlayerNumber);
 				}
 			}
 		}

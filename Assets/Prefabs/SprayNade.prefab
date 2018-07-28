@@ -116,6 +116,8 @@ MonoBehaviour:
   fuseTime: 1
   Explosion: {fileID: 114215110863174990, guid: 8bf1a415ae7d7574f8ba299573ee6dbe,
     type: 2}
+  DirectHit: {fileID: 198746646501995472, guid: 27041f95109d4354eb55dc87f69c560a,
+    type: 2}
   PlayerNumber: 0
 --- !u!136 &136355685656757658
 CapsuleCollider:

@@ -181,12 +181,14 @@ public class Player : MonoBehaviour
             balloons[i].Cut();
         }
         balloons.RemoveRange(Health, balloons.Count - Health);
+        animator.SetTrigger("Hit");
     }
 
 	public void Respawn(Vector3 position, Quaternion rotation)
 	{
 		transform.SetPositionAndRotation(position, rotation);
 		Health = 3;
+        IsDead = false;
 		canMove = true;
 		canRotate = true;
 		VerticalVelocity = 0f;
