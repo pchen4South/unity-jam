@@ -187,6 +187,7 @@ public class Player : MonoBehaviour
 	{
 		transform.SetPositionAndRotation(position, rotation);
 		Health = 3;
+        IsDead = false;
 		canMove = true;
 		canRotate = true;
 		VerticalVelocity = 0f;

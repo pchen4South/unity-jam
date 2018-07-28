@@ -11,7 +11,8 @@ public class SprayNade : MonoBehaviour
 
     [Header("Prefabs")]
     public GrenadeExplosion Explosion;
-    
+    public ParticleSystem DirectHit;
+
     [Header("State")]
     public int PlayerNumber;
 
@@ -41,6 +42,9 @@ public class SprayNade : MonoBehaviour
             {
                 //direct hit - instantly removes the rest of the other player's health
                 otherPlayer.Damage(otherPlayer.Health, PlayerNumber);
+
+                Instantiate(DirectHit, otherPlayer.transform);
+
                 Destroy(gameObject);
             }
             else
