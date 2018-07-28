@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
+    public float JumpPadStrength = 3f;
     public string HorizontalInput = "";
     public string VerticalInput = "";
     public string FireInput = "";
@@ -75,7 +76,9 @@ public class Player : MonoBehaviour
         {
             if (jumpDown)
             {
-                VerticalVelocity = JumpStrength;
+                var strength = didHit && rayHit.collider.CompareTag("JumpPad") ? JumpPadStrength : JumpStrength;
+
+                VerticalVelocity = strength;
             }
             else
             {
