@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 120113311459579246}
   - component: {fileID: 114378841969533814}
   - component: {fileID: 145418525346466390}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Balloon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
