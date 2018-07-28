@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Mallet : AbstractWeapon {
     enum WeaponState { Resting, Swinging, Charging, Spinning }
@@ -30,6 +31,7 @@ public class Mallet : AbstractWeapon {
     private ParticleSystem SpinAnimation;
     WeaponState state = WeaponState.Resting;
     private WeaponBar BarInstance;
+    private List<int> PlayersHitOnSpin = new List<int>();
 
     void Start () {
         var player = this.player;
@@ -38,6 +40,7 @@ public class Mallet : AbstractWeapon {
 
         if (ChargeBar != null)
         {
+            Debug.Log(ChargeBar);
             var bar = Instantiate(ChargeBar, player.transform.position + player.transform.up * 1.02f, player.transform.rotation, player.transform);
 
             bar.player = player;
@@ -48,16 +51,20 @@ public class Mallet : AbstractWeapon {
 
     void Update()
     {
-        var percentCharged = chargeTime / maxChargeTime;
+        var percentCharged = Math.Max((chargeTime  - chargeDelay),0)/ maxChargeTime;
 
         switch (state)
         {
             case WeaponState.Resting:
+                body.isKinematic = true;
+                break;
             case WeaponState.Swinging:
             case WeaponState.Spinning:
+                body.isKinematic = false;
                 BarInstance.slider.value = 0;
                 break;
             case WeaponState.Charging:
+                body.isKinematic = true;
                 // Weapon bar stuff
                 var img = BarInstance.img;
 
@@ -115,15 +122,28 @@ public class Mallet : AbstractWeapon {
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Player" 
-            && other.gameObject.GetComponent<Player>().PlayerNumber != player.PlayerNumber)
+        if (hitbox.enabled == false)
+            return;
+
+        if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<Player>().Health -= 1;
+            var otherPlayer = other.gameObject.GetComponent<Player>();
+            var otherPNum = otherPlayer.PlayerNumber;
+
+            if ( !PlayersHitOnSpin.Contains(otherPNum)
+                && otherPNum != player.PlayerNumber )
+            {
+                PlayersHitOnSpin.Add(otherPlayer.PlayerNumber);
+                otherPlayer.Damage(1, player.PlayerNumber);
+            }
         }
     }
 
+
+    // Animation events below
     public void HammerSpinStarted()
     {
+        PlayersHitOnSpin = new List<int>();
         hitbox.enabled = true;
         SpinAnimation = Instantiate(Spin, player.transform);
         malletSpin.Play();
@@ -147,6 +167,7 @@ public class Mallet : AbstractWeapon {
     }
 
     public void MalletSwingStarted() {
+        PlayersHitOnSpin = new List<int>();
         hitbox.enabled = true;
         malletSwing.Play();
         Instantiate(Trail, this.transform);
