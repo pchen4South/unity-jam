@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4367477877860496}
   - component: {fileID: 198828956911120832}
   - component: {fileID: 199675437081641110}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: DustCloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -4,148 +4,115 @@ using UnityEngine;
 
 public class MachineGun : AbstractWeapon 
 {
-    enum WeaponState { NotFiring, Firing, OverHeating };
-
     [Header("Cached references")]
     [SerializeField]
     AudioSource fireSound;
-
-    [Header("Prefabs")]
-    public MachineGunBullet Ammo;
-    public WeaponBar ChargeBar;
+    [SerializeField]
+    AudioSource hitSound;
+    [SerializeField]
+    AudioSource hitPlayerSound;
+    [SerializeField]
+    ParticleSystem HitParticlePrefab;
+    [SerializeField]
+    ParticleSystem HitPlayerParticlePrefab;
+    [SerializeField]
+    ParticleSystem muzzleFlash;
+    [SerializeField]
+    Light muzzleFlashLight;
+    [SerializeField]
+    LineRenderer bulletTracer;
 
     [Header("Config")]
-    public float TravelSpeed = 25f;
-    public float OverHeatTime = 3f;
-    public float OverHeatResetTime = 2f;
-    public float FireRatePenalty = 1.5f;
-    public Color BarColor1 = Color.white;
-    public Color BarColor2 = Color.yellow;
-    public Color BarColor3 = Color.red;
+    public float fireRate = .1f;
+    public float shotTime = .01f;
+    public float muzzleOffset = .5f;
+    public float kickBackGrowthRate = 1f;
+    public float kickBackDecayRate = -2f;
+    public LayerMask layerMask = new LayerMask();
 
     [Header("State")]
-    private float nextFire = 0f;
-    public float fireRate = 0.1f;
-    WeaponState state = WeaponState.NotFiring;
-
-    private float firingTime = 0f;
-    private WeaponBar BarInstance;
-
-    void Start()
-    {
-        var player = this.player;
-
-        if(ChargeBar != null)
-        {
-            var bar = Instantiate(ChargeBar, player.transform.position + player.transform.up * 1.02f , player.transform.rotation, player.transform);
-
-            bar.player = player;
-            bar.maxBarColor = BarColor3;
-            BarInstance = bar;
-        }
-    }
-
-    public void FireBullet(){
-        
-        if (Time.time < nextFire)
-            return;
-        
-        var weapon = player.Weapon;        
-        var bullet = Instantiate(Ammo, weapon.transform.position + weapon.transform.forward * .5f, weapon.transform.rotation);
-
-        bullet.body.AddForce( TravelSpeed * bullet.transform.forward, ForceMode.Impulse);
-        bullet.PlayerNumber = player.PlayerNumber;
-        fireSound.Play();
-
-        if(firingTime >= OverHeatTime / 2)
-        {
-            nextFire = Time.time + fireRate * FireRatePenalty ;
-        } 
-        else 
-        {
-            nextFire = Time.time + fireRate;
-        }
-    }
-    public override void PullTrigger(Player player)
-    {
-        // increase meter or hold at max
-        if (state == WeaponState.NotFiring)
-        {
-            // if (heat != HeatState.MaxHeat)
-            if (state != WeaponState.OverHeating)
-            {
-                state = WeaponState.Firing;
-                firingTime += Time.deltaTime;
-            }
-        }
-    }
-
-
-    public override void ReleaseTrigger(Player player)
-    {
-        if (state == WeaponState.OverHeating)
-        {
-            StartCoroutine(OverHeatReset());
-        } 
-        else 
-        {
-            state = WeaponState.NotFiring;
-        }
-    }
-
-    IEnumerator OverHeatReset()
-    {
-        yield return new WaitForSeconds(OverHeatResetTime);
-        firingTime = 0;
-        BarInstance.slider.value = 0;
-        state = WeaponState.NotFiring;
-    }
+    float timeTillNextShot = 0f;
+    float kickbackScale = 0f;
+    bool isFiring = false;
+    Ray ray = new Ray();
+    RaycastHit rayHit = new RaycastHit();
 
     void Update()
     {
-        var percentHeat = (firingTime <= OverHeatTime ? firingTime : OverHeatTime) / OverHeatTime;
+        timeTillNextShot -= Time.deltaTime;        
+        kickbackScale += Time.deltaTime * (isFiring ? kickBackGrowthRate : kickBackDecayRate);
+        kickbackScale = Mathf.Clamp01(kickbackScale);
 
-        switch(state)
+        if (isFiring)
         {
-            case WeaponState.NotFiring:
-                if (firingTime != 0)
-                {
-                    //reduce heat by y amount per unit time
-                    if (firingTime > 0)
-                    {
-                        firingTime -= Time.deltaTime * 1.5f;
-                    } 
-                    else 
-                    {
-                        firingTime = 0;
-                    }
-                    BarInstance.slider.value = percentHeat;
-                }
-            break;
-            case WeaponState.Firing:
-                firingTime += Time.deltaTime;
-                // Weapon bar stuff
-				var img = BarInstance.img;				
+            var yKickAngle = Random.Range(-kickbackScale, kickbackScale);
+            var xKickAngle = -Random.Range(0, kickbackScale);
 
-                BarInstance.slider.value = percentHeat;
+            transform.Rotate(xKickAngle, yKickAngle, 0, Space.Self);
+        }
+        else
+        {
+            transform.rotation = player.transform.rotation;
+        }
+    }
 
-				if (percentHeat < 0.5)
-				{
-					img.color = Color.Lerp(BarColor1, BarColor2, (float)percentHeat / 0.5f);
-                    FireBullet();
-				}
-				else if (percentHeat > 0.5 && percentHeat < 1)
-				{
-					img.color = Color.Lerp(BarColor2, BarColor3, (float)((percentHeat - 0.5f)/ 0.5f));
-                    FireBullet();
-				} 
-				else if (percentHeat == 1)
-				{
-                    firingTime = OverHeatTime;
-					img.color = BarColor3;
-                    state = WeaponState.OverHeating;
-				}
-            break;
-       }
+    public override void PullTrigger(Player player)
+    {
+        if (timeTillNextShot > 0)
+            return;
+        
+        var muzzle = transform.position + transform.forward * muzzleOffset;
+
+        StartCoroutine(PostShotCleanup());
+        isFiring = true;
+        timeTillNextShot = fireRate;
+        muzzleFlash.Stop();
+        muzzleFlash.Play();
+        muzzleFlashLight.enabled = true;
+        fireSound.Play();
+        ray.origin = muzzle;
+        ray.direction = transform.forward;
+
+        var didHit = Physics.Raycast(ray, out rayHit, layerMask);
+
+        if (!didHit)
+            return;
+
+        bulletTracer.SetPosition(0, muzzle);
+        bulletTracer.SetPosition(1, rayHit.point);
+        bulletTracer.enabled = true;
+        
+        var isPlayer = rayHit.collider.CompareTag("Player");
+
+        if (isPlayer)
+        {
+            var target = rayHit.collider.GetComponent<Player>();
+            var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
+
+            target.Damage(1, player.PlayerNumber);
+            hitPlayerSound.Play();
+            Destroy(hitParticles.gameObject, 2f);
+        }
+        else
+        {
+            var hitParticles = Instantiate(HitParticlePrefab);
+
+            hitSound.Play();
+            hitParticles.transform.position = rayHit.point;
+            hitParticles.transform.LookAt(transform, Vector3.up);
+            Destroy(hitParticles.gameObject, 2f);
+        }
+    }
+
+    IEnumerator PostShotCleanup()
+    {
+        yield return new WaitForSeconds(shotTime);
+        bulletTracer.enabled = false;
+        muzzleFlashLight.enabled = false;
+    }
+    public override void ReleaseTrigger(Player player)
+    {
+        isFiring = false;
+        fireSound.Stop();
     }
 }
