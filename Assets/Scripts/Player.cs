@@ -117,35 +117,27 @@ public class Player : MonoBehaviour
         //Animation stuff
         if(animator != null)
         {
-            /*
-            float turn = 0f;
-
-            if(moveDelta.x != 0 || moveDelta.z != 0){
-                Vector3 movedir = new Vector3( moveDelta.x - transform.forward.x, 0, moveDelta.z = transform.forward.z);
-                Debug.Log("turndir " + movedir );
-                turn = Vector3.Magnitude(movedir);
-
-            } else {
-                turn = 0f;
-            }
-            */
             float move = 0f;
 
             if(Mathf.Abs(horizontalAxis) > 0 || Mathf.Abs(verticalAxis) > 0)
             {
                 move = 1f;
             }
-            animator.SetFloat("Forward", move);
-            //animator.SetFloat("Turn", turn);
-            animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
-            animator.SetBool("OnGround", isGrounded);
-
-            if (Health <= 0) {
+            if (Health <= 0) 
+            {
                 animator.SetBool("PlayDeathAnimation", true);
             }
+            animator.SetFloat("Forward", move);
+            animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
+            animator.SetBool("OnGround", isGrounded);
         }
 
         meshRenderer.material.color = color;
+        // TODO: pretty overkill to do this every frame....
+        for (var i = 0; i < balloons.Count; i++)
+        {
+            balloons[i].meshRenderer.material.color = color;
+        }
     }
 
     public void DeathAnimationFinished() {
