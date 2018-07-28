@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Player : MonoBehaviour 
 {
     // N.B. This must be applied to the character every frame they are grounded to keep them grounded
     const float GROUNDED_DOWNWARD_VELOCITY = -10f;
 
+    [SerializeField]
+    Balloon BalloonPrefab;
+
+    public Rigidbody head;
     public SkinnedMeshRenderer meshRenderer;
     public CharacterController controller;
     public AbstractWeapon Weapon;
@@ -26,6 +31,8 @@ public class Player : MonoBehaviour
     public float VerticalVelocity = 0f;
     public bool isGrounded = true;
     public int lastAttackerIndex;
+
+    List<Balloon> balloons = new List<Balloon>();
 
     [Header("Animation")]
     private float Turn;
@@ -164,11 +171,41 @@ public class Player : MonoBehaviour
 
     public void Damage(int amountOfDamage, int attackerIndex)
     {
-        // TODO: This probably should be some kind of state so that controls stop working etc
         if (Health <= 0)
             return;
 
         Health -= amountOfDamage;
         lastAttackerIndex = attackerIndex;
+
+        for (var i = Health; i < balloons.Count; i++)
+        {
+            balloons[i].Cut();
+        }
+        balloons.RemoveRange(Health, balloons.Count - Health);
     }
+
+	public void Respawn(Vector3 position, Quaternion rotation)
+	{
+		transform.SetPositionAndRotation(position, rotation);
+		Health = 3;
+		canMove = true;
+		canRotate = true;
+		VerticalVelocity = 0f;
+
+        // cut any remaining balloons...
+        foreach(var balloon in balloons)
+        {
+            balloon.Cut();
+        }
+        balloons.Clear();
+
+        // spawn new balloons
+        for (var i = 0; i < Health; i++)
+        {
+            var balloon = Instantiate(BalloonPrefab);
+
+            balloon.springJoint.connectedBody = head;
+            balloons.Add(balloon);
+        }
+	}
 }

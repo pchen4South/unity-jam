@@ -45,13 +45,14 @@ public class GameMode : MonoBehaviour
 		var debugPlayer = GameObject.FindObjectOfType<Player>();
 
 		playerStates.Add(new PlayerState(debugPlayer));
+		debugPlayer.Respawn(debugPlayer.transform.position, debugPlayer.transform.rotation);
 
 		// crawl the map collecting references to all spawn points
 		spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
 		graph = Instantiate(GraphPrefab);
-        
-		for (var i = 1; i <= 4; i++)
+
+		for (var i = playerStates.Count; i <= 4; i++)
 		{
 			Spawn(i);
 		}
@@ -84,18 +85,22 @@ public class GameMode : MonoBehaviour
 					Debug.Log("Game over. Player " + attackerState.player.PlayerNumber + " wins!");
 					foreach(var ps in playerStates)
 					{
+						var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
 						ps.deathCount = 0;
 						ps.killCount = 0;
 						ps.weaponIndex = 0;
-						Respawn(ps.player);
+						ps.player.Respawn(sp.transform.position, sp.transform.rotation);
 						ps.player.SetWeapon(WeaponPrefabs[ps.weaponIndex]);
 					}
 				}
 				else
 				{
+					var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
 					attackerState.weaponIndex += 1;
 					attackerState.player.SetWeapon(WeaponPrefabs[attackerState.weaponIndex]);
-					Respawn(playerState.player);
+					playerState.player.Respawn(sp.transform.position, sp.transform.rotation);
 				}
 			}
 		}
@@ -125,9 +130,10 @@ public class GameMode : MonoBehaviour
 		BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
 	}
 
-	Player Spawn(int PlayerNumber)
+	void Spawn(int PlayerNumber)
 	{
 		var player = Instantiate(PlayerPrefab);
+		var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
 		playerStates.Add(new PlayerState(player));
 		player.PlayerNumber = PlayerNumber;
@@ -136,20 +142,6 @@ public class GameMode : MonoBehaviour
         player.VerticalInput = "Vertical_" + PlayerNumber;
         player.FireInput = "Fire_" + PlayerNumber;
         player.JumpInput = "Jump_" + PlayerNumber;
-		return Respawn(player);
-	}
-
-	Player Respawn(Player player)
-	{
-		var spawnIndex = Random.Range(0, spawnPoints.Length);
-		var spawn = spawnPoints[spawnIndex];
-		
-		player.transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
-		player.Health = 3;
-		player.canMove = true;
-		player.canRotate = true;
-		player.VerticalVelocity = 0f;
-        player.IsDead = false;
-		return player;
+		player.Respawn(sp.transform.position, sp.transform.rotation);
 	}
 }
