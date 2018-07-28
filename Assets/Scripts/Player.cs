@@ -30,13 +30,13 @@ public class Player : MonoBehaviour
     public float aerialHeight = 0f;
     public float VerticalVelocity = 0f;
     public bool isGrounded = true;
+    public bool IsDead = false;
     public int lastAttackerIndex;
 
     List<Balloon> balloons = new List<Balloon>();
 
     [Header("Animation")]
     private float Turn;
-    public bool IsDead = false;
 
     void OnDrawGizmos()
     {
@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
         {
             float move = 0f;
 
-            if(Mathf.Abs(horizontalAxis) > 0 || Mathf.Abs(verticalAxis) > 0)
+            if (Mathf.Abs(horizontalAxis) > 0 || Mathf.Abs(verticalAxis) > 0)
             {
                 move = 1f;
             }
@@ -140,7 +140,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void DeathAnimationFinished() {
+    public void DeathAnimationFinished() 
+    {
         animator.SetBool("PlayDeathAnimation", false);
         IsDead = true;
     }
