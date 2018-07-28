@@ -196,11 +196,11 @@ MonoBehaviour:
   Ammo: {fileID: 114517667255904582, guid: 8bda4e65767c3b74184dab59c0784b00, type: 2}
   ChargeBar: {fileID: 114337454257703070, guid: 9055c1b23e5849d4eb16fed06c5ddf5a,
     type: 2}
-  TravelSpeed: 25
-  OverHeatTime: 3
-  OverHeatResetTime: 2
+  TravelSpeed: 55
+  OverHeatTime: 8
+  OverHeatResetTime: 4
   FireRatePenalty: 1.5
   BarColor1: {r: 1, g: 1, b: 1, a: 1}
   BarColor2: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   BarColor3: {r: 1, g: 0, b: 0, a: 1}
-  fireRate: 0.15
+  fireRate: 0.1
