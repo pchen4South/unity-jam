@@ -72,7 +72,7 @@ public class GameMode : MonoBehaviour
 		{
 			var playerState = playerStates[i];
 
-			if (playerState.player.Health <= 0)
+			if (playerState.player.Health <= 0 && playerState.player.IsDead)
 			{
 				var attackerIndex = playerState.player.lastAttackerIndex;
 				var attackerState = playerStates[attackerIndex];

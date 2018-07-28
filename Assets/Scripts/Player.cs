@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
 
     [Header("Animation")]
     private float Turn;
+    public bool IsDead = false;
 
     void OnDrawGizmos()
     {
@@ -138,9 +139,18 @@ public class Player : MonoBehaviour
             //animator.SetFloat("Turn", turn);
             animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
             animator.SetBool("OnGround", isGrounded);
+
+            if (Health <= 0) {
+                animator.SetBool("PlayDeathAnimation", true);
+            }
         }
 
         meshRenderer.material.color = color;
+    }
+
+    public void DeathAnimationFinished() {
+        animator.SetBool("PlayDeathAnimation", false);
+        IsDead = true;
     }
 
     // TODO: Call some kind of reset on the weapon to clear modifiers to the player?
@@ -149,6 +159,7 @@ public class Player : MonoBehaviour
         var oldWeapon = Weapon;
 
         Weapon = Instantiate(newWeapon, transform);
+        Debug.Log("weapon transform: " + newWeapon.transform.position);
         Weapon.player = this;
 
         if (oldWeapon != null)
