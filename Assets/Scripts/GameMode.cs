@@ -44,15 +44,16 @@ public class GameMode : MonoBehaviour
 	{
 		var debugPlayer = GameObject.FindObjectOfType<Player>();
 
-		playerStates.Add(new PlayerState(debugPlayer));
-		debugPlayer.Respawn(debugPlayer.transform.position, debugPlayer.transform.rotation);
-
-		// crawl the map collecting references to all spawn points
-		spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        if(debugPlayer != null) { 
+		    playerStates.Add(new PlayerState(debugPlayer));
+		    debugPlayer.Respawn(debugPlayer.transform.position, debugPlayer.transform.rotation);
+        }
+        // crawl the map collecting references to all spawn points
+        spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
 		graph = Instantiate(GraphPrefab);
 
-		for (var i = playerStates.Count; i <= 4; i++)
+		for (var i = playerStates.Count; i < 4; i++)
 		{
 			Spawn(i);
 		}

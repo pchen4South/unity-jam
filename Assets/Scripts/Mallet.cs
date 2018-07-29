@@ -40,7 +40,6 @@ public class Mallet : AbstractWeapon {
 
         if (ChargeBar != null)
         {
-            Debug.Log(ChargeBar);
             var bar = Instantiate(ChargeBar, player.transform.position + player.transform.up * 1.02f, player.transform.rotation, player.transform);
 
             bar.player = player;
@@ -57,6 +56,7 @@ public class Mallet : AbstractWeapon {
         {
             case WeaponState.Resting:
                 body.isKinematic = true;
+                BarInstance.slider.value = 0;
                 break;
             case WeaponState.Swinging:
             case WeaponState.Spinning:
