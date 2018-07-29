@@ -191,8 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa3a04d261ab594580739a4f205d143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Muzzle: {fileID: 0}
   player: {fileID: 0}
   fireSound: {fileID: 82696240821624950}
   Ammo: {fileID: 114134425183445126, guid: 1ef161a8ed26caa40985580dfe8ac4e5, type: 2}
   TravelSpeed: 50
-  fireRate: 0.1
+  fireRate: 0.5

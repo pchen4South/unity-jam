@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 public class Player : MonoBehaviour 
 {
@@ -34,6 +35,11 @@ public class Player : MonoBehaviour
     public bool IsDead = false;
     public int lastAttackerIndex;
 
+    //reinput
+    private Rewired.Player player;
+    private CharacterController cc;
+
+
     List<Balloon> balloons = new List<Balloon>();
 
     [Header("Animation")]
@@ -49,18 +55,38 @@ public class Player : MonoBehaviour
         Gizmos.DrawCube(transform.position + transform.up * 3f, Vector3.one * .2f);
     }
 
+
+    void Start()
+    {
+        // Get the Rewired Player object for this player and keep it for the duration of the character's lifetime
+        player = ReInput.players.GetPlayer(PlayerNumber);
+
+        Debug.Log("player: " + PlayerNumber);
+
+        // Get the character controller
+        cc = GetComponent<CharacterController>();
+    }
+
     void Update() 
     {
         var ray = new Ray(transform.position, Vector3.down);
         var rayHit = new RaycastHit();
-        var jumpDown = Input.GetButtonDown(JumpInput);
-        var fireDown = Input.GetButton(FireInput);
-        var fireUp = Input.GetButtonUp(FireInput);
-        var horizontalAxis = Input.GetAxis(HorizontalInput);
-        var verticalAxis = Input.GetAxis(VerticalInput);
+        //var jumpDown = Input.GetButtonDown(JumpInput);
+        var jumpDown = player.GetButtonDown("Jump");
+        //var fireDown = Input.GetButton(FireInput);
+        var fireDown = player.GetButtonDown("Fire");
+        //var fireUp = Input.GetButtonUp(FireInput);
+        var fireUp = player.GetButtonUp("Fire");
+        //var horizontalAxis = Input.GetAxis(HorizontalInput);
+        var horizontalAxis = player.GetAxis(0);
+        //var verticalAxis = Input.GetAxis(VerticalInput);
+        var verticalAxis = player.GetAxis(1);
+        var fireHold = player.GetButtonTimedPress("Fire", .01f);
+
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
         var input = new Vector3(horizontalAxis, 0, verticalAxis);
         var moveDelta = Vector3.zero;
+
 
         isGrounded = controller.isGrounded;
         aerialHeight = didHit ? rayHit.distance : 0f;
@@ -106,7 +132,7 @@ public class Player : MonoBehaviour
         }
 
         // Weapon inputs
-        if (Weapon != null && fireDown)
+        if (Weapon != null && (fireDown || fireHold))
         {
             Weapon.PullTrigger(this);
         }
@@ -133,20 +159,31 @@ public class Player : MonoBehaviour
             animator.SetFloat("Forward", move);
             animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
             animator.SetBool("OnGround", isGrounded);
+
+            if (Health <= 0) {
+                animator.SetBool("PlayDeathAnimation", true);
+                canMove = false;
+                canRotate = false;
+
+            }
         }
 
         meshRenderer.material.color = color;
+        
         // TODO: pretty overkill to do this every frame....
         for (var i = 0; i < balloons.Count; i++)
         {
             balloons[i].meshRenderer.material.color = color;
         }
+
     }
 
     public void DeathAnimationFinished() 
     {
         animator.SetBool("PlayDeathAnimation", false);
         IsDead = true;
+        canMove = true;
+        canRotate = true;
     }
 
     // TODO: Call some kind of reset on the weapon to clear modifiers to the player?
