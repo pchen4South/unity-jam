@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13bdf9b319c184ce78c4e65c5a6b20bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExplosionPrefab: {fileID: 114215110863174990, guid: 8bf1a415ae7d7574f8ba299573ee6dbe,
+  ExplosionPrefab: {fileID: 114360727490428262, guid: 8bf1a415ae7d7574f8ba299573ee6dbe,
     type: 2}
   Body: {fileID: 54487021688573784}
   PlayerNumber: 0

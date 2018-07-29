@@ -24,7 +24,7 @@ public class GrenadeExplosion : MonoBehaviour
     {
         // Draw a yellow sphere at the transform's position
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, 2f);
+        Gizmos.DrawSphere(transform.position, 1.5f);
     }
 
     void Start()
@@ -34,25 +34,25 @@ public class GrenadeExplosion : MonoBehaviour
 
 	void Update () 
 	{
-		float r = Mathf.Sin((Time.time / loopduration) * (2 * Mathf.PI)) * 0.5f + 0.25f;
-		float g = Mathf.Sin((Time.time / loopduration + 0.33333333f) * 2 * Mathf.PI) * 0.5f + 0.25f;
-		float b = Mathf.Sin((Time.time / loopduration + 0.66666667f) * 2 * Mathf.PI) * 0.5f + 0.25f;
-		float correction = 1 / (r + g + b);
+		//float r = Mathf.Sin((Time.time / loopduration) * (2 * Mathf.PI)) * 0.5f + 0.25f;
+		//float g = Mathf.Sin((Time.time / loopduration + 0.33333333f) * 2 * Mathf.PI) * 0.5f + 0.25f;
+		//float b = Mathf.Sin((Time.time / loopduration + 0.66666667f) * 2 * Mathf.PI) * 0.5f + 0.25f;
+		//float correction = 1 / (r + g + b);
 
-		r *= correction;
-		g *= correction;
-		b *= correction;
-		ramptime += Time.deltaTime * 2;
-		alphatime -= Time.deltaTime;		
-		Renderer.material.SetVector("_ChannelFactor", new Vector4(r, g, b, 0));
-		Renderer.material.SetVector("_Range", new Vector4(ramptime, 0, 0, 0));
-		Renderer.material.SetFloat("_ClipRange", alphatime);
+		//r *= correction;
+		//g *= correction;
+		//b *= correction;
+		//ramptime += Time.deltaTime * 2;
+		//alphatime -= Time.deltaTime;		
+		//Renderer.material.SetVector("_ChannelFactor", new Vector4(r, g, b, 0));
+		//Renderer.material.SetVector("_Range", new Vector4(ramptime, 0, 0, 0));
+		//Renderer.material.SetFloat("_ClipRange", alphatime);
 		Destroy(gameObject, despawnTime);
 	}
 
 	void CheckExplosionRadius()
 	{
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.5f);
 
     
 
