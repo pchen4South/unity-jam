@@ -19,16 +19,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4695882477277956}
+  - component: {fileID: 114378841969533814}
   - component: {fileID: 33990953402619776}
   - component: {fileID: 23537223049420864}
   - component: {fileID: 54805793103187020}
   - component: {fileID: 135626226157677134}
   - component: {fileID: 120113311459579246}
-  - component: {fileID: 114378841969533814}
   - component: {fileID: 145418525346466390}
   m_Layer: 13
   m_Name: Balloon
-  m_TagString: Untagged
+  m_TagString: JumpPad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   balloonBody: {fileID: 54805793103187020}
   lineRenderer: {fileID: 120113311459579246}
-  meshRenderer: {fileID: 0}
+  meshRenderer: {fileID: 23537223049420864}
   springJoint: {fileID: 145418525346466390}
   bouyancy: 40
   despawnTime: 4

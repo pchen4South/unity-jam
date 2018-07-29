@@ -2572,6 +2572,7 @@ MonoBehaviour:
   color: {r: 1, g: 0, b: 0, a: 1}
   MoveSpeed: 0.16
   JumpStrength: 20
+  JumpPadStrength: 30
   HorizontalInput: Horizontal_0
   VerticalInput: Vertical_0
   FireInput: Fire_0
@@ -2583,8 +2584,8 @@ MonoBehaviour:
   aerialHeight: 0
   VerticalVelocity: 0
   isGrounded: 0
-  lastAttackerIndex: 0
   IsDead: 0
+  lastAttackerIndex: 0
 --- !u!114 &114877347624662624
 MonoBehaviour:
   m_ObjectHideFlags: 1
