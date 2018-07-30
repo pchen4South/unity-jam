@@ -47,11 +47,7 @@ public class Player : MonoBehaviour
     //state
     float standingHeight;
     Vector3 standingCenter;
-
     List<Balloon> balloons = new List<Balloon>();
-
-    [Header("Animation")]
-    private float Turn;
 
     void OnDrawGizmos()
     {
@@ -239,10 +235,10 @@ public class Player : MonoBehaviour
 		canRotate = true;
 		VerticalVelocity = 0f;
 
-        // cut any remaining balloons...
+        // Destroy any remaining balloons
         foreach(var balloon in balloons)
         {
-            balloon.Cut();
+            Destroy(balloon.gameObject);
         }
         balloons.Clear();
 

@@ -25,10 +25,7 @@ public class Mallet : AbstractWeapon {
     public WeaponBar ChargeBar;
 
     [Header("State")]
-    private bool swingingHammer = false;
-    private float hammerSwingingTime = 0;
     private float chargeTime = 0f;
-    private ParticleSystem SpinAnimation;
     WeaponState state = WeaponState.Resting;
     private WeaponBar BarInstance;
     private List<int> PlayersHitOnSpin = new List<int>();
@@ -83,16 +80,14 @@ public class Mallet : AbstractWeapon {
                     img.color = BarColor3;
                 }
                 break;
-
-
-
         }
     }
 
     public override void PullTrigger(Player player)
     {
         chargeTime += Time.deltaTime;
-        if (chargeTime >= chargeDelay) { 
+        if (chargeTime >= chargeDelay) 
+        { 
             animator.SetBool("charging", true);
             state = WeaponState.Charging;
         }
@@ -130,8 +125,7 @@ public class Mallet : AbstractWeapon {
             var otherPlayer = other.gameObject.GetComponent<Player>();
             var otherPNum = otherPlayer.PlayerNumber;
 
-            if ( !PlayersHitOnSpin.Contains(otherPNum)
-                && otherPNum != player.PlayerNumber )
+            if (!PlayersHitOnSpin.Contains(otherPNum) && otherPNum != player.PlayerNumber )
             {
                 PlayersHitOnSpin.Add(otherPlayer.PlayerNumber);
                 otherPlayer.Damage(1, player.PlayerNumber);
@@ -139,17 +133,17 @@ public class Mallet : AbstractWeapon {
         }
     }
 
-
     // Animation events below
     public void HammerSpinStarted()
     {
         PlayersHitOnSpin = new List<int>();
         hitbox.enabled = true;
-        SpinAnimation = Instantiate(Spin, player.transform);
+        Instantiate(Spin, player.transform);
         malletSpin.Play();
     }
 
-    public void HammerSpinEnded() {
+    public void HammerSpinEnded() 
+    {
         hitbox.enabled = false;
         animator.SetBool("hammerSpin", false);
         state = WeaponState.Resting;
@@ -166,11 +160,11 @@ public class Mallet : AbstractWeapon {
             Instantiate(Dust, this.transform);
     }
 
-    public void MalletSwingStarted() {
+    public void MalletSwingStarted() 
+    {
         PlayersHitOnSpin = new List<int>();
         hitbox.enabled = true;
         malletSwing.Play();
         Instantiate(Trail, this.transform);
     }
-
 }
