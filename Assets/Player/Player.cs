@@ -10,7 +10,10 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     Balloon BalloonPrefab;
+    [SerializeField]
+    PlayerIndicator PlayerIndicatorPrefab;
 
+    PlayerIndicator playerIndicator;
     public Rigidbody head;
     public SkinnedMeshRenderer meshRenderer;
     public CharacterController controller;
@@ -60,12 +63,11 @@ public class Player : MonoBehaviour
         Gizmos.DrawCube(transform.position + transform.up * 3f, Vector3.one * .2f);
     }
 
-
     void Start()
     {
         // Get the Rewired Player object for this player and keep it for the duration of the character's lifetime
         player = ReInput.players.GetPlayer(PlayerNumber);
-        
+        playerIndicator = Instantiate(PlayerIndicatorPrefab, transform);
         standingHeight = controller.height;
         standingCenter = controller.center;
 
@@ -153,8 +155,6 @@ public class Player : MonoBehaviour
         controller.Move(moveDelta);
         
         //Animation stuff
-        
-        
         if(animator != null)
         {
             if (MoveSpeed != 0f)
@@ -184,8 +184,10 @@ public class Player : MonoBehaviour
 
             }
         }
-        
 
+        playerIndicator.transform.position = didHit ? rayHit.point : transform.position;
+        playerIndicator.meshRenderer.material.color = color;
+        
         meshRenderer.material.color = color;      
         // TODO: pretty overkill to do this every frame....
         for (var i = 0; i < balloons.Count; i++)

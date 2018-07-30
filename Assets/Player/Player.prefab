@@ -2564,6 +2564,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BalloonPrefab: {fileID: 114378841969533814, guid: ad3dc4b552ed1425ba975af3c729c28e,
     type: 2}
+  PlayerIndicatorPrefab: {fileID: 114630853441799654, guid: 6712462c77dd440b6869b9b57e04a92e,
+    type: 2}
   head: {fileID: 54762338627949584}
   meshRenderer: {fileID: 137273324432325058}
   controller: {fileID: 143346210529754902}
@@ -2573,6 +2575,7 @@ MonoBehaviour:
   MoveSpeed: 0.2
   JumpStrength: 20
   JumpPadStrength: 30
+  CrouchMovementModifier: 0.5
   HorizontalInput: Horizontal_0
   VerticalInput: Vertical_0
   FireInput: Fire_0
