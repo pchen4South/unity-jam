@@ -4,6 +4,7 @@ using Rewired;
 
 public class Player : MonoBehaviour 
 {
+    public enum Status { Alive, Dying, Dead, Invincible}
     // N.B. This must be applied to the character every frame they are grounded to keep them grounded
     const float GROUNDED_DOWNWARD_VELOCITY = -10f;
 
@@ -20,6 +21,8 @@ public class Player : MonoBehaviour
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
     public float JumpPadStrength = 3f;
+    public float CrouchMovementModifier = 0.5f;
+
     public string HorizontalInput = "";
     public string VerticalInput = "";
     public string FireInput = "";
@@ -37,8 +40,10 @@ public class Player : MonoBehaviour
 
     //reinput
     private Rewired.Player player;
-    private CharacterController cc;
 
+    //state
+    float standingHeight;
+    Vector3 standingCenter;
 
     List<Balloon> balloons = new List<Balloon>();
 
@@ -60,33 +65,27 @@ public class Player : MonoBehaviour
     {
         // Get the Rewired Player object for this player and keep it for the duration of the character's lifetime
         player = ReInput.players.GetPlayer(PlayerNumber);
+        
+        standingHeight = controller.height;
+        standingCenter = controller.center;
 
-        Debug.Log("player: " + PlayerNumber);
-
-        // Get the character controller
-        cc = GetComponent<CharacterController>();
     }
 
     void Update() 
     {
         var ray = new Ray(transform.position, Vector3.down);
         var rayHit = new RaycastHit();
-        //var jumpDown = Input.GetButtonDown(JumpInput);
         var jumpDown = player.GetButtonDown("Jump");
-        //var fireDown = Input.GetButton(FireInput);
         var fireDown = player.GetButtonDown("Fire");
-        //var fireUp = Input.GetButtonUp(FireInput);
         var fireUp = player.GetButtonUp("Fire");
-        //var horizontalAxis = Input.GetAxis(HorizontalInput);
-        var horizontalAxis = player.GetAxis(0);
-        //var verticalAxis = Input.GetAxis(VerticalInput);
-        var verticalAxis = player.GetAxis(1);
         var fireHold = player.GetButtonTimedPress("Fire", .01f);
-
+        var horizontalAxis = player.GetAxis(0);
+        var verticalAxis = player.GetAxis(1);
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
         var input = new Vector3(horizontalAxis, 0, verticalAxis);
         var moveDelta = Vector3.zero;
-
+        var crouch = player.GetButtonTimedPress("Crouch", .01f);
+        float totalMovementModifier = 1f;
 
         isGrounded = controller.isGrounded;
         aerialHeight = didHit ? rayHit.distance : 0f;
@@ -109,6 +108,16 @@ public class Player : MonoBehaviour
             else
             {
                 VerticalVelocity = GROUNDED_DOWNWARD_VELOCITY;
+                if (crouch == true)
+                {
+                    totalMovementModifier *= CrouchMovementModifier;
+                    controller.height = standingHeight / 2;
+                    controller.center = new Vector3(standingCenter.x, standingCenter.y / 2, standingCenter.z);
+                }
+                else {
+                    controller.height = standingHeight;
+                    controller.center = standingCenter;
+                }
             }
         }
         else
@@ -122,13 +131,13 @@ public class Player : MonoBehaviour
                 VerticalVelocity = 0f;
             }
         }
-
+        
         // move if not rooted
         if (canMove)
         {
-            moveDelta.x += horizontalAxis * MoveSpeed;
+            moveDelta.x += horizontalAxis * MoveSpeed * totalMovementModifier;
             moveDelta.y += VerticalVelocity * Time.deltaTime;
-            moveDelta.z += verticalAxis * MoveSpeed;
+            moveDelta.z += verticalAxis * MoveSpeed * totalMovementModifier;
         }
 
         // Weapon inputs
@@ -140,26 +149,34 @@ public class Player : MonoBehaviour
         {
             Weapon.ReleaseTrigger(this);
         }
-
+        
         controller.Move(moveDelta);
-
+        
         //Animation stuff
+        
+        
         if(animator != null)
         {
-            float move = 0f;
-
-            if (Mathf.Abs(horizontalAxis) > 0 || Mathf.Abs(verticalAxis) > 0)
+            if (MoveSpeed != 0f)
             {
-                move = 1f;
+                float move = 0f;
+                Vector3 twodmove = new Vector3(moveDelta.x, 0, moveDelta.z);
+
+                if (Mathf.Abs(horizontalAxis) > 0 || Mathf.Abs(verticalAxis) > 0)
+                {
+                    move = Vector3.Magnitude(twodmove) / MoveSpeed;
+                }
+                animator.SetFloat("Forward", move);
+                animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
             }
+
             if (Health <= 0) 
             {
                 animator.SetBool("PlayDeathAnimation", true);
             }
-            animator.SetFloat("Forward", move);
-            animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
-            animator.SetBool("OnGround", isGrounded);
 
+            animator.SetBool("OnGround", isGrounded);
+            animator.SetBool("Crouch", crouch);
             if (Health <= 0) {
                 animator.SetBool("PlayDeathAnimation", true);
                 canMove = false;
@@ -167,9 +184,9 @@ public class Player : MonoBehaviour
 
             }
         }
-
-        meshRenderer.material.color = color;
         
+
+        meshRenderer.material.color = color;      
         // TODO: pretty overkill to do this every frame....
         for (var i = 0; i < balloons.Count; i++)
         {
