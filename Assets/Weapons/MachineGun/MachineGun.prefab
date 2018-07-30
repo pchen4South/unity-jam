@@ -436,8 +436,8 @@ MonoBehaviour:
   muzzleFlash: {fileID: 198981883714097846}
   muzzleFlashLight: {fileID: 108791401520107726}
   bulletTracer: {fileID: 120236607093590368}
-  fireRate: 0.01
-  shotTime: 0.01
+  fireRate: 0.1
+  shotTime: 0.1
   muzzleOffset: 0.5
   kickBackGrowthRate: 10
   kickBackDecayRate: -10
