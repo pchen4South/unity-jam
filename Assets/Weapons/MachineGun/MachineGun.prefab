@@ -292,8 +292,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d3247579c549643a5b3a95f9224eaf3c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.6
+  m_Pitch: 1.1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -437,7 +437,7 @@ MonoBehaviour:
   muzzleFlashLight: {fileID: 108791401520107726}
   bulletTracer: {fileID: 120236607093590368}
   fireRate: 0.1
-  shotTime: 0.1
+  shotTime: 0.02
   muzzleOffset: 0.5
   kickBackGrowthRate: 10
   kickBackDecayRate: -10

@@ -113,6 +113,5 @@ public class MachineGun : AbstractWeapon
     public override void ReleaseTrigger(Player player)
     {
         isFiring = false;
-        fireSound.Stop();
     }
 }
