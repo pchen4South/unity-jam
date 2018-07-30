@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Mallet : AbstractWeapon {
+public class Mallet : AbstractWeapon 
+{
     enum WeaponState { Resting, Swinging, Charging, Spinning }
 
     [Header("Config")]
