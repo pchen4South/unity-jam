@@ -81,13 +81,13 @@ public class Player : MonoBehaviour
         var fireDown = player.GetButtonDown("Fire");
         var fireUp = player.GetButtonUp("Fire");
         var fireHold = player.GetButtonTimedPress("Fire", .01f);
+        var crouch = player.GetButtonTimedPress("Crouch", .01f);
         var horizontalAxis = player.GetAxis(0);
         var verticalAxis = player.GetAxis(1);
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
         var input = new Vector3(horizontalAxis, 0, verticalAxis);
         var moveDelta = Vector3.zero;
-        var crouch = player.GetButtonTimedPress("Crouch", .01f);
-        float totalMovementModifier = 1f;
+        var totalMovementModifier = 1f;
 
         isGrounded = controller.isGrounded;
         aerialHeight = didHit ? rayHit.distance : 0f;
@@ -170,18 +170,13 @@ public class Player : MonoBehaviour
                 animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
             }
 
+            animator.SetBool("OnGround", isGrounded);
+            animator.SetBool("Crouch", crouch);
             if (Health <= 0) 
             {
                 animator.SetBool("PlayDeathAnimation", true);
-            }
-
-            animator.SetBool("OnGround", isGrounded);
-            animator.SetBool("Crouch", crouch);
-            if (Health <= 0) {
-                animator.SetBool("PlayDeathAnimation", true);
                 canMove = false;
                 canRotate = false;
-
             }
         }
 
@@ -194,7 +189,6 @@ public class Player : MonoBehaviour
         {
             balloons[i].meshRenderer.material.color = color;
         }
-
     }
 
     public void DeathAnimationFinished() 
