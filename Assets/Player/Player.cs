@@ -137,9 +137,9 @@ public class Player : MonoBehaviour
         // move if not rooted
         if (canMove)
         {
-            moveDelta.x += horizontalAxis * MoveSpeed * totalMovementModifier;
+            moveDelta.x += horizontalAxis * Time.deltaTime * MoveSpeed * totalMovementModifier;
             moveDelta.y += VerticalVelocity * Time.deltaTime;
-            moveDelta.z += verticalAxis * MoveSpeed * totalMovementModifier;
+            moveDelta.z += verticalAxis * Time.deltaTime * MoveSpeed * totalMovementModifier;
         }
 
         // Weapon inputs
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
 
                 if (Mathf.Abs(horizontalAxis) > 0 || Mathf.Abs(verticalAxis) > 0)
                 {
-                    move = Vector3.Magnitude(twodmove) / MoveSpeed;
+                    move = Vector3.Magnitude(twodmove) * (MoveSpeed / Time.deltaTime);
                 }
                 animator.SetFloat("Forward", move);
                 animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));

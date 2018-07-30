@@ -2572,7 +2572,7 @@ MonoBehaviour:
   Weapon: {fileID: 0}
   animator: {fileID: 95275682278858346}
   color: {r: 1, g: 0, b: 0, a: 1}
-  MoveSpeed: 0.2
+  MoveSpeed: 12
   JumpStrength: 20
   JumpPadStrength: 30
   CrouchMovementModifier: 0.5
