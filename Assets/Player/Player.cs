@@ -30,7 +30,9 @@ public class Player : MonoBehaviour
     public string VerticalInput = "";
     public string FireInput = "";
     public string JumpInput = "";
-
+    public float MaxHorizontalAimAngle = 60;
+    public float MaxVerticalAimAngle = 60;
+    public bool InvertAimVertical = false;
     public int PlayerNumber = 0;
     public int Health = 1;
     public bool canMove = true;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour
     public bool isGrounded = true;
     public bool IsDead = false;
     public int lastAttackerIndex;
+
 
     //reinput
     private Rewired.Player player;
@@ -84,6 +87,25 @@ public class Player : MonoBehaviour
         var input = new Vector3(horizontalAxis, 0, verticalAxis);
         var moveDelta = Vector3.zero;
         var totalMovementModifier = 1f;
+        var aimHorizontal = player.GetAxis(5);
+        var aimVertical = player.GetAxis(6);
+
+
+
+        if (aimVertical != 0.0f || aimHorizontal != 0.0f) {
+
+            //Atan2 gives values of -45 to 45
+             var VerticalAngle = (InvertAimVertical == false ? -1 : 1 ) * Mathf.Atan2(aimVertical, 1) * Mathf.Rad2Deg * MaxVerticalAimAngle / 45;
+             var HorizontalAngle = Mathf.Atan2(aimHorizontal, 1) * Mathf.Rad2Deg * MaxHorizontalAimAngle / 45;       
+    
+            Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
+
+        }
+        // return to centered position
+         else if (aimHorizontal < .01f && aimVertical < .01f){
+
+            Weapon.transform.forward = transform.forward;
+        }
 
         isGrounded = controller.isGrounded;
         aerialHeight = didHit ? rayHit.distance : 0f;

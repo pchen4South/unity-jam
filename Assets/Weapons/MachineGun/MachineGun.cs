@@ -37,7 +37,7 @@ public class MachineGun : AbstractWeapon
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 
-    void Update()
+    void LateUpdate()
     {
         timeTillNextShot -= Time.deltaTime;        
         kickbackScale += Time.deltaTime * (isFiring ? kickBackGrowthRate : kickBackDecayRate);
