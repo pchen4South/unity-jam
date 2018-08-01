@@ -43,10 +43,10 @@ public class Player : MonoBehaviour
     public bool IsDead = false;
     public int lastAttackerIndex;
 
-
     //reinput
     private Rewired.Player player;
-
+    private float mouseVertDelta = 0f;
+    private float mouseHorzDelta = 0f;
     //state
     float standingHeight;
     Vector3 standingCenter;
@@ -89,22 +89,48 @@ public class Player : MonoBehaviour
         var totalMovementModifier = 1f;
         var aimHorizontal = player.GetAxis(5);
         var aimVertical = player.GetAxis(6);
+        var mouseFire = player.GetButtonTimedPress("MouseFire", .01f);
+        var mouseFireUp = player.GetButtonUp("mouseFire");
+        var mouseHorizontal = player.GetAxis("MouseHorizontal");
+        var mouseVertical = player.GetAxis("MouseVertical");
+        
+
+        if(!mouseFire){
+            if (aimVertical != 0.0f || aimHorizontal != 0.0f) {
+
+                //Atan2 gives values of -45 to 45
+                var VerticalAngle = (InvertAimVertical == false ? -1 : 1 ) * Mathf.Atan2(aimVertical, 1) * Mathf.Rad2Deg * MaxVerticalAimAngle / 45;
+                var HorizontalAngle = Mathf.Atan2(aimHorizontal, 1) * Mathf.Rad2Deg * MaxHorizontalAimAngle / 45;       
+        
+                Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
+
+            }
+            // return to centered position
+            else if (aimHorizontal < .01f && aimVertical < .01f){
+
+                //Weapon.transform.forward = transform.forward;
+            }
+        } else if(mouseFire){
+
+            
+            if(player.id == 0 && (mouseHorizontal != 0 || mouseVertical != 0)){
+
+                var fwd = Weapon.transform.localRotation;
+                mouseHorzDelta += mouseHorizontal;
+                mouseVertDelta += mouseVertical;
 
 
-
-        if (aimVertical != 0.0f || aimHorizontal != 0.0f) {
-
-            //Atan2 gives values of -45 to 45
-             var VerticalAngle = (InvertAimVertical == false ? -1 : 1 ) * Mathf.Atan2(aimVertical, 1) * Mathf.Rad2Deg * MaxVerticalAimAngle / 45;
-             var HorizontalAngle = Mathf.Atan2(aimHorizontal, 1) * Mathf.Rad2Deg * MaxHorizontalAimAngle / 45;       
-    
-            Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
-
+                var newVert = Mathf.Clamp(fwd.x +  mouseVertDelta,-MaxVerticalAimAngle, MaxVerticalAimAngle);
+                var newHorz = Mathf.Clamp(fwd.y + mouseHorzDelta, -MaxHorizontalAimAngle, MaxHorizontalAimAngle);
+                
+                Weapon.transform.localRotation = Quaternion.Euler(-newVert, newHorz, 0f);
+            }
         }
-        // return to centered position
-         else if (aimHorizontal < .01f && aimVertical < .01f){
-
+        
+        if(mouseFireUp){
             Weapon.transform.forward = transform.forward;
+            mouseHorzDelta = 0f;
+            mouseVertDelta = 0f;
         }
 
         isGrounded = controller.isGrounded;
@@ -161,11 +187,11 @@ public class Player : MonoBehaviour
         }
 
         // Weapon inputs
-        if (Weapon != null && (fireDown || fireHold))
+        if (Weapon != null && (fireDown || fireHold || mouseFire))
         {
             Weapon.PullTrigger(this);
         }
-        if (Weapon != null && fireUp)
+        if (Weapon != null && fireUp || mouseFireUp)
         {
             Weapon.ReleaseTrigger(this);
         }

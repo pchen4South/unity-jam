@@ -2580,6 +2580,9 @@ MonoBehaviour:
   VerticalInput: Vertical_0
   FireInput: Fire_0
   JumpInput: Jump_0
+  MaxHorizontalAimAngle: 45
+  MaxVerticalAimAngle: 60
+  InvertAimVertical: 0
   PlayerNumber: 0
   Health: 1
   canMove: 1

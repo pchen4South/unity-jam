@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2157,6 +2157,11 @@ Prefab:
       propertyPath: m_Name
       value: InputManager
       objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 2}
+      propertyPath: _userData.inputBehaviors.Array.data[0]._mouseXYAxisSensitivity
+      value: 0.4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a45ce626b53644268261bf867e298fe, type: 2}
   m_IsPrefabAsset: 0
@@ -2197,8 +2202,8 @@ MonoBehaviour:
   BackgroundMusic: {fileID: 351282387}
   debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
   WeaponPrefabs:
-  - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 2}
   - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
+  - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 2}
   - {fileID: 114835541831488684, guid: 73412a9a3b2b24366b542efd8bc97d94, type: 2}
   - {fileID: 114316438352987716, guid: 013d2a4b8b9a60c4485b35c059e9b6ca, type: 2}
 --- !u!4 &351282386
