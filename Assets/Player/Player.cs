@@ -115,8 +115,8 @@ public class Player : MonoBehaviour
                 var VerticalAngle = (InvertAimVertical == false ? -1 : 1 ) * Mathf.Atan2(aimVertical, 1) * Mathf.Rad2Deg * MaxVerticalAimAngle / 45;
                 var HorizontalAngle = Mathf.Atan2(aimHorizontal, 1) * Mathf.Rad2Deg * MaxHorizontalAimAngle / 45;       
         
-                //Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
-                Weapon.transform.localRotation = Quaternion.Euler(0f, HorizontalAngle,0f);
+                Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
+                
                 */
 
                 // this code is for aiming only on the horizontal axis and absolute rotation instead of localRotation
