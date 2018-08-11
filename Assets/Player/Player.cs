@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 
 public class Player : MonoBehaviour 
 {
-    public enum Status { Alive, Dying, Dead, Invincible}
+    public enum PlayerStatus { Alive, Dying, Dead, Invincible}
     // N.B. This must be applied to the character every frame they are grounded to keep them grounded
     const float GROUNDED_DOWNWARD_VELOCITY = -10f;
 
@@ -39,8 +40,7 @@ public class Player : MonoBehaviour
     public bool canRotate = true;
     public float aerialHeight = 0f;
     public float VerticalVelocity = 0f;
-    public bool isGrounded = true;
-    public bool IsDead = false;
+
     public int lastAttackerIndex;
 
     //reinput
@@ -52,6 +52,15 @@ public class Player : MonoBehaviour
     Vector3 standingCenter;
     List<Balloon> balloons = new List<Balloon>();
 
+   
+    [Header("State")]
+	public PlayerStatus status = PlayerStatus.Alive;
+    private Vector3 PlayerDiedPosition;
+    private Vector3 PlayerDeadBodyPosition;
+    bool isFlashing = false;
+    public bool isGrounded = true;
+    public bool IsDead = false;
+    
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -95,30 +104,37 @@ public class Player : MonoBehaviour
         var mouseVertical = player.GetAxis("MouseVertical");
         
 
+        // Block for Stick and Mouse Aiming
+        // code for controllers
         if(!mouseFire){
             if (aimVertical != 0.0f || aimHorizontal != 0.0f) {
 
+                /*
+                // this section is the old aiming scheme for aiming with respect to the orientation of the player model    
                 //Atan2 gives values of -45 to 45
                 var VerticalAngle = (InvertAimVertical == false ? -1 : 1 ) * Mathf.Atan2(aimVertical, 1) * Mathf.Rad2Deg * MaxVerticalAimAngle / 45;
                 var HorizontalAngle = Mathf.Atan2(aimHorizontal, 1) * Mathf.Rad2Deg * MaxHorizontalAimAngle / 45;       
         
-                Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
+                //Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
+                Weapon.transform.localRotation = Quaternion.Euler(0f, HorizontalAngle,0f);
+                */
+
+                // this code is for aiming only on the horizontal axis and absolute rotation instead of localRotation
+                var angle = Mathf.Atan2(aimHorizontal,aimVertical) * Mathf.Rad2Deg;
+                Weapon.transform.rotation = Quaternion.Euler(0, angle, 0);
 
             }
             // return to centered position
             else if (aimHorizontal < .01f && aimVertical < .01f){
-
-                //Weapon.transform.forward = transform.forward;
+                Weapon.transform.forward = transform.forward;
             }
+        // code for mouse firing
         } else if(mouseFire){
-
-            
             if(player.id == 0 && (mouseHorizontal != 0 || mouseVertical != 0)){
 
                 var fwd = Weapon.transform.localRotation;
                 mouseHorzDelta += mouseHorizontal;
                 mouseVertDelta += mouseVertical;
-
 
                 var newVert = Mathf.Clamp(fwd.x +  mouseVertDelta,-MaxVerticalAimAngle, MaxVerticalAimAngle);
                 var newHorz = Mathf.Clamp(fwd.y + mouseHorzDelta, -MaxHorizontalAimAngle, MaxHorizontalAimAngle);
@@ -126,12 +142,14 @@ public class Player : MonoBehaviour
                 Weapon.transform.localRotation = Quaternion.Euler(-newVert, newHorz, 0f);
             }
         }
-        
         if(mouseFireUp){
             Weapon.transform.forward = transform.forward;
             mouseHorzDelta = 0f;
             mouseVertDelta = 0f;
         }
+        // End block for stick and mouse aiming
+
+
 
         isGrounded = controller.isGrounded;
         aerialHeight = didHit ? rayHit.distance : 0f;
@@ -216,23 +234,35 @@ public class Player : MonoBehaviour
 
             animator.SetBool("OnGround", isGrounded);
             animator.SetBool("Crouch", crouch);
-            if (Health <= 0) 
+            if (status == PlayerStatus.Dying) 
             {
                 animator.SetBool("PlayDeathAnimation", true);
                 canMove = false;
                 canRotate = false;
+                KnockbackPlayerOnDeath();
             }
         }
 
         playerIndicator.transform.position = didHit ? rayHit.point : transform.position;
         playerIndicator.meshRenderer.material.color = color;
         
-        meshRenderer.material.color = color;      
+        meshRenderer.material.color = color;
+
         // TODO: pretty overkill to do this every frame....
         for (var i = 0; i < balloons.Count; i++)
         {
             balloons[i].meshRenderer.material.color = color;
         }
+
+        if(status == PlayerStatus.Invincible){
+            if(!isFlashing)
+                StartCoroutine(FlashPlayerModel());
+        }
+
+    }
+
+    public void KnockbackPlayerOnDeath(){
+        transform.position = Vector3.Lerp(transform.position, PlayerDeadBodyPosition, Time.deltaTime * 5);
     }
 
     public void DeathAnimationFinished() 
@@ -241,6 +271,7 @@ public class Player : MonoBehaviour
         IsDead = true;
         canMove = true;
         canRotate = true;
+        status = PlayerStatus.Dead;
     }
 
     // TODO: Call some kind of reset on the weapon to clear modifiers to the player?
@@ -260,19 +291,52 @@ public class Player : MonoBehaviour
 
     public void Damage(int amountOfDamage, int attackerIndex)
     {
-        if (Health <= 0)
+        if (Health <= 0){
             return;
+        } 
 
-        Health -= amountOfDamage;
-        lastAttackerIndex = attackerIndex;
+        if(status != PlayerStatus.Invincible){
+            Health -= amountOfDamage;
+            lastAttackerIndex = attackerIndex;
 
-        for (var i = Health; i < balloons.Count; i++)
-        {
-            balloons[i].Cut();
+            for (var i = Health; i < balloons.Count; i++)
+            {
+                balloons[i].Cut();
+            }
+            balloons.RemoveRange(Health, balloons.Count - Health);
+
+            if (Health > 0 )
+            {
+                animator.SetTrigger("Hit");
+                status = PlayerStatus.Invincible;
+                StartCoroutine(PlayerDamaged());
+            } else if (Health <= 0){
+                PlayerDiedPosition = transform.position;
+                PlayerDeadBodyPosition = new Vector3(PlayerDiedPosition.x - 1f, PlayerDiedPosition.y - 1f, PlayerDiedPosition.z);
+                status = PlayerStatus.Dying;
+            }
         }
-        balloons.RemoveRange(Health, balloons.Count - Health);
-        animator.SetTrigger("Hit");
     }
+
+    IEnumerator PlayerDamaged(){
+        yield return new WaitForSeconds(2f);
+        status = PlayerStatus.Alive;
+    }
+
+    IEnumerator FlashPlayerModel(){
+        isFlashing = true;
+        color.a = 0f;
+        //meshRenderer.material.color = color;    
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine(FlashPlayerModelToOriginal());
+    }
+    IEnumerator FlashPlayerModelToOriginal(){
+        color.a = 1f;
+        //meshRenderer.material.color = color;    
+        yield return new WaitForSeconds(0.1f);
+        isFlashing = false;
+    }
+
 
 	public void Respawn(Vector3 position, Quaternion rotation)
 	{

@@ -39,7 +39,10 @@ public class MachineGun : AbstractWeapon
 
     void LateUpdate()
     {
-        timeTillNextShot -= Time.deltaTime;        
+        timeTillNextShot -= Time.deltaTime;   
+        //Commented out kickback code for now
+        /* 
+             
         kickbackScale += Time.deltaTime * (isFiring ? kickBackGrowthRate : kickBackDecayRate);
         kickbackScale = Mathf.Clamp01(kickbackScale);
 
@@ -54,6 +57,7 @@ public class MachineGun : AbstractWeapon
         {
             transform.rotation = player.transform.rotation;
         }
+        */
     }
 
     public override void PullTrigger(Player player)
