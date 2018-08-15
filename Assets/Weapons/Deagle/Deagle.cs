@@ -17,6 +17,10 @@ public class Deagle : AbstractWeapon
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
     ParticleSystem muzzleFlash;
+
+	[SerializeField]
+    GameObject BulletHole;
+
     [SerializeField]
     Light muzzleFlashLight;
     [SerializeField]
@@ -104,12 +108,15 @@ public class Deagle : AbstractWeapon
         }
         else
         {
-            var hitParticles = Instantiate(HitParticlePrefab);
+			GameObject bulletHole = Instantiate(BulletHole, rayHit.point, Quaternion.FromToRotation(Vector3.up, rayHit.normal));
+			var particleSystems = bulletHole.GetComponentsInChildren<ParticleSystem>();
 
-            hitSound.Play();
-            hitParticles.transform.position = rayHit.point;
-            hitParticles.transform.LookAt(transform, Vector3.up);
-            Destroy(hitParticles.gameObject, 2f);
+			foreach(var p in particleSystems){
+				ParticleSystem.MainModule psmain = p.main;
+				psmain.startColor = player.color;
+			}
+
+            Destroy(bulletHole, 3f);
         }
     }
 
