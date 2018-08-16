@@ -90,7 +90,6 @@ public class Deagle : AbstractWeapon
         bulletTracer.SetPosition(0, muzzle);
         bulletTracer.SetPosition(1, rayHit.point);
         bulletTracer.enabled = true;
-        
         var isPlayer = rayHit.collider.CompareTag("Player");
 
         // should move some of this code to player
@@ -116,7 +115,6 @@ public class Deagle : AbstractWeapon
             }
             Destroy(bulletHole, 3f);
         }
-
         if (AmmoCount == 0)
             Reload();
     }
