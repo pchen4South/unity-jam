@@ -321,7 +321,6 @@ public class Player : MonoBehaviour
                 DeathSound.Play();
             }
         } else {
-            Debug.Log("ey");
             InvicibleSound.Play();            
         }
     }

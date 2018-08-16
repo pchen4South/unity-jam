@@ -11,16 +11,16 @@ public class Deagle : AbstractWeapon
     AudioSource hitSound;
     [SerializeField]
     AudioSource hitPlayerSound;
+	[SerializeField]
+    AudioSource reloadSound;
     [SerializeField]
     ParticleSystem HitParticlePrefab;
     [SerializeField]
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
     ParticleSystem muzzleFlash;
-
 	[SerializeField]
     GameObject BulletHole;
-
     [SerializeField]
     Light muzzleFlashLight;
     [SerializeField]
@@ -30,45 +30,46 @@ public class Deagle : AbstractWeapon
     public float fireRate = .1f;
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
-    public float kickBackGrowthRate = 1f;
-    public float kickBackDecayRate = -2f;
     public LayerMask layerMask = new LayerMask();
+    float AmmoCount = 0f;
+	public float MagazineSize = 7f;
+	public float ReloadTime = 1f;
 
     [Header("State")]
     float timeTillNextShot = 0f;
     float kickbackScale = 0f;
     bool isFiring = false;
+    bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
+
+    void Start(){
+        AmmoCount = MagazineSize;        
+    }
+
+    void Reload(){
+        isReloading = true;
+        reloadSound.Play();
+        StartCoroutine(ReloadTimer());
+    }
+
+    IEnumerator ReloadTimer(){
+        yield return new WaitForSeconds(ReloadTime);
+        AmmoCount = MagazineSize;
+        isReloading = false;
+    }
 
     void LateUpdate()
     {
         timeTillNextShot -= Time.deltaTime;   
-        //Commented out kickback code for now
-        /* 
-             
-        kickbackScale += Time.deltaTime * (isFiring ? kickBackGrowthRate : kickBackDecayRate);
-        kickbackScale = Mathf.Clamp01(kickbackScale);
-
-        if (isFiring)
-        {
-            var yKickAngle = Random.Range(-kickbackScale, kickbackScale);
-            var xKickAngle = -Random.Range(0, kickbackScale);
-
-            transform.Rotate(xKickAngle, yKickAngle, 0, Space.Self);
-        }
-        else
-        {
-            transform.rotation = player.transform.rotation;
-        }
-        */
     }
 
     public override void PullTrigger(Player player)
     {
-        if (timeTillNextShot > 0)
+        if (timeTillNextShot > 0 || isReloading || AmmoCount == 0)
             return;
-        
+
+        AmmoCount -= 1;        
         var muzzle = transform.position + transform.forward * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
@@ -92,32 +93,32 @@ public class Deagle : AbstractWeapon
         
         var isPlayer = rayHit.collider.CompareTag("Player");
 
-		// shoudl move some of this code to player
+        // should move some of this code to player
         if (isPlayer)
         {
             var target = rayHit.collider.GetComponent<Player>();
-
-			if(target.status != Player.PlayerStatus.Invincible){
-				var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-				target.Damage(1, player.PlayerNumber);
-				//hitPlayerSound.Play();
-				Destroy(hitParticles.gameObject, 2f);
-			} else {
-				target.InvicibleSound.Play();  
-			}
+            if(target.status != Player.PlayerStatus.Invincible){
+                var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
+                target.Damage(1, player.PlayerNumber);
+                Destroy(hitParticles.gameObject, 2f);
+            } else {
+                target.InvicibleSound.Play();  
+            }
         }
         else
         {
-			GameObject bulletHole = Instantiate(BulletHole, rayHit.point, Quaternion.FromToRotation(Vector3.up, rayHit.normal));
-			var particleSystems = bulletHole.GetComponentsInChildren<ParticleSystem>();
+            GameObject bulletHole = Instantiate(BulletHole, rayHit.point, Quaternion.FromToRotation(Vector3.up, rayHit.normal));
+            var particleSystems = bulletHole.GetComponentsInChildren<ParticleSystem>();
 
-			foreach(var p in particleSystems){
-				ParticleSystem.MainModule psmain = p.main;
-				psmain.startColor = player.color;
-			}
-
+            foreach(var p in particleSystems){
+                ParticleSystem.MainModule psmain = p.main;
+                psmain.startColor = player.color;
+            }
             Destroy(bulletHole, 3f);
         }
+
+        if (AmmoCount == 0)
+            Reload();
     }
 
     IEnumerator PostShotCleanup()
