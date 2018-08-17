@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deagle : AbstractWeapon 
-{
-    [Header("Cached references")]
+public class Shotgun : AbstractWeapon {
+
+ 	[Header("Cached references")]
     [SerializeField]
     AudioSource fireSound;
-    
+
 	[SerializeField]
     AudioSource reloadSound;
     [SerializeField]
@@ -16,21 +16,24 @@ public class Deagle : AbstractWeapon
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
     ParticleSystem muzzleFlash;
-	[SerializeField]
-    GameObject BulletHole;
+	// [SerializeField]
+    // GameObject BulletHole;
     [SerializeField]
     Light muzzleFlashLight;
     [SerializeField]
-    LineRenderer bulletTracer;
+	GameObject BlastRadius;
+	// [SerializeField]
+    // LineRenderer bulletTracer;
+
 
     [Header("Config")]
-    public float fireRate = .1f;
+    public float fireRate = .75f;
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
     float AmmoCount = 0f;
-	public float MagazineSize = 7f;
-	public float ReloadTime = 1f;
+	public float MagazineSize = 5f;
+	public float ReloadTime = 2f;
 
     [Header("State")]
     float timeTillNextShot = 0f;
@@ -39,9 +42,11 @@ public class Deagle : AbstractWeapon
     bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
+	private ParticleSystem FlashInstance;
 
-    void Start(){
-        AmmoCount = MagazineSize;        
+	void Start(){
+        AmmoCount = MagazineSize;       
+		FlashInstance = Instantiate(muzzleFlash, transform);
     }
 
     void Reload(){
@@ -56,11 +61,17 @@ public class Deagle : AbstractWeapon
         isReloading = false;
     }
 
+	void Update()
+	{
+		FlashInstance.transform.localRotation = Quaternion.FromToRotation(Vector3.up, transform.forward);		
+	}
+
     void LateUpdate()
     {
         timeTillNextShot -= Time.deltaTime;   
     }
 
+	
     public override void PullTrigger(Player player)
     {
         if (timeTillNextShot > 0 || isReloading || AmmoCount == 0)
@@ -72,21 +83,26 @@ public class Deagle : AbstractWeapon
         StartCoroutine(PostShotCleanup());
         isFiring = true;
         timeTillNextShot = fireRate;
-        muzzleFlash.Stop();
-        muzzleFlash.Play();
+        
+		// FlashInstance.Stop();
+        // FlashInstance.Play();
+
         muzzleFlashLight.enabled = true;
         fireSound.Play();
+		
+		var br = BlastRadius.GetComponent<MeshRenderer>();
+		br.enabled = true;
+		var brCollider = br.GetComponent<MeshCollider>();
+
+
         ray.origin = muzzle;
         ray.direction = transform.forward;
 
         var didHit = Physics.Raycast(ray, out rayHit, layerMask);
 
-        if (!didHit)
-            return;
+        // if (!didHit)
+        //     return;
 
-        bulletTracer.SetPosition(0, muzzle);
-        bulletTracer.SetPosition(1, rayHit.point);
-        bulletTracer.enabled = true;
         var isPlayer = rayHit.collider.CompareTag("Player");
 
         // should move some of this code to player
@@ -101,17 +117,6 @@ public class Deagle : AbstractWeapon
                 target.InvicibleSound.Play();  
             }
         }
-        else
-        {
-            GameObject bulletHole = Instantiate(BulletHole, rayHit.point, Quaternion.FromToRotation(Vector3.up, rayHit.normal));
-            var particleSystems = bulletHole.GetComponentsInChildren<ParticleSystem>();
-
-            foreach(var p in particleSystems){
-                ParticleSystem.MainModule psmain = p.main;
-                psmain.startColor = player.color;
-            }
-            Destroy(bulletHole, 3f);
-        }
         if (AmmoCount == 0)
             Reload();
     }
@@ -119,8 +124,10 @@ public class Deagle : AbstractWeapon
     IEnumerator PostShotCleanup()
     {
         yield return new WaitForSeconds(shotTime);
-        bulletTracer.enabled = false;
         muzzleFlashLight.enabled = false;
+		var br = BlastRadius.GetComponent<MeshRenderer>();
+		br.enabled = false;
+		//FlashInstance.Stop();
     }
     public override void ReleaseTrigger(Player player)
     {
