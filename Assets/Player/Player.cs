@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     public AbstractWeapon Weapon;
     public Animator animator;
     public Color color = Color.red;
+    public AudioSource TakeDamageSound;
+    public AudioSource InvicibleSound;
+    public AudioSource DeathSound;
 
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
@@ -115,8 +118,8 @@ public class Player : MonoBehaviour
                 var VerticalAngle = (InvertAimVertical == false ? -1 : 1 ) * Mathf.Atan2(aimVertical, 1) * Mathf.Rad2Deg * MaxVerticalAimAngle / 45;
                 var HorizontalAngle = Mathf.Atan2(aimHorizontal, 1) * Mathf.Rad2Deg * MaxHorizontalAimAngle / 45;       
         
-                //Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
-                Weapon.transform.localRotation = Quaternion.Euler(0f, HorizontalAngle,0f);
+                Weapon.transform.localRotation = Quaternion.Euler(VerticalAngle, HorizontalAngle,0f);
+                
                 */
 
                 // this code is for aiming only on the horizontal axis and absolute rotation instead of localRotation
@@ -309,12 +312,16 @@ public class Player : MonoBehaviour
             {
                 animator.SetTrigger("Hit");
                 status = PlayerStatus.Invincible;
+                TakeDamageSound.Play();
                 StartCoroutine(PlayerDamaged());
             } else if (Health <= 0){
                 PlayerDiedPosition = transform.position;
                 PlayerDeadBodyPosition = new Vector3(PlayerDiedPosition.x - 1f, PlayerDiedPosition.y - 1f, PlayerDiedPosition.z);
                 status = PlayerStatus.Dying;
+                DeathSound.Play();
             }
+        } else {
+            InvicibleSound.Play();            
         }
     }
 

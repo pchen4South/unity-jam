@@ -53,7 +53,7 @@ public class GameMode : MonoBehaviour
 
 		graph = Instantiate(GraphPrefab);
 
-		for (var i = playerStates.Count; i < 4; i++)
+		for (var i = playerStates.Count; i < 2; i++)
 		{
 			Spawn(i);
 		}
