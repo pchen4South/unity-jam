@@ -358,12 +358,12 @@ MonoBehaviour:
       _joystickAxisSensitivity: 1
       _digitalAxisSimulation: 1
       _digitalAxisSnap: 1
-      _digitalAxisInstantReverse: 0
-      _digitalAxisGravity: 3
-      _digitalAxisSensitivity: 3
+      _digitalAxisInstantReverse: 1
+      _digitalAxisGravity: 100
+      _digitalAxisSensitivity: 100
       _mouseXYAxisMode: 0
       _mouseOtherAxisMode: 0
-      _mouseXYAxisSensitivity: 0.5
+      _mouseXYAxisSensitivity: 0.4
       _mouseXYAxisDeltaCalc: 0
       _mouseOtherAxisSensitivity: 1
       _customControllerAxisSensitivity: 1

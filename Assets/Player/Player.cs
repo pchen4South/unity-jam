@@ -93,8 +93,8 @@ public class Player : MonoBehaviour
         var fireUp = player.GetButtonUp("Fire");
         var fireHold = player.GetButtonTimedPress("Fire", .01f);
         var crouch = player.GetButtonTimedPress("Crouch", .01f);
-        var horizontalAxis = player.GetAxis(0);
-        var verticalAxis = player.GetAxis(1);
+        var horizontalAxis = LerpUtilities.Step(player.GetAxis(0));
+        var verticalAxis = LerpUtilities.Step(player.GetAxis(1));
         var didHit = Physics.Raycast(ray, out rayHit, 1000f);
         var input = new Vector3(horizontalAxis, 0, verticalAxis);
         var moveDelta = Vector3.zero;
@@ -257,9 +257,9 @@ public class Player : MonoBehaviour
             balloons[i].meshRenderer.material.color = color;
         }
 
-        if(status == PlayerStatus.Invincible){
-            if(!isFlashing)
-                StartCoroutine(FlashPlayerModel());
+        if(status == PlayerStatus.Invincible && !isFlashing)
+        {
+            StartCoroutine(FlashPlayerModel());
         }
 
     }
@@ -343,7 +343,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         isFlashing = false;
     }
-
 
 	public void Respawn(Vector3 position, Quaternion rotation)
 	{
