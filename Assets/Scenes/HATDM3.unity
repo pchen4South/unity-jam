@@ -654,11 +654,6 @@ Prefab:
       propertyPath: m_Name
       value: InputManager
       objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 2}
-      propertyPath: _userData.inputBehaviors.Array.data[0]._mouseXYAxisSensitivity
-      value: 0.4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a45ce626b53644268261bf867e298fe, type: 2}
   m_IsPrefabAsset: 0
@@ -691,6 +686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed165575a518a4e4b98dce5f8b69dbf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewCamera: {fileID: 0}
   PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
     type: 2}
   GraphPrefab: {fileID: 114828885761802702, guid: 91096ca2c46534fc69c46b40c76881b7,

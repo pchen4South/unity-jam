@@ -1003,7 +1003,7 @@ MonoBehaviour:
       customControllerUid: 0
       actionElementMaps:
       - _actionCategoryId: 0
-        _actionId: 7
+        _actionId: 3
         _elementType: 1
         _elementIdentifierId: 3
         _axisRange: 0
@@ -1055,12 +1055,12 @@ MonoBehaviour:
     mapCategoryIdCounter: 2
     joystickLayoutIdCounter: 3
     keyboardLayoutIdCounter: 1
-    mouseLayoutIdCounter: 1
+    mouseLayoutIdCounter: 2
     customControllerLayoutIdCounter: 1
     joystickMapIdCounter: 5
     keyboardMapIdCounter: 1
     mouseMapIdCounter: 1
     customControllerMapIdCounter: 0
-    customControllerIdCounter: 0
+    customControllerIdCounter: 1
   _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7,
     type: 2}

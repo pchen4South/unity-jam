@@ -17,6 +17,9 @@ public class PlayerState
 
 public class GameMode : MonoBehaviour 
 {
+	[SerializeField]
+	Camera viewCamera;
+
 	[Header("Prefabs")]
 	[SerializeField]
 	Player PlayerPrefab;
@@ -44,7 +47,8 @@ public class GameMode : MonoBehaviour
 	{
 		var debugPlayer = GameObject.FindObjectOfType<Player>();
 
-        if(debugPlayer != null) { 
+        if(debugPlayer != null) 
+		{
 		    playerStates.Add(new PlayerState(debugPlayer));
 		    debugPlayer.Respawn(debugPlayer.transform.position, debugPlayer.transform.rotation);
         }
@@ -139,10 +143,6 @@ public class GameMode : MonoBehaviour
 		playerStates.Add(new PlayerState(player));
 		player.PlayerNumber = PlayerNumber;
 		player.name = "Player " + PlayerNumber;
-        player.HorizontalInput = "Horizontal_" + PlayerNumber;
-        player.VerticalInput = "Vertical_" + PlayerNumber;
-        player.FireInput = "Fire_" + PlayerNumber;
-        player.JumpInput = "Jump_" + PlayerNumber;
 		player.Respawn(sp.transform.position, sp.transform.rotation);
 	}
 }
