@@ -1053,10 +1053,11 @@ MonoBehaviour:
     type: 2}
   HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
     type: 2}
-  muzzleFlash: {fileID: 198919157133104350, guid: 35a31d7fb099a164f901cbf961ec55f7,
+  muzzleFlash: {fileID: 1956061264784194, guid: 0c8832a2e0bc8c944969fe1a480bb84c,
     type: 2}
   muzzleFlashLight: {fileID: 108913146903628442}
   BlastRadius: {fileID: 1135383639204200}
+  Projectile: {fileID: 1126949053357362, guid: b37fc9248adb8bb4c86406fd9c583f83, type: 2}
   fireRate: 1
   shotTime: 0.1
   muzzleOffset: 0.1

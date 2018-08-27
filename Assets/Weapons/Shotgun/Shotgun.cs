@@ -15,7 +15,7 @@ public class Shotgun : AbstractWeapon {
     [SerializeField]
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
-    ParticleSystem muzzleFlash;
+    GameObject muzzleFlash;
 	// [SerializeField]
     // GameObject BulletHole;
     [SerializeField]
@@ -24,6 +24,9 @@ public class Shotgun : AbstractWeapon {
 	GameObject BlastRadius;
 	// [SerializeField]
     // LineRenderer bulletTracer;
+    [SerializeField]
+	GameObject Projectile;
+
 
 
     [Header("Config")]
@@ -42,7 +45,7 @@ public class Shotgun : AbstractWeapon {
     bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
-	private ParticleSystem FlashInstance;
+	private GameObject FlashInstance;
 
 	void Start(){
         AmmoCount = MagazineSize;       
@@ -63,7 +66,7 @@ public class Shotgun : AbstractWeapon {
 
 	void Update()
 	{
-		FlashInstance.transform.localRotation = Quaternion.FromToRotation(Vector3.up, transform.forward);		
+		//FlashInstance.transform.localRotation = Quaternion.FromToRotation(Vector3.up, transform.forward);		
 	}
 
     void LateUpdate()
@@ -84,8 +87,8 @@ public class Shotgun : AbstractWeapon {
         isFiring = true;
         timeTillNextShot = fireRate;
         
-		// FlashInstance.Stop();
-        // FlashInstance.Play();
+		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
+        FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
 
         muzzleFlashLight.enabled = true;
         fireSound.Play();
@@ -94,11 +97,12 @@ public class Shotgun : AbstractWeapon {
 		br.enabled = true;
 		var brCollider = br.GetComponent<MeshCollider>();
 
-
         ray.origin = muzzle;
         ray.direction = transform.forward;
 
         var didHit = Physics.Raycast(ray, out rayHit, layerMask);
+
+        var proj = Instantiate(Projectile, muzzle, transform.rotation);
 
         // if (!didHit)
         //     return;
