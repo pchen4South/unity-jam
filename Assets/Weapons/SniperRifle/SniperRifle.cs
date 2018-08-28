@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shotgun : AbstractWeapon {
+public class SniperRifle : AbstractWeapon {
 
- 	[Header("Cached references")]
+[Header("Cached references")]
     [SerializeField]
     AudioSource fireSound;
 
@@ -16,14 +16,16 @@ public class Shotgun : AbstractWeapon {
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
     GameObject muzzleFlash;
-
+	// [SerializeField]
+    // GameObject BulletHole;
     [SerializeField]
     Light muzzleFlashLight;
+
     [SerializeField]
-	GameObject BlastRadius;
+	GameObject Projectile;
 
     [Header("Config")]
-    public float fireRate = .75f;
+    public float fireRate = 2f;
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
@@ -33,7 +35,6 @@ public class Shotgun : AbstractWeapon {
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    float kickbackScale = 0f;
     bool isFiring = false;
     bool isReloading = false;
     Ray ray = new Ray();
@@ -43,6 +44,14 @@ public class Shotgun : AbstractWeapon {
 	void Start(){
         AmmoCount = MagazineSize;       
 		FlashInstance = Instantiate(muzzleFlash, transform);
+    }
+
+
+	void Update(){}
+
+    void LateUpdate()
+    {
+        timeTillNextShot -= Time.deltaTime;   
     }
 
     void Reload(){
@@ -56,14 +65,6 @@ public class Shotgun : AbstractWeapon {
         AmmoCount = MagazineSize;
         isReloading = false;
     }
-
-	void Update(){	}
-
-    void LateUpdate()
-    {
-        timeTillNextShot -= Time.deltaTime;   
-    }
-
 	
     public override void PullTrigger(Player player)
     {
@@ -82,15 +83,13 @@ public class Shotgun : AbstractWeapon {
 
         muzzleFlashLight.enabled = true;
         fireSound.Play();
-		
-		var br = BlastRadius.GetComponent<MeshRenderer>();
-		br.enabled = true;
-		var brCollider = br.GetComponent<MeshCollider>();
 
         ray.origin = muzzle;
         ray.direction = transform.forward;
 
         var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
+
+        var proj = Instantiate(Projectile, muzzle, transform.rotation);
 
         if (AmmoCount == 0)
             Reload();
@@ -118,9 +117,7 @@ public class Shotgun : AbstractWeapon {
     IEnumerator PostShotCleanup()
     {
         yield return new WaitForSeconds(shotTime);
-        muzzleFlashLight.enabled = false;
-		var br = BlastRadius.GetComponent<MeshRenderer>();
-		br.enabled = false;
+        muzzleFlashLight.enabled = false;		
 		//FlashInstance.Stop();
     }
     public override void ReleaseTrigger(Player player)
