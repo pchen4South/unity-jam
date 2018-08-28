@@ -100,12 +100,15 @@ public class Shotgun : AbstractWeapon {
         ray.origin = muzzle;
         ray.direction = transform.forward;
 
-        var didHit = Physics.Raycast(ray, out rayHit, layerMask);
+        var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
 
         var proj = Instantiate(Projectile, muzzle, transform.rotation);
 
-        // if (!didHit)
-        //     return;
+        if (AmmoCount == 0)
+            Reload();
+
+        if (!didHit)
+            return;
 
         var isPlayer = rayHit.collider.CompareTag("Player");
 
@@ -121,8 +124,7 @@ public class Shotgun : AbstractWeapon {
                 target.InvicibleSound.Play();  
             }
         }
-        if (AmmoCount == 0)
-            Reload();
+
     }
 
     IEnumerator PostShotCleanup()

@@ -1063,6 +1063,6 @@ MonoBehaviour:
   muzzleOffset: 0.1
   layerMask:
     serializedVersion: 2
-    m_Bits: 1025
+    m_Bits: 1024
   MagazineSize: 5
   ReloadTime: 3.5
