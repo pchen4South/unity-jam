@@ -1,15 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Graph : MonoBehaviour 
 {
 	[SerializeField]
 	GraphBar[] graphBars;
 
-	public void UpdateBar(int barIndex, Color color, float normalizedScale)
+	public void UpdateBar(int barIndex, Color color, float normalizedLength)
 	{
-		graphBars[barIndex].backgroundImage.color = color;
-		graphBars[barIndex].transform.localScale = new Vector3(normalizedScale, 1, 1);
+		graphBars[barIndex].UpdateBar(color, normalizedLength);
 	}
 }

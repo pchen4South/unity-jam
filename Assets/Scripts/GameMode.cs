@@ -15,21 +15,71 @@ public class PlayerState
 	}
 }
 
+[System.Serializable]
+public class PlayerHUDManager : Object
+{
+	PlayerHUD[] playerHUDPool;
+
+	public PlayerHUDManager(PlayerHUD PlayerHUDPrefab, int maximumSize)
+	{
+		playerHUDPool = new PlayerHUD[maximumSize];
+
+		for (var i = 0; i < playerHUDPool.Length; i++)
+		{
+			playerHUDPool[i] = Instantiate(PlayerHUDPrefab);
+		}
+	}
+
+	void OnDestroy()
+	{
+		for (var i = 0; i < playerHUDPool.Length; i++)
+		{
+			Destroy(playerHUDPool[i]);
+		}
+	}
+
+	public void UpdatePlayerHUDs(List<PlayerState> playerStates, Camera camera, RectTransform parent)
+	{
+		var i = 0;
+
+		while (i < playerStates.Count)
+		{
+			playerHUDPool[i].gameObject.SetActive(true);
+			playerHUDPool[i].transform.SetParent(parent, false);
+			playerHUDPool[i].UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
+			playerHUDPool[i].UpdatePosition(camera, parent, playerStates[i].player.transform.position);
+			i++;
+		}
+		while (i < playerHUDPool.Length)
+		{
+			playerHUDPool[i].gameObject.SetActive(false);
+			i++;
+		}
+	}
+}
+
 public class GameMode : MonoBehaviour 
 {
 	[SerializeField]
-	Camera viewCamera;
+	Camera mainCamera;
 
 	[Header("Prefabs")]
 	[SerializeField]
 	Player PlayerPrefab;
 	[SerializeField]
+
+	[Header("UI")]
 	Graph GraphPrefab;
+	[SerializeField]
+	Canvas ScreenSpaceUICanvasPrefab;
+	[SerializeField]
+	PlayerHUD PlayerHUDPrefab;
 
 	[Header("Game")]
 	[SerializeField]
 	GameSettings GameSettings;
 	Graph graph;
+	Canvas screenSpaceUICanvas;
 
 	[Header("Sounds")]
 	[SerializeField]
@@ -41,6 +91,7 @@ public class GameMode : MonoBehaviour
 
 	[Header("State")]
 	List<PlayerState> playerStates = new List<PlayerState>();
+	PlayerHUDManager playerHUDManager;
 	GameObject[] spawnPoints;
 
 	void Start()
@@ -55,7 +106,11 @@ public class GameMode : MonoBehaviour
         // crawl the map collecting references to all spawn points
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
+		// Instantiate UI Objects
 		graph = Instantiate(GraphPrefab);
+		screenSpaceUICanvas = Instantiate(ScreenSpaceUICanvasPrefab);
+		screenSpaceUICanvas.worldCamera = mainCamera;
+		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, 8);
 
 		for (var i = playerStates.Count; i < 2; i++)
 		{
@@ -118,6 +173,9 @@ public class GameMode : MonoBehaviour
 
 			graph.UpdateBar(i, ps.player.color, normalizedScale);
 		}
+
+		// Update the player HUDs
+		playerHUDManager.UpdatePlayerHUDs(playerStates, mainCamera, screenSpaceUICanvas.transform as RectTransform);
 
 		if (GameSettings.PlayBackgroundMusic)
 		{
