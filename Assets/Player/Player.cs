@@ -10,11 +10,8 @@ public class Player : MonoBehaviour
     const float GROUNDED_DOWNWARD_VELOCITY = -10f;
 
     [SerializeField]
-    Balloon BalloonPrefab;
-    [SerializeField]
-    PlayerIndicator PlayerIndicatorPrefab;
-
     PlayerIndicator playerIndicator;
+
     public Rigidbody head;
     public SkinnedMeshRenderer meshRenderer;
     public CharacterController controller;
@@ -25,6 +22,7 @@ public class Player : MonoBehaviour
     public AudioSource InvicibleSound;
     public AudioSource DeathSound;
 
+    public int MaxHealth = 3;
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
     public float JumpPadStrength = 3f;
@@ -49,7 +47,6 @@ public class Player : MonoBehaviour
     //state
     float standingHeight;
     Vector3 standingCenter;
-    List<Balloon> balloons = new List<Balloon>();
    
     [Header("State")]
 	public PlayerStatus status = PlayerStatus.Alive;
@@ -73,7 +70,6 @@ public class Player : MonoBehaviour
     {
         // Get the Rewired Player object for this player and keep it for the duration of the character's lifetime
         player = ReInput.players.GetPlayer(PlayerNumber);
-        playerIndicator = Instantiate(PlayerIndicatorPrefab, transform);
         standingHeight = controller.height;
         standingCenter = controller.center;
         mainCamera = Camera.main;
@@ -107,10 +103,10 @@ public class Player : MonoBehaviour
 
         if (hasMouse)
         {
-            var tInViewport = mainCamera.WorldToScreenPoint(transform.position);
-            var delta = Input.mousePosition - tInViewport;
-            var direction = delta.normalized;
-            var orientedDirection = new Vector3(direction.x, direction.z, direction.y);
+            Vector2 tInViewport = mainCamera.WorldToScreenPoint(transform.position);
+            Vector2 delta = player.controllers.Mouse.screenPosition - tInViewport;
+            Vector2 direction = delta.normalized;
+            Vector3 orientedDirection = new Vector3(direction.x, 0, direction.y);
 
             transform.rotation = Quaternion.LookRotation(orientedDirection, Vector3.up);
         }
@@ -198,22 +194,17 @@ public class Player : MonoBehaviour
             }
         }
 
+        // playerHUD.UpdateHealth((float)Health / (float)MaxHealth);
+        // playerHUD.transform.rotation = Quaternion.LookRotation(-mainCamera.transform.forward, mainCamera.transform.up);
         playerIndicator.transform.position = didHit ? rayHit.point : transform.position;
         playerIndicator.meshRenderer.material.color = color;
         
         meshRenderer.material.color = color;
 
-        // TODO: pretty overkill to do this every frame....
-        for (var i = 0; i < balloons.Count; i++)
-        {
-            balloons[i].meshRenderer.material.color = color;
-        }
-
         if(status == PlayerStatus.Invincible && !isFlashing)
         {
             StartCoroutine(FlashPlayerModel());
         }
-
     }
 
     public void KnockbackPlayerOnDeath(){
@@ -254,12 +245,6 @@ public class Player : MonoBehaviour
             Health -= amountOfDamage;
             lastAttackerIndex = attackerIndex;
 
-            for (var i = Health; i < balloons.Count; i++)
-            {
-                balloons[i].Cut();
-            }
-            balloons.RemoveRange(Health, balloons.Count - Health);
-
             if (Health > 0 )
             {
                 animator.SetTrigger("Hit");
@@ -299,26 +284,10 @@ public class Player : MonoBehaviour
 	public void Respawn(Vector3 position, Quaternion rotation)
 	{
 		transform.SetPositionAndRotation(position, rotation);
-		Health = 3;
+		Health = MaxHealth;
         IsDead = false;
 		canMove = true;
 		canRotate = true;
 		VerticalVelocity = 0f;
-
-        // Destroy any remaining balloons
-        foreach(var balloon in balloons)
-        {
-            Destroy(balloon.gameObject);
-        }
-        balloons.Clear();
-
-        // spawn new balloons
-        for (var i = 0; i < Health; i++)
-        {
-            var balloon = Instantiate(BalloonPrefab);
-
-            balloon.springJoint.connectedBody = head;
-            balloons.Add(balloon);
-        }
 	}
 }
