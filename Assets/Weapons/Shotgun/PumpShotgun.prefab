@@ -63,7 +63,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1278227707502888
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,7 +1057,6 @@ MonoBehaviour:
     type: 2}
   muzzleFlashLight: {fileID: 108913146903628442}
   BlastRadius: {fileID: 1135383639204200}
-  Projectile: {fileID: 1126949053357362, guid: b37fc9248adb8bb4c86406fd9c583f83, type: 2}
   fireRate: 1
   shotTime: 0.1
   muzzleOffset: 0.1
@@ -1066,3 +1065,4 @@ MonoBehaviour:
     m_Bits: 1024
   MagazineSize: 5
   ReloadTime: 3.5
+  projectile: {fileID: 1126949053357362, guid: b37fc9248adb8bb4c86406fd9c583f83, type: 2}

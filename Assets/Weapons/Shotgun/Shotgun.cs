@@ -39,6 +39,7 @@ public class Shotgun : AbstractWeapon {
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 	private GameObject FlashInstance;
+    public  GameObject projectile;
 
 	void Start(){
         AmmoCount = MagazineSize;       
@@ -69,6 +70,8 @@ public class Shotgun : AbstractWeapon {
     {
         if (timeTillNextShot > 0 || isReloading || AmmoCount == 0)
             return;
+
+        Instantiate(projectile, transform.position, transform.rotation);
 
         AmmoCount -= 1;        
         var muzzle = transform.position + transform.forward * muzzleOffset;
