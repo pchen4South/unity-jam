@@ -15,7 +15,7 @@ public class Deagle : AbstractWeapon
     [SerializeField]
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
-    ParticleSystem muzzleFlash;
+    GameObject muzzleFlash;
 	[SerializeField]
     GameObject BulletHole;
     [SerializeField]
@@ -39,9 +39,11 @@ public class Deagle : AbstractWeapon
     bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
+	private GameObject FlashInstance;
 
-    void Start(){
-        AmmoCount = MagazineSize;        
+    void Awake(){
+        AmmoCount = MagazineSize;   
+        FlashInstance = Instantiate(muzzleFlash, transform);     
     }
 
     void Reload(){
@@ -72,14 +74,19 @@ public class Deagle : AbstractWeapon
         StartCoroutine(PostShotCleanup());
         isFiring = true;
         timeTillNextShot = fireRate;
-        muzzleFlash.Stop();
-        muzzleFlash.Play();
+        
+		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
+        FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
+
         muzzleFlashLight.enabled = true;
         fireSound.Play();
         ray.origin = muzzle;
         ray.direction = transform.forward;
 
-        var didHit = Physics.Raycast(ray, out rayHit, layerMask);
+        var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
+
+        if (AmmoCount == 0)
+            Reload();
 
         if (!didHit)
             return;
@@ -112,8 +119,7 @@ public class Deagle : AbstractWeapon
             }
             Destroy(bulletHole, 3f);
         }
-        if (AmmoCount == 0)
-            Reload();
+  
     }
 
     IEnumerator PostShotCleanup()

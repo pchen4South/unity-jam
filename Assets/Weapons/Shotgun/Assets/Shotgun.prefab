@@ -758,6 +758,7 @@ MonoBehaviour:
     type: 2}
   muzzleFlashLight: {fileID: 108407953475959530}
   BlastRadius: {fileID: 1453033381021268}
+  Projectile: {fileID: 0}
   fireRate: 1
   shotTime: 0.02
   muzzleOffset: 0.5
