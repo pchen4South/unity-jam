@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4804192931736984}
   - component: {fileID: 114543945616106426}
   - component: {fileID: 108602454586832904}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SniperProjectile
-  m_TagString: Untagged
+  m_TagString: FiredProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4122316639308506}
   - component: {fileID: 96221815548922334}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BulletTrail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4905010256744346}
   - component: {fileID: 96373584254953298}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BulletTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 4289114178892992}
   - component: {fileID: 198329468122596110}
   - component: {fileID: 199091256009569278}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4816516131499102}
   - component: {fileID: 198998497578275708}
   - component: {fileID: 199994808324190138}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: OuterBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 4653840255112086}
   - component: {fileID: 198848542395585698}
   - component: {fileID: 199817536761664410}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Pieces
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 3
+  m_Time: 0.5
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 1
@@ -270,7 +270,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0.12710093, b: 0, a: 1}
-      key1: {r: 1, g: 0.98797643, b: 0, a: 1}
+      key1: {r: 1, g: 0.13981165, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -311,7 +311,7 @@ TrailRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1441058706762330}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -5075,7 +5075,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5182,7 +5182,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.4575472, g: 0.78130573, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5244,8 +5244,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.5
-      minScalar: 1
+      scalar: 0.5
+      minScalar: 0.25
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5769,7 +5769,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 50
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -5875,7 +5875,7 @@ ParticleSystem:
     m_BurstCount: 0
     m_Bursts: []
   SizeModule:
-    enabled: 1
+    enabled: 0
     curve:
       serializedVersion: 2
       minMaxState: 3
@@ -6207,8 +6207,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0, g: 1, b: 1, a: 1}
-        key1: {r: 0, g: 0.94070315, b: 1, a: 0}
+        key0: {r: 1, g: 0.055873387, b: 0, a: 1}
+        key1: {r: 1, g: 0.043573618, b: 0, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -6236,8 +6236,8 @@ ParticleSystem:
         m_NumAlphaKeys: 3
       minGradient:
         serializedVersion: 2
-        key0: {r: 0.11748028, g: 0, b: 1, a: 1}
-        key1: {r: 0.06532431, g: 0, b: 1, a: 0}
+        key0: {r: 1, g: 0.4332019, b: 0, a: 1}
+        key1: {r: 0.8000001, g: 0.34509805, b: 0, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0.7058809}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 1}

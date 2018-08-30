@@ -71,18 +71,6 @@ public class Shotgun : AbstractWeapon {
         if (timeTillNextShot > 0 || isReloading || AmmoCount == 0)
             return;
 
-        var proj = Instantiate(projectile, transform.position, transform.rotation);
-        var pieces = proj.transform.Find("Pieces");
-        var piecesMain = pieces.GetComponent<ParticleSystem>().main;
-
-        var playerRotY = player.transform.eulerAngles.y;
-
-        Debug.Log("player rot y" + playerRotY);
-        piecesMain.startRotationZ = Mathf.Deg2Rad * (playerRotY);
-
-
-
-
         AmmoCount -= 1;        
         var muzzle = transform.position + transform.forward * muzzleOffset;
 

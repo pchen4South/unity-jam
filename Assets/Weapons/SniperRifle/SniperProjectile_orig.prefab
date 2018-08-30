@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4804192931736984}
   - component: {fileID: 114543945616106426}
   - component: {fileID: 108602454586832904}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SniperProjectile_orig
-  m_TagString: Untagged
+  m_TagString: FiredProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4122316639308506}
   - component: {fileID: 96221815548922334}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BulletTrail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4905010256744346}
   - component: {fileID: 96373584254953298}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BulletTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 4289114178892992}
   - component: {fileID: 198329468122596110}
   - component: {fileID: 199091256009569278}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4816516131499102}
   - component: {fileID: 198998497578275708}
   - component: {fileID: 199994808324190138}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: OuterBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 4653840255112086}
   - component: {fileID: 198848542395585698}
   - component: {fileID: 199817536761664410}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Pieces
   m_TagString: Untagged
   m_Icon: {fileID: 0}

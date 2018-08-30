@@ -40,10 +40,18 @@ public class SniperRifle : AbstractWeapon {
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 	private GameObject FlashInstance;
+    GameObject ProjectileInstance;
 
 	void Start(){
         AmmoCount = MagazineSize;       
 		FlashInstance = Instantiate(muzzleFlash, transform);
+    }
+
+    void AlignProjectileParts() {
+        var pieces = ProjectileInstance.transform.Find("Pieces");
+        var piecesMain = pieces.GetComponent<ParticleSystem>().main;
+        var playerRotY = player.transform.eulerAngles.y;
+        piecesMain.startRotationZ = Mathf.Deg2Rad * (playerRotY);
     }
 
 
@@ -84,12 +92,13 @@ public class SniperRifle : AbstractWeapon {
         muzzleFlashLight.enabled = true;
         fireSound.Play();
 
+        ProjectileInstance = Instantiate(Projectile, transform.position, transform.rotation);
+        Destroy(ProjectileInstance, 1);
+
         ray.origin = muzzle;
         ray.direction = transform.forward;
 
         var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
-
-        var proj = Instantiate(Projectile, muzzle, transform.rotation);
 
         if (AmmoCount == 0)
             Reload();
