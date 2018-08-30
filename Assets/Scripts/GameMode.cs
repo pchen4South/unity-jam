@@ -52,7 +52,7 @@ public class PlayerHUDManager : Object
 		}
 		while (i < playerHUDPool.Length)
 		{
-			playerHUDPool[i].gameObject.SetActive(false);
+		playerHUDPool[i].gameObject.SetActive(false);
 			i++;
 		}
 	}
@@ -61,7 +61,7 @@ public class PlayerHUDManager : Object
 public class GameMode : MonoBehaviour 
 {
 	[SerializeField]
-	Camera mainCamera;
+	Shakeable shakeable;
 
 	[Header("Prefabs")]
 	[SerializeField]
@@ -89,6 +89,9 @@ public class GameMode : MonoBehaviour
 	public DebugConfig debugConfig;
 	public AbstractWeapon[] WeaponPrefabs;
 
+	[Range(0f, 1f)]
+	public float screenShakeIntensity = 0f;
+
 	[Header("State")]
 	List<PlayerState> playerStates = new List<PlayerState>();
 	PlayerHUDManager playerHUDManager;
@@ -98,6 +101,7 @@ public class GameMode : MonoBehaviour
 	{
 		var debugPlayer = GameObject.FindObjectOfType<Player>();
 
+		debugPlayer.shakeable = shakeable;
         if(debugPlayer != null) 
 		{
 		    playerStates.Add(new PlayerState(debugPlayer));
@@ -109,7 +113,7 @@ public class GameMode : MonoBehaviour
 		// Instantiate UI Objects
 		graph = Instantiate(GraphPrefab);
 		screenSpaceUICanvas = Instantiate(ScreenSpaceUICanvasPrefab);
-		screenSpaceUICanvas.worldCamera = mainCamera;
+		screenSpaceUICanvas.worldCamera = shakeable.shakyCamera;
 		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, 8);
 
 		for (var i = playerStates.Count; i < 2; i++)
@@ -165,6 +169,8 @@ public class GameMode : MonoBehaviour
 			}
 		}
 
+		// Handle screen shake
+
 		// Update the graphs for gun status
 		for (var i = 0; i < playerStates.Count; i++)
 		{
@@ -175,7 +181,7 @@ public class GameMode : MonoBehaviour
 		}
 
 		// Update the player HUDs
-		playerHUDManager.UpdatePlayerHUDs(playerStates, mainCamera, screenSpaceUICanvas.transform as RectTransform);
+		playerHUDManager.UpdatePlayerHUDs(playerStates, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform);
 
 		if (GameSettings.PlayBackgroundMusic)
 		{
@@ -184,7 +190,8 @@ public class GameMode : MonoBehaviour
 				BackgroundMusic.Play();
 			}
 		}
-		else {
+		else 
+		{
 			if (BackgroundMusic.isPlaying)
 			{
 				BackgroundMusic.Pause();
@@ -200,6 +207,7 @@ public class GameMode : MonoBehaviour
 
 		playerStates.Add(new PlayerState(player));
 		player.PlayerNumber = PlayerNumber;
+		player.shakeable = shakeable;
 		player.name = "Player " + PlayerNumber;
 		player.Respawn(sp.transform.position, sp.transform.rotation);
 	}

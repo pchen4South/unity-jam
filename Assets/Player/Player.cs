@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     public AudioSource InvicibleSound;
     public AudioSource DeathSound;
 
+    public Shakeable shakeable;
+
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
@@ -39,8 +41,6 @@ public class Player : MonoBehaviour
     public float VerticalVelocity = 0f;
 
     public int lastAttackerIndex;
-
-    Camera mainCamera;
 
     //reinput
     private Rewired.Player player;
@@ -72,7 +72,6 @@ public class Player : MonoBehaviour
         player = ReInput.players.GetPlayer(PlayerNumber);
         standingHeight = controller.height;
         standingCenter = controller.center;
-        mainCamera = Camera.main;
     }
 
     void Update() 
@@ -103,7 +102,7 @@ public class Player : MonoBehaviour
 
         if (hasMouse)
         {
-            Vector2 tInViewport = mainCamera.WorldToScreenPoint(transform.position);
+            Vector2 tInViewport = shakeable.shakyCamera.WorldToScreenPoint(transform.position);
             Vector2 delta = player.controllers.Mouse.screenPosition - tInViewport;
             Vector2 direction = delta.normalized;
             Vector3 orientedDirection = new Vector3(direction.x, 0, direction.y);
@@ -194,8 +193,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        // playerHUD.UpdateHealth((float)Health / (float)MaxHealth);
-        // playerHUD.transform.rotation = Quaternion.LookRotation(-mainCamera.transform.forward, mainCamera.transform.up);
         playerIndicator.transform.position = didHit ? rayHit.point : transform.position;
         playerIndicator.meshRenderer.material.color = color;
         
@@ -241,42 +238,51 @@ public class Player : MonoBehaviour
             return;
         } 
 
-        if(status != PlayerStatus.Invincible){
+        if(status != PlayerStatus.Invincible)
+        {
             Health -= amountOfDamage;
             lastAttackerIndex = attackerIndex;
 
-            if (Health > 0 )
+            if (Health > 0)
             {
                 animator.SetTrigger("Hit");
-                status = PlayerStatus.Invincible;
                 TakeDamageSound.Play();
-                StartCoroutine(PlayerDamaged());
-            } else if (Health <= 0){
-                PlayerDiedPosition = transform.position;
-                PlayerDeadBodyPosition = new Vector3(PlayerDiedPosition.x - 1f, PlayerDiedPosition.y - 1f, PlayerDiedPosition.z);
-                status = PlayerStatus.Dying;
-                DeathSound.Play();
+                shakeable.AddIntensity((float)amountOfDamage / (float)MaxHealth);
+            } 
+            else if (Health <= 0)
+            {
+                StartCoroutine(PlayerDied());
             }
-        } else {
+        } 
+        else 
+        {
             InvicibleSound.Play();            
         }
     }
 
-    IEnumerator PlayerDamaged(){
-        yield return new WaitForSeconds(2f);
-        status = PlayerStatus.Alive;
+    IEnumerator PlayerDied()
+    {
+        PlayerDiedPosition = transform.position;
+        PlayerDeadBodyPosition = new Vector3(PlayerDiedPosition.x - 1f, PlayerDiedPosition.y - 1f, PlayerDiedPosition.z);
+        status = PlayerStatus.Dying;
+        shakeable.AddIntensity(1f);
+        DeathSound.Play();
+        Time.timeScale = .2f;
+        yield return new WaitForSecondsRealtime(1f);
+        Time.timeScale = 1f;
     }
 
-    IEnumerator FlashPlayerModel(){
+    IEnumerator FlashPlayerModel()
+    {
         isFlashing = true;
         color.a = 0f;
-        //meshRenderer.material.color = color;    
         yield return new WaitForSeconds(0.1f);
         StartCoroutine(FlashPlayerModelToOriginal());
     }
-    IEnumerator FlashPlayerModelToOriginal(){
+
+    IEnumerator FlashPlayerModelToOriginal()
+    {
         color.a = 1f;
-        //meshRenderer.material.color = color;    
         yield return new WaitForSeconds(0.1f);
         isFlashing = false;
     }

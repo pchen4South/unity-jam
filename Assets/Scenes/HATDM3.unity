@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -625,7 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed165575a518a4e4b98dce5f8b69dbf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 1907297135}
+  shakeable: {fileID: 596187705}
   PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
     type: 2}
   GraphPrefab: {fileID: 114828885761802702, guid: 91096ca2c46534fc69c46b40c76881b7,
@@ -642,6 +642,7 @@ MonoBehaviour:
   - {fileID: 114448926660466218, guid: 9d73e5b707a651543994b25b24e3483d, type: 2}
   - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 2}
   - {fileID: 114555601104815158, guid: ac122ee7146e61a4c8d52d51e19cc298, type: 2}
+  screenShakeIntensity: 0
 --- !u!4 &351282386
 Transform:
   m_ObjectHideFlags: 0
@@ -854,6 +855,52 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df2c0b90f808944819fc7ea82383b64c, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &596187704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 596187706}
+  - component: {fileID: 596187705}
+  m_Layer: 0
+  m_Name: CameraRig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &596187705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 596187704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c72b70389206f4f4ab086a9267ba7fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakyCamera: {fileID: 1907297135}
+  MaxAngle: 6
+  MaxOffset: 1
+  sampleVelocity: 1
+  intensityDecayRate: 0.2
+--- !u!4 &596187706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 596187704}
+  m_LocalRotation: {x: 0.5847105, y: -0, z: -0, w: 0.8112421}
+  m_LocalPosition: {x: 0, y: 18, z: -6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1907297136}
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &651432351
 Prefab:
   m_ObjectHideFlags: 0
@@ -1036,11 +1083,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 989ab89bb2b1f4fc0b7378a35ca77b91, type: 2}
   m_IsPrefabAsset: 0
---- !u!4 &651432352 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4658263947052428, guid: 989ab89bb2b1f4fc0b7378a35ca77b91,
-    type: 2}
-  m_PrefabInternal: {fileID: 651432351}
 --- !u!1001 &788980905
 Prefab:
   m_ObjectHideFlags: 0
@@ -1464,7 +1506,6 @@ GameObject:
   - component: {fileID: 1907297136}
   - component: {fileID: 1907297135}
   - component: {fileID: 1907297134}
-  - component: {fileID: 1907297137}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1525,31 +1566,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1907297133}
-  m_LocalRotation: {x: 0.5847105, y: -0, z: -0, w: 0.8112421}
-  m_LocalPosition: {x: 0, y: 18, z: -6}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 596187706}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
---- !u!1183024399 &1907297137
-LookAtConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1907297133}
-  m_Enabled: 1
-  m_Weight: 1
-  m_RotationAtRest: {x: 0, y: 0, z: 0}
-  m_RotationOffset: {x: 0, y: 0, z: 0}
-  m_Roll: 0
-  m_WorldUpObject: {fileID: 0}
-  m_UseUpObject: 0
-  m_IsContraintActive: 1
-  m_IsLocked: 1
-  m_Sources:
-  - sourceTransform: {fileID: 651432352}
-    weight: 1
 --- !u!1 &1951380961
 GameObject:
   m_ObjectHideFlags: 0
