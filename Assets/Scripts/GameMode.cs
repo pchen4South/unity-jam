@@ -89,9 +89,6 @@ public class GameMode : MonoBehaviour
 	public DebugConfig debugConfig;
 	public AbstractWeapon[] WeaponPrefabs;
 
-	[Range(0f, 1f)]
-	public float screenShakeIntensity = 0f;
-
 	[Header("State")]
 	List<PlayerState> playerStates = new List<PlayerState>();
 	PlayerHUDManager playerHUDManager;
@@ -169,7 +166,8 @@ public class GameMode : MonoBehaviour
 			}
 		}
 
-		// Handle screen shake
+		// always push timescale back towards full-speed
+		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 
 		// Update the graphs for gun status
 		for (var i = 0; i < playerStates.Count; i++)

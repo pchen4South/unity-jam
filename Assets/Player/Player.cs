@@ -251,25 +251,18 @@ public class Player : MonoBehaviour
             } 
             else if (Health <= 0)
             {
-                StartCoroutine(PlayerDied());
+                PlayerDiedPosition = transform.position;
+                PlayerDeadBodyPosition = new Vector3(PlayerDiedPosition.x - 1f, PlayerDiedPosition.y - 1f, PlayerDiedPosition.z);
+                status = PlayerStatus.Dying;
+                shakeable.AddIntensity(1f);
+                DeathSound.Play();
+                Time.timeScale = .1f;
             }
         } 
         else 
         {
             InvicibleSound.Play();            
         }
-    }
-
-    IEnumerator PlayerDied()
-    {
-        PlayerDiedPosition = transform.position;
-        PlayerDeadBodyPosition = new Vector3(PlayerDiedPosition.x - 1f, PlayerDiedPosition.y - 1f, PlayerDiedPosition.z);
-        status = PlayerStatus.Dying;
-        shakeable.AddIntensity(1f);
-        DeathSound.Play();
-        Time.timeScale = .2f;
-        yield return new WaitForSecondsRealtime(1f);
-        Time.timeScale = 1f;
     }
 
     IEnumerator FlashPlayerModel()
