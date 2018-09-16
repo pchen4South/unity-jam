@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SniperRifle : AbstractWeapon {
+public class SniperRifle : AbstractWeapon
+{
 
-[Header("Cached references")]
+    [Header("Cached references")]
     [SerializeField]
     AudioSource fireSound;
 
-	[SerializeField]
+    [SerializeField]
     AudioSource reloadSound;
     [SerializeField]
     ParticleSystem HitParticlePrefab;
@@ -16,22 +17,24 @@ public class SniperRifle : AbstractWeapon {
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
     GameObject muzzleFlash;
-	// [SerializeField]
-    // GameObject BulletHole;
     [SerializeField]
     Light muzzleFlashLight;
 
     [SerializeField]
-	GameObject Projectile;
+    GameObject Projectile;
+
+    [SerializeField]
+    GameObject LaserSight;
 
     [Header("Config")]
     public float fireRate = 2f;
+    public float FireDelayTime = 1f;
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
     float AmmoCount = 0f;
-	public float MagazineSize = 5f;
-	public float ReloadTime = 2f;
+    public float MagazineSize = 5f;
+    public float ReloadTime = 2f;
 
     [Header("State")]
     float timeTillNextShot = 0f;
@@ -39,15 +42,19 @@ public class SniperRifle : AbstractWeapon {
     bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
-	private GameObject FlashInstance;
+    private GameObject FlashInstance;
     GameObject ProjectileInstance;
+    bool inPrefire = false;
 
-	void Start(){
-        AmmoCount = MagazineSize;       
-		FlashInstance = Instantiate(muzzleFlash, transform);
+    void Start()
+    {
+        AmmoCount = MagazineSize;
+        FlashInstance = Instantiate(muzzleFlash, transform);
+        LaserSight.gameObject.SetActive(false);
     }
 
-    void AlignProjectileParts() {
+    void AlignProjectileParts()
+    {
         var pieces = ProjectileInstance.transform.Find("Pieces");
         var piecesMain = pieces.GetComponent<ParticleSystem>().main;
         var playerRotY = player.transform.eulerAngles.y;
@@ -55,38 +62,47 @@ public class SniperRifle : AbstractWeapon {
     }
 
 
-	void Update(){}
+    void Update() { }
 
     void LateUpdate()
     {
-        timeTillNextShot -= Time.deltaTime;   
+        timeTillNextShot -= Time.deltaTime;
     }
 
-    void Reload(){
+    void Reload()
+    {
         isReloading = true;
         reloadSound.Play();
         StartCoroutine(ReloadTimer());
     }
 
-    IEnumerator ReloadTimer(){
+    IEnumerator ReloadTimer()
+    {
         yield return new WaitForSeconds(ReloadTime);
         AmmoCount = MagazineSize;
         isReloading = false;
     }
-	
+
     public override void PullTrigger(Player player)
     {
-        if (timeTillNextShot > 0 || isReloading || AmmoCount == 0)
+        if (timeTillNextShot > 0 || isReloading || AmmoCount == 0 || inPrefire)
             return;
+        StartCoroutine(PrefireRoutine());
+        //FireBullet();
+    }
 
-        AmmoCount -= 1;        
+
+    void FireBullet()
+    {
+
+        AmmoCount -= 1;
         var muzzle = transform.position + transform.forward * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
         isFiring = true;
         timeTillNextShot = fireRate;
-        
-		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
+
+        FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
         FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
 
         muzzleFlashLight.enabled = true;
@@ -112,22 +128,37 @@ public class SniperRifle : AbstractWeapon {
         if (isPlayer)
         {
             var target = rayHit.collider.GetComponent<Player>();
-            if(target.status != Player.PlayerStatus.Invincible){
+            if (target.status != Player.PlayerStatus.Invincible)
+            {
                 var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
                 target.Damage(1, player.PlayerNumber);
                 Destroy(hitParticles.gameObject, 2f);
-            } else {
-                target.InvicibleSound.Play();  
+            }
+            else
+            {
+                target.InvicibleSound.Play();
             }
         }
+    }
 
+
+    IEnumerator PrefireRoutine()
+    {
+        inPrefire = true;
+        player.canMove = false;
+        LaserSight.gameObject.SetActive(true);
+        yield return new WaitForSeconds(FireDelayTime);
+        FireBullet();
     }
 
     IEnumerator PostShotCleanup()
     {
         yield return new WaitForSeconds(shotTime);
-        muzzleFlashLight.enabled = false;		
-		//FlashInstance.Stop();
+        muzzleFlashLight.enabled = false;
+        LaserSight.gameObject.SetActive(false);
+        player.canMove = true;
+        inPrefire = false;
+        //FlashInstance.Stop();
     }
     public override void ReleaseTrigger(Player player)
     {
