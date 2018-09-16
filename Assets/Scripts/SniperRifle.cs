@@ -24,7 +24,7 @@ public class SniperRifle : AbstractWeapon
     GameObject Projectile;
 
     [SerializeField]
-    GameObject LaserSight;
+    LineRenderer LaserSight;
 
     [Header("Config")]
     public float fireRate = 2f;
@@ -62,7 +62,9 @@ public class SniperRifle : AbstractWeapon
     }
 
 
-    void Update() { }
+    void Update() 
+    { 
+    }
 
     void LateUpdate()
     {
@@ -144,10 +146,22 @@ public class SniperRifle : AbstractWeapon
 
     IEnumerator PrefireRoutine()
     {
+        var start = Time.time;
+        var elapsed = 0f;
+
         inPrefire = true;
         player.canMove = false;
         LaserSight.gameObject.SetActive(true);
-        yield return new WaitForSeconds(FireDelayTime);
+
+        while (Time.time < start + FireDelayTime)
+        {
+            var c = Color.red;
+
+            c.a = elapsed / FireDelayTime;
+            LaserSight.material.SetColor("_TintColor", c);
+            yield return null;  
+            elapsed += Time.deltaTime;
+        }
         FireBullet();
     }
 

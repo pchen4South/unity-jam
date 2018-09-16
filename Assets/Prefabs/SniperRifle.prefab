@@ -122,7 +122,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 1386597420028620, guid: c687edea6a60a9b4fb61ed5f9ced4495, type: 3}
   muzzleFlashLight: {fileID: 108751192721887738}
   Projectile: {fileID: 1126949053357362, guid: b37fc9248adb8bb4c86406fd9c583f83, type: 3}
-  LaserSight: {fileID: 2018704534551165445}
+  LaserSight: {fileID: 2138617059536591821}
   fireRate: 2
   FireDelayTime: 1
   shotTime: 0.01
@@ -266,14 +266,14 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &2018704534551165445 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4041660580506541239, guid: 401cb21dee144414ebf841079ef879d7, type: 3}
-  m_PrefabInstance: {fileID: 2600052487783114418}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2020237566470344283 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4043228244797008105, guid: 401cb21dee144414ebf841079ef879d7, type: 3}
+  m_PrefabInstance: {fileID: 2600052487783114418}
+  m_PrefabAsset: {fileID: 0}
+--- !u!120 &2138617059536591821 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 4159312939086134655, guid: 401cb21dee144414ebf841079ef879d7, type: 3}
   m_PrefabInstance: {fileID: 2600052487783114418}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2600052487783114418
