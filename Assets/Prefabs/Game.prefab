@@ -1,0 +1,189 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1862115645707864}
+  m_IsPrefabAsset: 1
+--- !u!1 &1862115645707864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4508983614605128}
+  - component: {fileID: 114049356793282842}
+  - component: {fileID: 114750740230482952}
+  - component: {fileID: 82536754695568076}
+  m_Layer: 0
+  m_Name: Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4508983614605128
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862115645707864}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &82536754695568076
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862115645707864}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c9abac777fa1b43038b8e3c07101562d, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &114049356793282842
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862115645707864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed165575a518a4e4b98dce5f8b69dbf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShakeablePrefab: {fileID: 114980724503269148, guid: 89c04eac0753d4209b6cb0ae8e40ebe6,
+    type: 2}
+  PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c,
+    type: 2}
+  GraphPrefab: {fileID: 114828885761802702, guid: 91096ca2c46534fc69c46b40c76881b7,
+    type: 2}
+  ScreenSpaceUICanvasPrefab: {fileID: 223810841900511582, guid: 53add808cc7cf44f283462d6ad2efcd8,
+    type: 2}
+  PlayerHUDPrefab: {fileID: 114303112821929430, guid: b342c51801bdf49508f02f5ded55ab67,
+    type: 2}
+  GameSettings: {fileID: 114750740230482952}
+  BackgroundMusic: {fileID: 82536754695568076}
+  debugConfig: {fileID: 11400000, guid: d02d9c329eca54b9f95de032d1123cd5, type: 2}
+  WeaponPrefabs:
+  - {fileID: 114131538142783484, guid: cfcb332d67619214087fa9778edd768a, type: 2}
+  - {fileID: 114448926660466218, guid: 9d73e5b707a651543994b25b24e3483d, type: 2}
+  - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 2}
+--- !u!114 &114750740230482952
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862115645707864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e34f90d1de54d689b42bebd6343187, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayBackgroundMusic: 0
+  BackgroundMusicVolume: 0.2
+  playerColors:
+  - {r: 0.84900004, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.85, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0.85, a: 1}
+  - {r: 0, g: 0.85, b: 0.85, a: 1}
+  - {r: 0.85, g: 0.55, b: 0, a: 1}
+  - {r: 0.94509804, g: 0.40392157, b: 0.27058825, a: 1}
+  - {r: 1, g: 0.7764706, b: 0.3647059, a: 1}
+  - {r: 0.48235294, g: 0.78431374, b: 0.6431373, a: 1}

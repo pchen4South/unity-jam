@@ -52,7 +52,7 @@ public class PlayerHUDManager : Object
 		}
 		while (i < playerHUDPool.Length)
 		{
-		playerHUDPool[i].gameObject.SetActive(false);
+			playerHUDPool[i].gameObject.SetActive(false);
 			i++;
 		}
 	}
@@ -60,10 +60,10 @@ public class PlayerHUDManager : Object
 
 public class GameMode : MonoBehaviour 
 {
-	[SerializeField]
-	Shakeable shakeable;
-
 	[Header("Prefabs")]
+	[SerializeField]
+	Shakeable ShakeablePrefab;
+
 	[SerializeField]
 	Player PlayerPrefab;
 	[SerializeField]
@@ -78,6 +78,7 @@ public class GameMode : MonoBehaviour
 	[Header("Game")]
 	[SerializeField]
 	GameSettings GameSettings;
+	Shakeable shakeable;
 	Graph graph;
 	Canvas screenSpaceUICanvas;
 
@@ -96,6 +97,9 @@ public class GameMode : MonoBehaviour
 
 	void Start()
 	{
+		// Instantiate the camera
+		shakeable = Instantiate(ShakeablePrefab);
+
 		var debugPlayer = GameObject.FindObjectOfType<Player>();
 
 		debugPlayer.shakeable = shakeable;
@@ -106,6 +110,7 @@ public class GameMode : MonoBehaviour
         }
         // crawl the map collecting references to all spawn points
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+
 
 		// Instantiate UI Objects
 		graph = Instantiate(GraphPrefab);
