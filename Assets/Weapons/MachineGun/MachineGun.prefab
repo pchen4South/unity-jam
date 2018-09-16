@@ -459,11 +459,12 @@ MonoBehaviour:
   fireSound: {fileID: 82650046438256882}
   hitSound: {fileID: 82393371894628036}
   hitPlayerSound: {fileID: 82487041082512720}
-  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
+  HitParticlePrefab: {fileID: 1880468109313604, guid: cff46989bc6ae2041904a8c347b4b806,
     type: 2}
   HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
     type: 2}
-  muzzleFlash: {fileID: 198981883714097846}
+  muzzleFlash: {fileID: 1198785579207794, guid: 1be67b4e356d79844abba1e0ee4da043,
+    type: 2}
   muzzleFlashLight: {fileID: 108791401520107726}
   bulletTracer: {fileID: 120236607093590368}
   fireRate: 0.1

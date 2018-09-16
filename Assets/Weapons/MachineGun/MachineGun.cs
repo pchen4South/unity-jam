@@ -12,11 +12,11 @@ public class MachineGun : AbstractWeapon
     [SerializeField]
     AudioSource hitPlayerSound;
     [SerializeField]
-    ParticleSystem HitParticlePrefab;
+    GameObject HitParticlePrefab;
     [SerializeField]
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
-    ParticleSystem muzzleFlash;
+    GameObject muzzleFlash;
     [SerializeField]
     Light muzzleFlashLight;
     [SerializeField]
@@ -36,6 +36,14 @@ public class MachineGun : AbstractWeapon
     bool isFiring = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
+    GameObject FlashInstance;
+
+
+    void Awake()
+    {
+        //AmmoCount = MagazineSize;
+        FlashInstance = Instantiate(muzzleFlash, transform);
+    }
 
     void LateUpdate()
     {
@@ -70,8 +78,10 @@ public class MachineGun : AbstractWeapon
         StartCoroutine(PostShotCleanup());
         isFiring = true;
         timeTillNextShot = fireRate;
-        muzzleFlash.Stop();
-        muzzleFlash.Play();
+
+        FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
+        FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
+
         muzzleFlashLight.enabled = true;
         fireSound.Play();
         ray.origin = muzzle;
@@ -99,12 +109,14 @@ public class MachineGun : AbstractWeapon
         }
         else
         {
-            var hitParticles = Instantiate(HitParticlePrefab);
+            var hitParticles = Instantiate(HitParticlePrefab) as GameObject;
 
             hitSound.Play();
             hitParticles.transform.position = rayHit.point;
-            hitParticles.transform.LookAt(transform, Vector3.up);
-            Destroy(hitParticles.gameObject, 2f);
+            hitParticles.transform.LookAt(transform, -Vector3.up);
+            //hitParticles.transform.Find("Burst").transform.LookAt(transform, Vector3.up);
+
+            Destroy(hitParticles, 2f);
         }
     }
 
