@@ -28,7 +28,7 @@ public class Shotgun : AbstractWeapon {
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
     float AmmoCount = 0f;
-	public float MagazineSize = 5f;
+	public float MagazineSize = 4f;
 	public float ReloadTime = 2f;
 
     [Header("State")]
