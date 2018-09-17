@@ -4,128 +4,77 @@ using UnityEngine;
 
 public class SniperRifle : AbstractWeapon
 {
+    enum SniperRifleState { Ready, Prefire, Reload };
 
-    [Header("Cached references")]
-    [SerializeField]
-    AudioSource fireSound;
+    [SerializeField] AudioSource fireSound;
+    [SerializeField] AudioSource reloadSound;
+    [SerializeField] Animator animator;
+    [SerializeField] LineRenderer laserSight;
+    [SerializeField] ParticleSystem muzzleFlash;
 
-    [SerializeField]
-    AudioSource reloadSound;
-    [SerializeField]
-    ParticleSystem HitParticlePrefab;
-    [SerializeField]
-    ParticleSystem HitPlayerParticlePrefab;
-    [SerializeField]
-    GameObject muzzleFlash;
-    [SerializeField]
-    Light muzzleFlashLight;
+    [SerializeField] ParticleSystem HitParticlePrefab;
+    [SerializeField] ParticleSystem HitPlayerParticlePrefab;
+    [SerializeField] GameObject ProjectilePrefab;
 
-    [SerializeField]
-    GameObject Projectile;
-
-    [SerializeField]
-    GameObject LaserSight;
-
-    [Header("Config")]
-    public float fireRate = 2f;
-    public float FireDelayTime = 1f;
-    public float shotTime = .01f;
-    public float muzzleOffset = .5f;
+    public float PreFireDuration = 1f;
+    public float ReloadDuration = 1f;
     public LayerMask layerMask = new LayerMask();
-    float AmmoCount = 0f;
-    public float MagazineSize = 5f;
-    public float ReloadTime = 2f;
 
-    [Header("State")]
-    float timeTillNextShot = 0f;
-    bool isFiring = false;
-    bool isReloading = false;
+    SniperRifleState state = SniperRifleState.Ready;
+    float remainingReloadTime = 0f;
+    float remainingPrefireTime = 0f;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
-    private GameObject FlashInstance;
-    GameObject ProjectileInstance;
-    bool inPrefire = false;
 
-    void Start()
-    {
-        AmmoCount = MagazineSize;
-        FlashInstance = Instantiate(muzzleFlash, transform);
-        LaserSight.gameObject.SetActive(false);
-    }
-
-    void AlignProjectileParts()
-    {
-        var pieces = ProjectileInstance.transform.Find("Pieces");
-        var piecesMain = pieces.GetComponent<ParticleSystem>().main;
-        var playerRotY = player.transform.eulerAngles.y;
-        piecesMain.startRotationZ = Mathf.Deg2Rad * (playerRotY);
-    }
-
-
-    void Update() { }
-
-    void LateUpdate()
-    {
-        timeTillNextShot -= Time.deltaTime;
-    }
-
-    void Reload()
-    {
-        isReloading = true;
-        reloadSound.Play();
-        StartCoroutine(ReloadTimer());
-    }
-
-    IEnumerator ReloadTimer()
-    {
-        yield return new WaitForSeconds(ReloadTime);
-        AmmoCount = MagazineSize;
-        isReloading = false;
+    void Update() 
+    { 
+        if (state == SniperRifleState.Reload && remainingReloadTime <= 0f)
+        {
+            state = SniperRifleState.Ready;
+        }
+        if (state == SniperRifleState.Prefire && remainingPrefireTime <= 0f)
+        {
+            FireBullet();
+            state = SniperRifleState.Reload;
+            animator.SetBool("PreFire", false);
+        }
+        else
+        {
+            remainingReloadTime -= Time.deltaTime;
+            remainingPrefireTime -= Time.deltaTime;
+        }
+        player.canMove = state != SniperRifleState.Prefire;
     }
 
     public override void PullTrigger(Player player)
     {
-        if (timeTillNextShot > 0 || isReloading || AmmoCount == 0 || inPrefire)
+        if (state != SniperRifleState.Ready)
             return;
-        StartCoroutine(PrefireRoutine());
-        //FireBullet();
+        
+        state = SniperRifleState.Prefire;
+        remainingPrefireTime = PreFireDuration;
+        animator.SetBool("PreFire", true);
     }
-
 
     void FireBullet()
     {
+        var projectile = Instantiate(ProjectilePrefab, transform.position, transform.rotation);
 
-        AmmoCount -= 1;
-        var muzzle = transform.position + transform.forward * muzzleOffset;
-
-        StartCoroutine(PostShotCleanup());
-        isFiring = true;
-        timeTillNextShot = fireRate;
-
-        FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
-        FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
-
-        muzzleFlashLight.enabled = true;
+        Destroy(projectile, 1f);
+        state = SniperRifleState.Reload;
+        remainingReloadTime = ReloadDuration;
+        muzzleFlash.Stop();
+        muzzleFlash.Play();
         fireSound.Play();
 
-        ProjectileInstance = Instantiate(Projectile, transform.position, transform.rotation);
-        Destroy(ProjectileInstance, 1);
+        ray.origin = Muzzle.transform.position;
+        ray.direction = Muzzle.transform.forward;
 
-        ray.origin = muzzle;
-        ray.direction = transform.forward;
-
-        var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
-
-        if (AmmoCount == 0)
-            Reload();
-
-        if (!didHit)
+        if (!Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask))
             return;
 
-        var isPlayer = rayHit.collider.CompareTag("Player");
-
-        // should move some of this code to player
-        if (isPlayer)
+        // TODO: should move some of this code to player
+        if (rayHit.collider.CompareTag("Player"))
         {
             var target = rayHit.collider.GetComponent<Player>();
             if (target.status != Player.PlayerStatus.Invincible)
@@ -139,29 +88,5 @@ public class SniperRifle : AbstractWeapon
                 target.InvicibleSound.Play();
             }
         }
-    }
-
-
-    IEnumerator PrefireRoutine()
-    {
-        inPrefire = true;
-        player.canMove = false;
-        LaserSight.gameObject.SetActive(true);
-        yield return new WaitForSeconds(FireDelayTime);
-        FireBullet();
-    }
-
-    IEnumerator PostShotCleanup()
-    {
-        yield return new WaitForSeconds(shotTime);
-        muzzleFlashLight.enabled = false;
-        LaserSight.gameObject.SetActive(false);
-        player.canMove = true;
-        inPrefire = false;
-        //FlashInstance.Stop();
-    }
-    public override void ReleaseTrigger(Player player)
-    {
-        isFiring = false;
     }
 }
