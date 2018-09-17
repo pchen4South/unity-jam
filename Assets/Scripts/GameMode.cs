@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class PlayerState
@@ -38,11 +36,11 @@ public class PlayerHUDManager : Object
 		}
 	}
 
-	public void UpdatePlayerHUDs(List<PlayerState> playerStates, Camera camera, RectTransform parent)
+	public void UpdatePlayerHUDs(PlayerState[] playerStates, Camera camera, RectTransform parent)
 	{
 		var i = 0;
 
-		while (i < playerStates.Count)
+		while (i < playerStates.Length)
 		{
 			playerHUDPool[i].gameObject.SetActive(true);
 			playerHUDPool[i].transform.SetParent(parent, false);
@@ -60,80 +58,50 @@ public class PlayerHUDManager : Object
 
 public class GameMode : MonoBehaviour 
 {
-	[Header("Prefabs")]
-	[SerializeField]
-	Shakeable ShakeablePrefab;
+	[SerializeField] Player PlayerPrefab;
+	[SerializeField] PlayerHUD PlayerHUDPrefab;
 
-	[SerializeField]
-	Player PlayerPrefab;
-	[SerializeField]
+	[SerializeField] GameSettings GameSettings;
+	[SerializeField] Shakeable shakeable;
+	[SerializeField] Graph graph;
+	[SerializeField] Canvas screenSpaceUICanvas;
 
-	[Header("UI")]
-	Graph GraphPrefab;
-	[SerializeField]
-	Canvas ScreenSpaceUICanvasPrefab;
-	[SerializeField]
-	PlayerHUD PlayerHUDPrefab;
+	[SerializeField] AudioSource BackgroundMusic;
 
-	[Header("Game")]
-	[SerializeField]
-	GameSettings GameSettings;
-	Shakeable shakeable;
-	Graph graph;
-	Canvas screenSpaceUICanvas;
+	[SerializeField] AbstractWeapon[] WeaponPrefabs;
 
-	[Header("Sounds")]
-	[SerializeField]
-	AudioSource BackgroundMusic;
-
-	[Header("Configuration")]
-	public DebugConfig debugConfig;
-	public AbstractWeapon[] WeaponPrefabs;
-
-	[Header("State")]
-	List<PlayerState> playerStates = new List<PlayerState>();
-	PlayerHUDManager playerHUDManager;
+	PlayerState[] playerStates;
 	GameObject[] spawnPoints;
+	PlayerHUDManager playerHUDManager;
 
 	void Start()
 	{
-		// Instantiate the camera
-		shakeable = Instantiate(ShakeablePrefab);
+		var playerCount = 2;
 
-		var debugPlayer = GameObject.FindObjectOfType<Player>();
-
-		debugPlayer.shakeable = shakeable;
-        if(debugPlayer != null) 
-		{
-		    playerStates.Add(new PlayerState(debugPlayer));
-		    debugPlayer.Respawn(debugPlayer.transform.position, debugPlayer.transform.rotation);
-        }
-        // crawl the map collecting references to all spawn points
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+		playerStates = new PlayerState[playerCount];
 
-		// Instantiate UI Objects
-		graph = Instantiate(GraphPrefab);
-		screenSpaceUICanvas = Instantiate(ScreenSpaceUICanvasPrefab);
-		screenSpaceUICanvas.worldCamera = shakeable.shakyCamera;
-		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, 8);
-
-		for (var i = playerStates.Count; i < 2; i++)
+		// for each connected controller, spawn a player
+		for (var i = 0; i < playerCount; i++)
 		{
 			Spawn(i);
 		}
 
-		for (var i = 0; i < playerStates.Count; i++)
+		for (var i = 0; i < playerStates.Length; i++)
 		{
 			playerStates[i].player.SetWeapon(WeaponPrefabs[playerStates[i].weaponIndex]);
 			playerStates[i].player.color = GameSettings.playerColors[i];
 		}
+
+		// Instantiate UI Objects
+		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, 8);
 	}
 
 	void Update()
 	{
 		var gunCount = WeaponPrefabs.Length;
 
-		for(var i = 0; i < playerStates.Count; i++)
+		for(var i = 0; i < playerStates.Length; i++)
 		{
 			var playerState = playerStates[i];
 
@@ -147,7 +115,6 @@ public class GameMode : MonoBehaviour
 
 				if (attackerState.weaponIndex + 1 >= gunCount)
 				{
-					Debug.Log("Game over. Player " + attackerState.player.PlayerNumber + " wins!");
 					foreach(var ps in playerStates)
 					{
 						var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
@@ -174,7 +141,7 @@ public class GameMode : MonoBehaviour
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 
 		// Update the graphs for gun status
-		for (var i = 0; i < playerStates.Count; i++)
+		for (var i = 0; i < playerStates.Length; i++)
 		{
 			var ps = playerStates[i];
 			var normalizedScale = (float)ps.weaponIndex / (float)gunCount;
@@ -207,7 +174,7 @@ public class GameMode : MonoBehaviour
 		var player = Instantiate(PlayerPrefab);
 		var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-		playerStates.Add(new PlayerState(player));
+		playerStates[PlayerNumber] = new PlayerState(player);
 		player.PlayerNumber = PlayerNumber;
 		player.shakeable = shakeable;
 		player.name = "Player " + PlayerNumber;
