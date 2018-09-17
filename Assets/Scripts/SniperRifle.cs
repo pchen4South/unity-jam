@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SniperRifle : AbstractWeapon
 {
     enum SniperRifleState { Ready, Prefire, Reload };
 
     [SerializeField] AudioSource fireSound;
-    [SerializeField] AudioSource reloadSound;
     [SerializeField] Animator animator;
     [SerializeField] LineRenderer laserSight;
     [SerializeField] ParticleSystem muzzleFlash;

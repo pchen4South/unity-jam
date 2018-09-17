@@ -111,7 +111,6 @@ public class GameMode : MonoBehaviour
         // crawl the map collecting references to all spawn points
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
-
 		// Instantiate UI Objects
 		graph = Instantiate(GraphPrefab);
 		screenSpaceUICanvas = Instantiate(ScreenSpaceUICanvasPrefab);
