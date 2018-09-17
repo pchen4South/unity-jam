@@ -1,60 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Rewired;
 
 public class Player : MonoBehaviour 
 {
-    public enum PlayerStatus { Alive, Dying, Dead, Invincible}
-    // N.B. This must be applied to the character every frame they are grounded to keep them grounded
     const float GROUNDED_DOWNWARD_VELOCITY = -10f;
 
-    [SerializeField]
-    PlayerIndicator playerIndicator;
+    // TODO: Would like to remove Invincible 
+    public enum PlayerStatus { Alive, Dead, Invincible }
 
-    public Rigidbody head;
-    public SkinnedMeshRenderer meshRenderer;
-    public CharacterController controller;
-    public AbstractWeapon Weapon;
-    public Animator animator;
+    [SerializeField] PlayerIndicator playerIndicator;
+    [SerializeField] SkinnedMeshRenderer meshRenderer;
+    [SerializeField] CharacterController controller;
+    [SerializeField] Animator animator;
+    [SerializeField] AudioSource takeDamageSound;
+    [SerializeField] AudioSource deathSound;
+    [SerializeField] AudioSource spawnSound;
+
     public Color color = Color.red;
-    public AudioSource TakeDamageSound;
-    public AudioSource InvicibleSound;
-    public AudioSource DeathSound;
-
-    public Shakeable shakeable;
-
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
     public float JumpStrength = 2f;
-    public float JumpPadStrength = 3f;
     public float CrouchMovementModifier = 0.5f;
+    public System.Action<int, int> OnDeath;
 
-    public float MaxHorizontalAimAngle = 60;
-    public float MaxVerticalAimAngle = 60;
-    public bool InvertAimVertical = false;
+    public AbstractWeapon Weapon;
     public int PlayerNumber = 0;
     public int Health = 1;
     public bool canMove = true;
     public bool canRotate = true;
     public float aerialHeight = 0f;
     public float VerticalVelocity = 0f;
+	public PlayerStatus status = PlayerStatus.Alive;
+    public bool isGrounded = true;
 
-    public int lastAttackerIndex;
-
-    //reinput
-    private Rewired.Player player;
-    //state
+    Rewired.Player player;
     float standingHeight;
     Vector3 standingCenter;
-   
-    [Header("State")]
-	public PlayerStatus status = PlayerStatus.Alive;
-    private Vector3 PlayerDiedPosition;
-    private Vector3 PlayerDeadBodyPosition;
-    bool isFlashing = false;
-    public bool isGrounded = true;
-    public bool IsDead = false;
     
     void OnDrawGizmos()
     {
@@ -68,7 +49,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        // Get the Rewired Player object for this player and keep it for the duration of the character's lifetime
         player = ReInput.players.GetPlayer(PlayerNumber);
         standingHeight = controller.height;
         standingCenter = controller.center;
@@ -102,7 +82,8 @@ public class Player : MonoBehaviour
 
         if (hasMouse)
         {
-            Vector2 tInViewport = shakeable.shakyCamera.WorldToScreenPoint(transform.position);
+            // TODO: this is not ... good and shouldn't be here anyway... remove
+            Vector2 tInViewport = Camera.main.WorldToScreenPoint(transform.position);
             Vector2 delta = player.controllers.Mouse.screenPosition - tInViewport;
             Vector2 direction = delta.normalized;
             Vector3 orientedDirection = new Vector3(direction.x, 0, direction.y);
@@ -115,9 +96,7 @@ public class Player : MonoBehaviour
         {
             if (jumpDown)
             {
-                var strength = didHit && rayHit.collider.CompareTag("JumpPad") ? JumpPadStrength : JumpStrength;
-
-                VerticalVelocity = strength;
+                VerticalVelocity = JumpStrength;
             }
             else
             {
@@ -128,7 +107,8 @@ public class Player : MonoBehaviour
                     controller.height = standingHeight / 2;
                     controller.center = new Vector3(standingCenter.x, standingCenter.y / 2, standingCenter.z);
                 }
-                else {
+                else 
+                {
                     controller.height = standingHeight;
                     controller.center = standingCenter;
                 }
@@ -166,7 +146,8 @@ public class Player : MonoBehaviour
         
         controller.Move(moveDelta);
         
-        //Animation stuff
+        // TODO: looks like this could be simplified a lot
+        // Animation stuff
         if(animator != null)
         {
             if (MoveSpeed != 0f)
@@ -181,112 +162,67 @@ public class Player : MonoBehaviour
                 animator.SetFloat("Forward", move);
                 animator.SetFloat("Jump", VerticalVelocity + (GROUNDED_DOWNWARD_VELOCITY * -1));
             }
-
             animator.SetBool("OnGround", isGrounded);
             animator.SetBool("Crouch", crouch);
-            if (status == PlayerStatus.Dying) 
-            {
-                animator.SetBool("PlayDeathAnimation", true);
-                canMove = false;
-                canRotate = false;
-                KnockbackPlayerOnDeath();
-            }
         }
 
         playerIndicator.transform.position = didHit ? rayHit.point : transform.position;
         playerIndicator.meshRenderer.material.color = color;
-        
         meshRenderer.material.color = color;
-
-        if(status == PlayerStatus.Invincible && !isFlashing)
-        {
-            StartCoroutine(FlashPlayerModel());
-        }
     }
 
-    public void KnockbackPlayerOnDeath(){
-        transform.position = Vector3.Lerp(transform.position, PlayerDeadBodyPosition, Time.deltaTime * 5);
-    }
-
-    public void DeathAnimationFinished() 
-    {
-        animator.SetBool("PlayDeathAnimation", false);
-        IsDead = true;
-        canMove = true;
-        canRotate = true;
-        status = PlayerStatus.Dead;
-    }
-
-    // TODO: Call some kind of reset on the weapon to clear modifiers to the player?
     public void SetWeapon(AbstractWeapon newWeapon)
     {
-        var oldWeapon = Weapon;
-
+        if (Weapon)
+        {
+            Destroy(Weapon.gameObject);
+        }
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
-
-        if (oldWeapon != null)
-        {
-            oldWeapon.player = null;
-            Destroy(oldWeapon.gameObject);
-        }
+        canRotate = true;
+        canMove = true;
     }
 
+    // guns call this damage function which calls a callback to handle death
+    // not sure if this is any good...
     public void Damage(int amountOfDamage, int attackerIndex)
     {
-        if (Health <= 0){
+        if (status == PlayerStatus.Dead)
             return;
-        } 
 
-        if(status != PlayerStatus.Invincible)
-        {
-            Health -= amountOfDamage;
-            lastAttackerIndex = attackerIndex;
+        Health = Mathf.Max(0, Health - amountOfDamage);
+        animator.SetTrigger("Hit");
+        takeDamageSound.Play();
 
-            if (Health > 0)
-            {
-                animator.SetTrigger("Hit");
-                TakeDamageSound.Play();
-                shakeable.AddIntensity((float)amountOfDamage / (float)MaxHealth);
-            } 
-            else if (Health <= 0)
-            {
-                PlayerDiedPosition = transform.position;
-                PlayerDeadBodyPosition = new Vector3(PlayerDiedPosition.x - 1f, PlayerDiedPosition.y - 1f, PlayerDiedPosition.z);
-                status = PlayerStatus.Dying;
-                shakeable.AddIntensity(1f);
-                DeathSound.Play();
-                Time.timeScale = .1f;
-            }
-        } 
-        else 
+        if (Health <= 0)
         {
-            InvicibleSound.Play();            
+            Kill(attackerIndex);
         }
     }
 
-    IEnumerator FlashPlayerModel()
+    public void Kill(int attackerIndex)
     {
-        isFlashing = true;
-        color.a = 0f;
-        yield return new WaitForSeconds(0.1f);
-        StartCoroutine(FlashPlayerModelToOriginal());
+        status = PlayerStatus.Dead;
+        Health = 0;
+        canMove = false;
+        canRotate = false;
+        VerticalVelocity = 0f;
+
+        OnDeath.Invoke(PlayerNumber, attackerIndex);
+        animator.SetBool("PlayDeathAnimation", true);
+        deathSound.Play();
     }
 
-    IEnumerator FlashPlayerModelToOriginal()
-    {
-        color.a = 1f;
-        yield return new WaitForSeconds(0.1f);
-        isFlashing = false;
-    }
-
-	public void Respawn(Vector3 position, Quaternion rotation)
+	public void Spawn(Transform t)
 	{
-		transform.SetPositionAndRotation(position, rotation);
+        status = PlayerStatus.Alive;
 		Health = MaxHealth;
-        IsDead = false;
-		canMove = true;
-		canRotate = true;
-		VerticalVelocity = 0f;
+        canMove = true;
+        canRotate = true;
+        VerticalVelocity = 0f;
+
+		transform.SetPositionAndRotation(t.position, t.rotation);
+        animator.SetBool("PlayDeathAnimation", false);
+        spawnSound.Play();
 	}
 }

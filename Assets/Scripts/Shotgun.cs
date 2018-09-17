@@ -105,15 +105,11 @@ public class Shotgun : AbstractWeapon {
         if (isPlayer)
         {
             var target = rayHit.collider.GetComponent<Player>();
-            if(target.status != Player.PlayerStatus.Invincible){
-                var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-                target.Damage(1, player.PlayerNumber);
-                Destroy(hitParticles.gameObject, 2f);
-            } else {
-                target.InvicibleSound.Play();  
-            }
-        }
+            var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
 
+            target.Damage(1, player.PlayerNumber);
+            Destroy(hitParticles.gameObject, 2f);
+        }
     }
 
     IEnumerator PostShotCleanup()
@@ -122,7 +118,6 @@ public class Shotgun : AbstractWeapon {
         muzzleFlashLight.enabled = false;
 		var br = BlastRadius.GetComponent<MeshRenderer>();
 		br.enabled = false;
-		//FlashInstance.Stop();
     }
     public override void ReleaseTrigger(Player player)
     {

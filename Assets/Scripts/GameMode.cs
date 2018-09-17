@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public class PlayerState
@@ -58,6 +60,8 @@ public class PlayerHUDManager : Object
 
 public class GameMode : MonoBehaviour 
 {
+	public enum GameState { PreGame, Countdown, Live, Victory, PostGame };
+
 	[SerializeField] Player PlayerPrefab;
 	[SerializeField] PlayerHUD PlayerHUDPrefab;
 
@@ -65,14 +69,16 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Shakeable shakeable;
 	[SerializeField] Graph graph;
 	[SerializeField] Canvas screenSpaceUICanvas;
-
 	[SerializeField] AudioSource BackgroundMusic;
-
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
 
-	PlayerState[] playerStates;
+	public float RespawnTimer = 3f;
+
 	GameObject[] spawnPoints;
+	PlayerState[] playerStates;
+	int winningPlayerIndex;
 	PlayerHUDManager playerHUDManager;
+	GameState state = GameState.PreGame;
 
 	void Start()
 	{
@@ -80,17 +86,20 @@ public class GameMode : MonoBehaviour
 
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 		playerStates = new PlayerState[playerCount];
-
-		// for each connected controller, spawn a player
 		for (var i = 0; i < playerCount; i++)
 		{
-			Spawn(i);
-		}
+			var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
+			var player = Instantiate(PlayerPrefab);
+			var ps = new PlayerState(player);
+			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
 
-		for (var i = 0; i < playerStates.Length; i++)
-		{
-			playerStates[i].player.SetWeapon(WeaponPrefabs[playerStates[i].weaponIndex]);
-			playerStates[i].player.color = GameSettings.playerColors[i];
+			ps.player.PlayerNumber = i;
+			ps.player.name = "Player " + i;
+			ps.player.SetWeapon(WeaponPrefab);
+			ps.player.OnDeath = HandlePlayerDeath;
+			ps.player.color = GameSettings.playerColors[i];
+			ps.player.Spawn(sp.transform);
+			playerStates[i] = ps;
 		}
 
 		// Instantiate UI Objects
@@ -99,48 +108,11 @@ public class GameMode : MonoBehaviour
 
 	void Update()
 	{
-		var gunCount = WeaponPrefabs.Length;
-
-		for(var i = 0; i < playerStates.Length; i++)
-		{
-			var playerState = playerStates[i];
-
-			if (playerState.player.Health <= 0 && playerState.player.IsDead)
-			{
-				var attackerIndex = playerState.player.lastAttackerIndex;
-				var attackerState = playerStates[attackerIndex];
-
-				attackerState.killCount += 1;
-				playerState.deathCount += 1;
-
-				if (attackerState.weaponIndex + 1 >= gunCount)
-				{
-					foreach(var ps in playerStates)
-					{
-						var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
-
-						ps.deathCount = 0;
-						ps.killCount = 0;
-						ps.weaponIndex = 0;
-						ps.player.Respawn(sp.transform.position, sp.transform.rotation);
-						ps.player.SetWeapon(WeaponPrefabs[ps.weaponIndex]);
-					}
-				}
-				else
-				{
-					var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
-
-					attackerState.weaponIndex += 1;
-					attackerState.player.SetWeapon(WeaponPrefabs[attackerState.weaponIndex]);
-					playerState.player.Respawn(sp.transform.position, sp.transform.rotation);
-				}
-			}
-		}
-
 		// always push timescale back towards full-speed
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 
 		// Update the graphs for gun status
+		var gunCount = WeaponPrefabs.Length;
 		for (var i = 0; i < playerStates.Length; i++)
 		{
 			var ps = playerStates[i];
@@ -151,33 +123,33 @@ public class GameMode : MonoBehaviour
 
 		// Update the player HUDs
 		playerHUDManager.UpdatePlayerHUDs(playerStates, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform);
-
-		if (GameSettings.PlayBackgroundMusic)
-		{
-			if (!BackgroundMusic.isPlaying)
-			{
-				BackgroundMusic.Play();
-			}
-		}
-		else 
-		{
-			if (BackgroundMusic.isPlaying)
-			{
-				BackgroundMusic.Pause();
-			}
-		}
-		BackgroundMusic.volume = GameSettings.BackgroundMusicVolume;
 	}
 
-	void Spawn(int PlayerNumber)
+	void HandlePlayerDeath(int killedIndex, int killerIndex)
 	{
-		var player = Instantiate(PlayerPrefab);
-		var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
+		var killedPlayerState = playerStates[killedIndex];
+		var killerPlayerState = playerStates[killerIndex];
+		var gunCount = WeaponPrefabs.Length;
 
-		playerStates[PlayerNumber] = new PlayerState(player);
-		player.PlayerNumber = PlayerNumber;
-		player.shakeable = shakeable;
-		player.name = "Player " + PlayerNumber;
-		player.Respawn(sp.transform.position, sp.transform.rotation);
+		killedPlayerState.deathCount++;
+		killerPlayerState.killCount++;
+
+		if (killerPlayerState.weaponIndex >= gunCount - 1)
+		{
+			winningPlayerIndex = killerIndex;
+			state = GameState.Victory;
+		}
+		else
+		{
+			killerPlayerState.weaponIndex++;
+			killerPlayerState.player.SetWeapon(WeaponPrefabs[killerPlayerState.weaponIndex]);
+			StartCoroutine(RespawnAfter(killedPlayerState, RespawnTimer));
+		}
+	}
+
+	IEnumerator RespawnAfter(PlayerState ps, float seconds)
+	{
+		yield return new WaitForSeconds(seconds);
+		ps.player.Spawn(spawnPoints[Random.Range(0, spawnPoints.Length)].transform);
 	}
 }

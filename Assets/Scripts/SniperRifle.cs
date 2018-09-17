@@ -74,16 +74,10 @@ public class SniperRifle : AbstractWeapon
         if (rayHit.collider.CompareTag("Player"))
         {
             var target = rayHit.collider.GetComponent<Player>();
-            if (target.status != Player.PlayerStatus.Invincible)
-            {
-                var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-                target.Damage(1, player.PlayerNumber);
-                Destroy(hitParticles.gameObject, 2f);
-            }
-            else
-            {
-                target.InvicibleSound.Play();
-            }
+            var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
+
+            target.Damage(1, player.PlayerNumber);
+            Destroy(hitParticles.gameObject, 2f);
         }
     }
 }
