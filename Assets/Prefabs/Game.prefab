@@ -1,9 +1,9 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!223 &1829554422988371510 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 223810841900511582, guid: 53add808cc7cf44f283462d6ad2efcd8, type: 3}
-  m_PrefabInstance: {fileID: 1907486422570043240}
+--- !u!4 &7969230442102286334 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+  m_PrefabInstance: {fileID: 7964879390396408794}
   m_PrefabAsset: {fileID: 0}
 --- !u!20 &6480316697909677724 stripped
 Camera:
@@ -26,11 +26,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4106747673629592, guid: 89c04eac0753d4209b6cb0ae8e40ebe6, type: 3}
   m_PrefabInstance: {fileID: 6460811115147002878}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7969230442102286334 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-  m_PrefabInstance: {fileID: 7964879390396408794}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4264632474090768991 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224207832986331350, guid: 91096ca2c46534fc69c46b40c76881b7, type: 3}
@@ -52,6 +47,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224235053984905340, guid: 53add808cc7cf44f283462d6ad2efcd8, type: 3}
   m_PrefabInstance: {fileID: 1907486422570043240}
   m_PrefabAsset: {fileID: 0}
+--- !u!223 &1829554422988371510 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 223810841900511582, guid: 53add808cc7cf44f283462d6ad2efcd8, type: 3}
+  m_PrefabInstance: {fileID: 1907486422570043240}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1862115645707864
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +62,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4508983614605128}
   - component: {fileID: 114049356793282842}
-  - component: {fileID: 114750740230482952}
   - component: {fileID: 82536754695568076}
   m_Layer: 0
   m_Name: Game
@@ -103,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 114288909183283028, guid: df2c0b90f808944819fc7ea82383b64c, type: 3}
   PlayerHUDPrefab: {fileID: 114303112821929430, guid: b342c51801bdf49508f02f5ded55ab67, type: 3}
-  GameSettings: {fileID: 114750740230482952}
+  colorScheme: {fileID: 11400000, guid: 0c38aa5d1fad3417fb1150dd519a2588, type: 2}
   shakeable: {fileID: 6354886003038309602}
   graph: {fileID: 4153580230668018503}
   screenSpaceUICanvas: {fileID: 1829554422988371510}
@@ -112,29 +111,7 @@ MonoBehaviour:
   - {fileID: 114131538142783484, guid: cfcb332d67619214087fa9778edd768a, type: 3}
   - {fileID: 114448926660466218, guid: 9d73e5b707a651543994b25b24e3483d, type: 3}
   - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 3}
---- !u!114 &114750740230482952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862115645707864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e34f90d1de54d689b42bebd6343187, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayBackgroundMusic: 0
-  BackgroundMusicVolume: 0.2
-  playerColors:
-  - {r: 0.84900004, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0.85, b: 0, a: 1}
-  - {r: 0, g: 0, b: 0.85, a: 1}
-  - {r: 0, g: 0.85, b: 0.85, a: 1}
-  - {r: 0.85, g: 0.55, b: 0, a: 1}
-  - {r: 0.94509804, g: 0.40392157, b: 0.27058825, a: 1}
-  - {r: 1, g: 0.7764706, b: 0.3647059, a: 1}
-  - {r: 0.48235294, g: 0.78431374, b: 0.6431373, a: 1}
+  RespawnTimer: 3
 --- !u!82 &82536754695568076
 AudioSource:
   m_ObjectHideFlags: 0

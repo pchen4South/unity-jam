@@ -33,8 +33,6 @@ public class Shotgun : AbstractWeapon {
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    float kickbackScale = 0f;
-    bool isFiring = false;
     bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
@@ -75,7 +73,6 @@ public class Shotgun : AbstractWeapon {
         var muzzle = transform.position + transform.forward * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
-        isFiring = true;
         timeTillNextShot = fireRate;
         
 		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
@@ -86,7 +83,6 @@ public class Shotgun : AbstractWeapon {
 		
 		var br = BlastRadius.GetComponent<MeshRenderer>();
 		br.enabled = true;
-		var brCollider = br.GetComponent<MeshCollider>();
 
         ray.origin = muzzle;
         ray.direction = transform.forward;
@@ -118,9 +114,5 @@ public class Shotgun : AbstractWeapon {
         muzzleFlashLight.enabled = false;
 		var br = BlastRadius.GetComponent<MeshRenderer>();
 		br.enabled = false;
-    }
-    public override void ReleaseTrigger(Player player)
-    {
-        isFiring = false;
     }
 }

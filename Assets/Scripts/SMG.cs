@@ -34,7 +34,6 @@ public class SMG : AbstractWeapon {
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    bool isFiring = false;
     bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
@@ -71,7 +70,6 @@ public class SMG : AbstractWeapon {
     void LateUpdate()
     {
         timeTillNextShot -= Time.deltaTime;
-
     }
 
     public override void PullTrigger(Player player)
@@ -84,7 +82,6 @@ public class SMG : AbstractWeapon {
         var muzzle = transform.Find("silencer").position + (-transform.right) * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
-        isFiring = true;
         timeTillNextShot = fireRate;
 
         FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
@@ -136,17 +133,15 @@ public class SMG : AbstractWeapon {
         }
     }
 
-
-
     IEnumerator PostShotCleanup()
     {
         yield return new WaitForSeconds(shotTime);
         bulletTracer.enabled = false;
         muzzleFlashLight.enabled = false;
     }
+
     public override void ReleaseTrigger(Player player)
     {
-        isFiring = false;
         em.enabled = false;
     }
 

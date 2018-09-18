@@ -34,8 +34,6 @@ public class Deagle : AbstractWeapon
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    float kickbackScale = 0f;
-    bool isFiring = false;
     bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
@@ -72,7 +70,6 @@ public class Deagle : AbstractWeapon
         var muzzle = transform.position + transform.forward * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
-        isFiring = true;
         timeTillNextShot = fireRate;
         
 		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
@@ -96,7 +93,6 @@ public class Deagle : AbstractWeapon
         bulletTracer.enabled = true;
         var isPlayer = rayHit.collider.CompareTag("Player");
 
-        // should move some of this code to player
         if (isPlayer)
         {
             var target = rayHit.collider.GetComponent<Player>();
@@ -110,13 +106,13 @@ public class Deagle : AbstractWeapon
             GameObject bulletHole = Instantiate(BulletHole, rayHit.point, Quaternion.FromToRotation(Vector3.up, rayHit.normal));
             var particleSystems = bulletHole.GetComponentsInChildren<ParticleSystem>();
 
-            foreach(var p in particleSystems){
+            foreach(var p in particleSystems)
+            {
                 ParticleSystem.MainModule psmain = p.main;
                 psmain.startColor = player.color;
             }
             Destroy(bulletHole, 3f);
         }
-  
     }
 
     IEnumerator PostShotCleanup()
@@ -124,9 +120,5 @@ public class Deagle : AbstractWeapon
         yield return new WaitForSeconds(shotTime);
         bulletTracer.enabled = false;
         muzzleFlashLight.enabled = false;
-    }
-    public override void ReleaseTrigger(Player player)
-    {
-        isFiring = false;
     }
 }

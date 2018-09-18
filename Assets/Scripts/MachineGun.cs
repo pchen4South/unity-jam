@@ -32,8 +32,6 @@ public class MachineGun : AbstractWeapon
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    float kickbackScale = 0f;
-    bool isFiring = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
     GameObject FlashInstance;
@@ -76,7 +74,6 @@ public class MachineGun : AbstractWeapon
         var muzzle = transform.position + transform.forward * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
-        isFiring = true;
         timeTillNextShot = fireRate;
 
         FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
@@ -125,9 +122,5 @@ public class MachineGun : AbstractWeapon
         yield return new WaitForSeconds(shotTime);
         bulletTracer.enabled = false;
         muzzleFlashLight.enabled = false;
-    }
-    public override void ReleaseTrigger(Player player)
-    {
-        isFiring = false;
     }
 }

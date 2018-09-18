@@ -65,7 +65,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Player PlayerPrefab;
 	[SerializeField] PlayerHUD PlayerHUDPrefab;
 
-	[SerializeField] GameSettings GameSettings;
+	[SerializeField] ColorScheme colorScheme;
 	[SerializeField] Shakeable shakeable;
 	[SerializeField] Graph graph;
 	[SerializeField] Canvas screenSpaceUICanvas;
@@ -97,17 +97,35 @@ public class GameMode : MonoBehaviour
 			ps.player.name = "Player " + i;
 			ps.player.SetWeapon(WeaponPrefab);
 			ps.player.OnDeath = HandlePlayerDeath;
-			ps.player.color = GameSettings.playerColors[i];
+			ps.player.color = colorScheme.playerColors[i];
 			ps.player.Spawn(sp.transform);
 			playerStates[i] = ps;
 		}
 
-		// Instantiate UI Objects
 		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, 8);
 	}
 
 	void Update()
 	{
+		switch (state)
+		{
+			case GameState.PreGame:
+				Debug.Log("PreGame: LOOK AROUND!");
+			break;
+			case GameState.Countdown:
+            	Debug.Log("Countdown: YOU CAN MOVE BUT CAN'T SHOOT!");
+			break;
+			case GameState.Live:
+            	Debug.Log("Live: GAME ON!");
+			break;
+			case GameState.Victory:
+            	Debug.Log("Victory: PLAYER " + winningPlayerIndex + " HAS TAKEN IT!");
+			break;
+			case GameState.PostGame:
+            	Debug.Log("PostGame: WHY NOT GET A SNACK?");
+			break;
+		}
+
 		// always push timescale back towards full-speed
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 
@@ -131,6 +149,8 @@ public class GameMode : MonoBehaviour
 		var killerPlayerState = playerStates[killerIndex];
 		var gunCount = WeaponPrefabs.Length;
 
+		shakeable.AddIntensity(1f);
+		Time.timeScale = .1f;
 		killedPlayerState.deathCount++;
 		killerPlayerState.killCount++;
 
