@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using Rewired;
 
 public class Player : MonoBehaviour 
 {
-    // TODO: Would like to remove Invincible 
     public enum PlayerStatus { Alive, Dead, Invincible }
 
     [SerializeField] PlayerIndicator playerIndicator;
@@ -60,8 +58,6 @@ public class Player : MonoBehaviour
         canMove = true;
     }
 
-    // guns call this damage function which calls a callback to handle death
-    // not sure if this is any good...
     public void Damage(int amountOfDamage, int attackerIndex)
     {
         if (status == PlayerStatus.Dead)

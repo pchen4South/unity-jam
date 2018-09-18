@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Rewired;
 
 [System.Serializable]
@@ -63,7 +64,7 @@ public class PlayerHUDManager : Object
 
 public class GameMode : MonoBehaviour 
 {
-	public enum GameState { PreGame, Live, Victory, PostGame };
+	public enum GameState { Countdown, Live, Victory };
 
 	[SerializeField] Player PlayerPrefab;
 	[SerializeField] PlayerHUD PlayerHUDPrefab;
@@ -81,7 +82,7 @@ public class GameMode : MonoBehaviour
 	GameObject[] spawnPoints;
 	PlayerState[] playerStates;
 	PlayerHUDManager playerHUDManager;
-	GameState state = GameState.PreGame;
+	GameState state = GameState.Countdown;
 	int winningPlayerIndex;
 	float remainingCountdownDuration;
 
@@ -114,74 +115,92 @@ public class GameMode : MonoBehaviour
 
 	void Update()
 	{
-		switch (state)
+		var canMove = false;
+		var canRotate = false;
+		var canShoot = false;
+
+		if (state == GameState.Countdown)
 		{
-			case GameState.PreGame:
-				if (remainingCountdownDuration > 0f)
-				{
-					remainingCountdownDuration -= Time.deltaTime;
-				}
-				else 
-				{
-					state = GameState.Live;
-				}
-			break;
-			case GameState.Live:
-				for (var i = 0; i < playerStates.Length; i++)
-				{
-					var c = playerStates[i].playerController;
-					var p = playerStates[i].player;
-					var triggerDown = c.GetButton("Fire") || c.GetButtonRepeating("Fire");
-					var triggerUp = c.GetButtonUp("Fire");
-					var xAxis = c.GetAxis(0);
-					var yAxis = c.GetAxis(1);
-					var moving = xAxis != 0f || yAxis != 0f;
+			canMove = true;
+			canRotate = true;
+			canShoot = false;
+			remainingCountdownDuration -= Time.deltaTime;
+			if (remainingCountdownDuration <= 0f)
+			{
+				state = GameState.Live;
+			}
+		}
+		else if (state == GameState.Live)
+		{
+			canMove = true;
+			canRotate = true;
+			canShoot = true;
+		}
+		else if (state == GameState.Victory)
+		{
+			canMove = false;
+			canRotate = false;
+			canShoot = false;
 
-					if (triggerDown && p.Weapon)
-					{
-						p.Weapon.PullTrigger(p);
-					}
-					if (triggerUp && p.Weapon)
-					{
-						p.Weapon.ReleaseTrigger(p);
-					}
-					if (moving && p.canMove)
-					{
-						p.Move(xAxis, yAxis);
-					}
-					if (p.canRotate)
-					{
-						if (c.controllers.hasMouse)
-						{
-							Vector2 pvp = shakeable.shakyCamera.WorldToScreenPoint(p.transform.position);
-							Vector2 mouse = c.controllers.Mouse.screenPosition;
-							Vector3 direction = new Vector3(mouse.x - pvp.x, 0, mouse.y - pvp.y);
+			// check for Fire button presses to load next map
+			for (var i = 0; i < playerStates.Length; i++)
+			{
+				var c = playerStates[i].playerController;
 
-							if (direction.magnitude > 0f)
-							{
-								p.transform.LookAt(direction, Vector3.up);
-							}
-						}
-						else
-						{
-							var lookXAxis = c.GetAxis(5);
-							var lookYAxis = c.GetAxis(6);
-							var direction = new Vector3(lookXAxis, 0f, lookYAxis);
+				if (c.GetButtonDown("Fire"))
+				{
+					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				}
+			}
+		}
 
-							if (direction.magnitude > 0f)
-							{
-								p.transform.LookAt(direction, Vector3.up);
-							}
-						}
+		for (var i = 0; i < playerStates.Length; i++)
+		{
+			var c = playerStates[i].playerController;
+			var p = playerStates[i].player;
+			var triggerDown = c.GetButton("Fire") || c.GetButtonRepeating("Fire");
+			var triggerUp = c.GetButtonUp("Fire");
+			var xAxis = c.GetAxis(0);
+			var yAxis = c.GetAxis(1);
+			var moving = xAxis != 0f || yAxis != 0f;
+
+			if (canShoot && triggerDown && p.Weapon)
+			{
+				p.Weapon.PullTrigger(p);
+			}
+			if (canShoot && triggerUp && p.Weapon)
+			{
+				p.Weapon.ReleaseTrigger(p);
+			}
+			if (canMove && moving && p.canMove)
+			{
+				p.Move(xAxis, yAxis);
+			}
+			if (canRotate && p.canRotate)
+			{
+				if (c.controllers.hasMouse)
+				{
+					Vector2 pvp = shakeable.shakyCamera.WorldToScreenPoint(p.transform.position);
+					Vector2 mouse = c.controllers.Mouse.screenPosition;
+					Vector3 direction = new Vector3(mouse.x - pvp.x, 0, mouse.y - pvp.y);
+
+					if (direction.magnitude > 0f)
+					{
+						p.transform.LookAt(direction, Vector3.up);
 					}
 				}
-			break;
-			case GameState.Victory:
-            	Debug.Log("Victory: PLAYER " + winningPlayerIndex + " HAS TAKEN IT!");
-			break;
-			case GameState.PostGame:
-            	Debug.Log("PostGame: WHY NOT GET A SNACK?");
-			break;
+				else
+				{
+					var lookXAxis = c.GetAxis(5);
+					var lookYAxis = c.GetAxis(6);
+					var direction = new Vector3(lookXAxis, 0f, lookYAxis);
+
+					if (direction.magnitude > 0f)
+					{
+						p.transform.LookAt(direction, Vector3.up);
+					}
+				}
+			}
 		}
 
 		// always push timescale back towards full-speed
