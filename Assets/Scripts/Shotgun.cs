@@ -20,7 +20,7 @@ public class Shotgun : AbstractWeapon {
     [SerializeField]
     Light muzzleFlashLight;
     [SerializeField]
-	GameObject BlastRadius;
+	ParticleSystem BlastRadius;
 
     [Header("Config")]
     public float fireRate = .75f;
@@ -37,11 +37,13 @@ public class Shotgun : AbstractWeapon {
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 	private GameObject FlashInstance;
-    public  GameObject projectile;
+
+
 
 	void Start(){
         AmmoCount = MagazineSize;       
 		FlashInstance = Instantiate(muzzleFlash, transform);
+        
     }
 
     void Reload(){
@@ -81,38 +83,20 @@ public class Shotgun : AbstractWeapon {
         muzzleFlashLight.enabled = true;
         fireSound.Play();
 		
-		var br = BlastRadius.GetComponent<MeshRenderer>();
-		br.enabled = true;
-
-        ray.origin = muzzle;
-        ray.direction = transform.forward;
-
-        var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
-
         if (AmmoCount == 0)
             Reload();
 
-        if (!didHit)
-            return;
+        BlastRadius.Emit(8);
 
-        var isPlayer = rayHit.collider.CompareTag("Player");
-
-        // should move some of this code to player
-        if (isPlayer)
-        {
-            var target = rayHit.collider.GetComponent<Player>();
-            var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-
-            target.Damage(1, player.PlayerNumber);
-            Destroy(hitParticles.gameObject, 2f);
-        }
     }
 
     IEnumerator PostShotCleanup()
     {
         yield return new WaitForSeconds(shotTime);
         muzzleFlashLight.enabled = false;
-		var br = BlastRadius.GetComponent<MeshRenderer>();
-		br.enabled = false;
+		// var br = BlastRadius.GetComponent<MeshRenderer>();
+		// br.enabled = false;
     }
+
+
 }
