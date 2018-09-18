@@ -72,6 +72,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] ColorScheme colorScheme;
 	[SerializeField] Shakeable shakeable;
 	[SerializeField] Graph graph;
+	[SerializeField] UI ui;
 	[SerializeField] Canvas screenSpaceUICanvas;
 	[SerializeField] AudioSource BackgroundMusic;
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
@@ -125,9 +126,11 @@ public class GameMode : MonoBehaviour
 			canRotate = true;
 			canShoot = false;
 			remainingCountdownDuration -= Time.deltaTime;
+			ui.countdownNumber.text = Mathf.CeilToInt(remainingCountdownDuration).ToString();
 			if (remainingCountdownDuration <= 0f)
 			{
 				state = GameState.Live;
+				ui.animator.SetTrigger("Close");
 			}
 		}
 		else if (state == GameState.Live)
