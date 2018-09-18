@@ -106,11 +106,6 @@ public class Deagle : AbstractWeapon
             GameObject bulletHole = Instantiate(BulletHole, rayHit.point, Quaternion.FromToRotation(Vector3.up, rayHit.normal));
             var particleSystems = bulletHole.GetComponentsInChildren<ParticleSystem>();
 
-            foreach(var p in particleSystems)
-            {
-                ParticleSystem.MainModule psmain = p.main;
-                psmain.startColor = player.color;
-            }
             Destroy(bulletHole, 3f);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 [System.Serializable]
 public class PlayerState
@@ -9,9 +10,11 @@ public class PlayerState
 	public int killCount = 0;
 	public int deathCount = 0;
 	public Player player;
-	public PlayerState(Player Player)
+	public Rewired.Player playerController;
+	public PlayerState(Player Player, Rewired.Player PlayerController)
 	{
 		player = Player;
+		playerController = PlayerController;
 	}
 }
 
@@ -60,7 +63,7 @@ public class PlayerHUDManager : Object
 
 public class GameMode : MonoBehaviour 
 {
-	public enum GameState { PreGame, Countdown, Live, Victory, PostGame };
+	public enum GameState { PreGame, Live, Victory, PostGame };
 
 	[SerializeField] Player PlayerPrefab;
 	[SerializeField] PlayerHUD PlayerHUDPrefab;
@@ -73,31 +76,35 @@ public class GameMode : MonoBehaviour
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
 
 	public float RespawnTimer = 3f;
+	public float CountdownDuration = 3f;
 
 	GameObject[] spawnPoints;
 	PlayerState[] playerStates;
-	int winningPlayerIndex;
 	PlayerHUDManager playerHUDManager;
 	GameState state = GameState.PreGame;
+	int winningPlayerIndex;
+	float remainingCountdownDuration;
 
+	// TODO: I like the idea of not using Start for this but making an explicit method?
 	void Start()
 	{
 		var playerCount = 2;
 
+		remainingCountdownDuration = CountdownDuration;
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 		playerStates = new PlayerState[playerCount];
 		for (var i = 0; i < playerCount; i++)
 		{
 			var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
 			var player = Instantiate(PlayerPrefab);
-			var ps = new PlayerState(player);
+			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
 			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
 
 			ps.player.PlayerNumber = i;
 			ps.player.name = "Player " + i;
 			ps.player.SetWeapon(WeaponPrefab);
 			ps.player.OnDeath = HandlePlayerDeath;
-			ps.player.color = colorScheme.playerColors[i];
+			ps.player.SetColor(colorScheme.playerColors[i]);
 			ps.player.Spawn(sp.transform);
 			playerStates[i] = ps;
 		}
@@ -110,13 +117,64 @@ public class GameMode : MonoBehaviour
 		switch (state)
 		{
 			case GameState.PreGame:
-				Debug.Log("PreGame: LOOK AROUND!");
-			break;
-			case GameState.Countdown:
-            	Debug.Log("Countdown: YOU CAN MOVE BUT CAN'T SHOOT!");
+				if (remainingCountdownDuration > 0f)
+				{
+					remainingCountdownDuration -= Time.deltaTime;
+				}
+				else 
+				{
+					state = GameState.Live;
+				}
 			break;
 			case GameState.Live:
-            	Debug.Log("Live: GAME ON!");
+				for (var i = 0; i < playerStates.Length; i++)
+				{
+					var c = playerStates[i].playerController;
+					var p = playerStates[i].player;
+					var triggerDown = c.GetButton("Fire") || c.GetButtonRepeating("Fire");
+					var triggerUp = c.GetButtonUp("Fire");
+					var xAxis = c.GetAxis(0);
+					var yAxis = c.GetAxis(1);
+					var moving = xAxis != 0f || yAxis != 0f;
+
+					if (triggerDown && p.Weapon)
+					{
+						p.Weapon.PullTrigger(p);
+					}
+					if (triggerUp && p.Weapon)
+					{
+						p.Weapon.ReleaseTrigger(p);
+					}
+					if (moving && p.canMove)
+					{
+						p.Move(xAxis, yAxis);
+					}
+					if (p.canRotate)
+					{
+						if (c.controllers.hasMouse)
+						{
+							Vector2 pvp = shakeable.shakyCamera.WorldToScreenPoint(p.transform.position);
+							Vector2 mouse = c.controllers.Mouse.screenPosition;
+							Vector3 direction = new Vector3(mouse.x - pvp.x, 0, mouse.y - pvp.y);
+
+							if (direction.magnitude > 0f)
+							{
+								p.transform.LookAt(direction, Vector3.up);
+							}
+						}
+						else
+						{
+							var lookXAxis = c.GetAxis(5);
+							var lookYAxis = c.GetAxis(6);
+							var direction = new Vector3(lookXAxis, 0f, lookYAxis);
+
+							if (direction.magnitude > 0f)
+							{
+								p.transform.LookAt(direction, Vector3.up);
+							}
+						}
+					}
+				}
 			break;
 			case GameState.Victory:
             	Debug.Log("Victory: PLAYER " + winningPlayerIndex + " HAS TAKEN IT!");
@@ -136,7 +194,7 @@ public class GameMode : MonoBehaviour
 			var ps = playerStates[i];
 			var normalizedScale = (float)ps.weaponIndex / (float)gunCount;
 
-			graph.UpdateBar(i, ps.player.color, normalizedScale);
+			graph.UpdateBar(i, colorScheme.playerColors[i], normalizedScale);
 		}
 
 		// Update the player HUDs
