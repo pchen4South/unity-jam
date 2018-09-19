@@ -32,6 +32,11 @@ public class SMG : AbstractWeapon {
     public float MagazineSize = 25f;
     public float ReloadTime = 1f;
 
+    public float maxBulletSpread;
+    public float timeToMaxSpread;
+
+
+
     [Header("State")]
     float timeTillNextShot = 0f;
     bool isReloading = false;
@@ -40,6 +45,7 @@ public class SMG : AbstractWeapon {
     private GameObject FlashInstance;
     ParticleSystem CasingsInstance;
     ParticleSystem.EmissionModule em;
+    float fireTime;
 
     void Awake()
     {
@@ -57,6 +63,7 @@ public class SMG : AbstractWeapon {
         isReloading = true;
         em.enabled = false;
         reloadSound.Play();
+        fireTime = 0f;
         StartCoroutine(ReloadTimer());
     }
 
@@ -77,8 +84,9 @@ public class SMG : AbstractWeapon {
         if (timeTillNextShot > 0 || isReloading || AmmoCount == 0)
             return;
 
+        fireTime += Time.deltaTime;
+
         AmmoCount -= 1;
-        //var muzzle = transform.position + ( - transform.right) * muzzleOffset;
         var muzzle = transform.Find("silencer").position + (-transform.right) * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
@@ -90,8 +98,14 @@ public class SMG : AbstractWeapon {
         muzzleFlashLight.enabled = true;
         fireSound.Play();
 
+        Vector3 fireDirection = player.transform.forward;        
+        float currentSpread = Mathf.Lerp(0.0f, maxBulletSpread, fireTime / timeToMaxSpread);
+        float randomOffsetX= Random.Range(-currentSpread, currentSpread);
+        float randomOffsetY= Random.Range(-currentSpread, currentSpread);
+
+        //apply random inaccuracy to raycast
         ray.origin = muzzle;
-        ray.direction = - transform.right;
+        ray.direction = new Vector3(fireDirection.x  + randomOffsetX, fireDirection.y, fireDirection.z + randomOffsetY);
 
         var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
 
@@ -112,24 +126,12 @@ public class SMG : AbstractWeapon {
         // should move some of this code to player
         if (isPlayer)
         {
-            Debug.Log("hit player");
-            var target = rayHit.collider.GetComponent<Player>();
-            var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-
-            target.Damage(1, player.PlayerNumber);
-            Destroy(hitParticles.gameObject, 2f);
-        }
-        else
-        {
-            Debug.Log("hit other");
-            //GameObject bulletHole = Instantiate(BulletHole, rayHit.point, Quaternion.FromToRotation(Vector3.up, rayHit.normal));
-            //var particleSystems = bulletHole.GetComponentsInChildren<ParticleSystem>();
-
-            //foreach (var p in particleSystems)
-            //{
-            //    ParticleSystem.MainModule psmain = p.main;
-            //    psmain.startColor = player.color;
-            //}
+            if(player.PlayerNumber != rayHit.collider.gameObject.GetComponent<Player>().PlayerNumber){
+                var target = rayHit.collider.GetComponent<Player>();
+                var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
+                target.Damage(1, player.PlayerNumber);
+                Destroy(hitParticles.gameObject, 2f);
+            }
         }
     }
 
@@ -143,6 +145,7 @@ public class SMG : AbstractWeapon {
     public override void ReleaseTrigger(Player player)
     {
         em.enabled = false;
+        fireTime = 0f;
     }
 
 }
