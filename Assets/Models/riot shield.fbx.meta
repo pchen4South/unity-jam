@@ -1,22 +1,14 @@
 fileFormatVersion: 2
-guid: 6ecdb8edd2f5ef842ae106145464c291
+guid: 1a1a3f11cb893914da01c6c1fa1e94d1
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Shield
-    100004: WindowGlass
     400000: //RootNode
-    400002: Shield
-    400004: WindowGlass
-    2100000: window
-    2100002: Material
-    2300000: Shield
-    2300002: WindowGlass
-    3300000: Shield
-    3300002: WindowGlass
-    4300000: WindowGlass
-    4300002: Shield
+    2100000: swat
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Shield
   externalObjects: {}
   materials:
     importMaterials: 1
