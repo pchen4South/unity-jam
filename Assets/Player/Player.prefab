@@ -789,8 +789,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283205163268018}
-  m_LocalRotation: {x: -0.0000020492112, y: 0.0000006409474, z: 0.043222737, w: 0.99906546}
-  m_LocalPosition: {x: -0.044983033, y: 0.00011812973, z: -0.000000026061407}
+  m_LocalRotation: {x: -0.0000019669533, y: 0.00000059604645, z: 0.043222755, w: 0.9990655}
+  m_LocalPosition: {x: -0.04498303, y: 0.000118128955, z: -0.00000002606248}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4884239312492416}
@@ -1415,8 +1415,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1465204206409104}
-  m_LocalRotation: {x: -7.318979e-17, y: 1.4170987e-17, z: -0.13052638, w: 0.9914448}
-  m_LocalPosition: {x: -0.12697862, y: 0.02224573, z: -0.00000028315998}
+  m_LocalRotation: {x: 0.000000029802322, y: -0, z: -0.13052642, w: 0.9914448}
+  m_LocalPosition: {x: -0.12697868, y: 0.022245735, z: -0.00000028312206}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4370935401921276}
@@ -2616,20 +2616,17 @@ MonoBehaviour:
   takeDamageSound: {fileID: 82099034126225934}
   deathSound: {fileID: 82204234171632710}
   spawnSound: {fileID: 82464947360962388}
-  color: {r: 1, g: 0, b: 0, a: 1}
   MaxHealth: 3
   MoveSpeed: 12
-  JumpStrength: 20
-  CrouchMovementModifier: 0.5
+  RollModifier: 2.5
+  RollDuration: 0.25
   Weapon: {fileID: 0}
   PlayerNumber: 0
   Health: 1
   canMove: 1
   canRotate: 1
-  aerialHeight: 0
-  VerticalVelocity: 0
   status: 0
-  isGrounded: 0
+  isRolling: 0
 --- !u!95 &95275682278858346
 Animator:
   serializedVersion: 3

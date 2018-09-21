@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
+    public float RollModifier = 2f;
+    public float RollDuration = 0.125f;
     public System.Action<int, int> OnDeath;
 
     public AbstractWeapon Weapon;
@@ -22,12 +24,30 @@ public class Player : MonoBehaviour
     public bool canMove = true;
     public bool canRotate = true;
 	public PlayerStatus status = PlayerStatus.Alive;
+    float currentRollTime = 0f;
+    public bool isRolling;
+    float rollX;
+    float rollY;
 
     Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
     
     void Update() 
     {
         controller.Move(GROUNDED_DOWNWARD_VELOCITY);
+
+        //Roll logic
+        if(isRolling && currentRollTime <= RollDuration){
+            this.canMove = false;
+            this.canRotate = false;
+
+            var m = Vector3.zero;
+                
+            m.x = rollX * Time.deltaTime * MoveSpeed * RollModifier;
+            m.z = rollY * Time.deltaTime * MoveSpeed * RollModifier;
+
+            controller.Move(m);
+            currentRollTime += Time.deltaTime;
+        }
     }
 
     public void SetColor(Color color)
@@ -96,4 +116,20 @@ public class Player : MonoBehaviour
         animator.SetBool("PlayDeathAnimation", false);
         spawnSound.Play();
 	}
+
+    public void RollInDirection(float xAxis, float yAxis){
+        rollX  = xAxis;
+        rollY = yAxis;
+        isRolling = true;
+        animator.SetBool("PerformRoll", true);
+    }
+
+    public void RollEnd(){
+        isRolling = false;
+        currentRollTime = 0f;
+        this.canMove = true;
+        this.canRotate = true;
+        animator.SetBool("PerformRoll", false);
+    }
+
 }

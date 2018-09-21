@@ -167,6 +167,9 @@ public class GameMode : MonoBehaviour
 			var yAxis = c.GetAxis(1);
 			var moving = xAxis != 0f || yAxis != 0f;
 
+			//added for roll / dash
+			var rollTrue = Input.GetKey("r");
+
 			if (canShoot && triggerDown && p.Weapon)
 			{
 				p.Weapon.PullTrigger(p);
@@ -181,11 +184,13 @@ public class GameMode : MonoBehaviour
 			}
 			if (canRotate && p.canRotate)
 			{
+
+				Vector3 direction = new Vector3();
 				if (c.controllers.hasMouse)
 				{
 					Vector2 pvp = shakeable.shakyCamera.WorldToScreenPoint(p.transform.position);
 					Vector2 mouse = c.controllers.Mouse.screenPosition;
-					Vector3 direction = new Vector3(mouse.x - pvp.x, 0, mouse.y - pvp.y);
+					direction = new Vector3(mouse.x - pvp.x, 0, mouse.y - pvp.y);
 
 					if (direction.magnitude > 0f)
 					{
@@ -196,13 +201,19 @@ public class GameMode : MonoBehaviour
 				{
 					var lookXAxis = c.GetAxis(5);
 					var lookYAxis = c.GetAxis(6);
-					var direction = new Vector3(lookXAxis, 0f, lookYAxis);
+					direction = new Vector3(lookXAxis, 0f, lookYAxis);
 
 					if (direction.magnitude > 0f)
 					{
 						p.transform.LookAt(direction, Vector3.up);
 					}
 				}
+
+				//added for roll/dash
+				if(rollTrue && !p.isRolling){
+					p.RollInDirection(xAxis, yAxis);
+				}
+
 			}
 		}
 
