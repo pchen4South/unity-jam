@@ -12,6 +12,8 @@ public class Shield : AbstractWeapon
     Animator anim;
     [SerializeField]
     public float swingTime = 1f;
+    [SerializeField]
+    AudioSource swingSound;
 
     // Update is called once per frame
     void Update()
@@ -23,6 +25,7 @@ public class Shield : AbstractWeapon
         if(shieldState != RiotShieldState.Ready)
             return;
         shieldState = RiotShieldState.Swinging;
+        swingSound.Play();
         anim.SetBool("swinging", true);
     }
 
