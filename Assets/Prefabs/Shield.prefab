@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 582779447934330973}
   - component: {fileID: 1238142626142742237}
   m_Layer: 0
-  m_Name: riot shield
-  m_TagString: Untagged
+  m_Name: Shield
+  m_TagString: MeleeWeapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1a1a3f11cb893914da01c6c1fa1e94d1, type: 3}
+  - {fileID: 2100000, guid: b6b67c96ef945a447951fd3ccf61de4a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128,7 +128,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: be6697938c6366249ac89c61d85396da, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

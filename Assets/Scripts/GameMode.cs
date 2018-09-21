@@ -211,7 +211,11 @@ public class GameMode : MonoBehaviour
 
 				//added for roll/dash
 				if(rollTrue && !p.isRolling){
-					p.RollInDirection(xAxis, yAxis);
+					//p.RollInDirection(xAxis, yAxis);
+				}
+
+				if(rollTrue){
+					p.Dash();
 				}
 
 			}

@@ -14,8 +14,9 @@ public class Player : MonoBehaviour
 
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
-    public float RollModifier = 2f;
+    public float SpeedModifier = 1f;
     public float RollDuration = 0.125f;
+    public float DashDuration = 0.25f;
     public System.Action<int, int> OnDeath;
 
     public AbstractWeapon Weapon;
@@ -25,29 +26,58 @@ public class Player : MonoBehaviour
     public bool canRotate = true;
 	public PlayerStatus status = PlayerStatus.Alive;
     float currentRollTime = 0f;
-    public bool isRolling;
+    float currentDashTime = 0f;
+    public bool isRolling = false;
+    public bool isDashing = false;
     float rollX;
     float rollY;
 
     Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
-    
+   void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, transform.forward * 10f);
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(transform.position, Vector3.down * 10f);
+        Gizmos.color = controller.isGrounded ? Color.green : Color.gray;
+        Gizmos.DrawCube(transform.position + transform.up * 3f, Vector3.one * .2f);
+    }
+
     void Update() 
     {
         controller.Move(GROUNDED_DOWNWARD_VELOCITY);
 
         //Roll logic
-        if(isRolling && currentRollTime <= RollDuration){
-            this.canMove = false;
-            this.canRotate = false;
+        //keep for now
+        // if(isRolling && currentRollTime <= RollDuration){
+        //     this.canMove = false;
+        //     this.canRotate = false;
 
-            var m = Vector3.zero;
+        //     var m = Vector3.zero;
                 
-            m.x = rollX * Time.deltaTime * MoveSpeed * RollModifier;
-            m.z = rollY * Time.deltaTime * MoveSpeed * RollModifier;
+        //     m.x = rollX * Time.deltaTime * MoveSpeed * RollModifier;
+        //     m.z = rollY * Time.deltaTime * MoveSpeed * RollModifier;
 
+        //     controller.Move(m);
+        //     currentRollTime += Time.deltaTime;
+        // }
+
+        if(isDashing && currentDashTime <= DashDuration){
+            
+            var dashDir = transform.forward.normalized;
+            Debug.Log("dash " + dashDir);
+            var m = Vector3.zero;
+            m.x = dashDir.x  * Time.deltaTime * MoveSpeed * SpeedModifier;
+            m.z = dashDir.z * Time.deltaTime * MoveSpeed * SpeedModifier;
             controller.Move(m);
-            currentRollTime += Time.deltaTime;
+            currentDashTime += Time.deltaTime;
         }
+
+        if(currentDashTime > DashDuration){
+            DashEnd();
+        }
+
+
     }
 
     public void SetColor(Color color)
@@ -60,8 +90,8 @@ public class Player : MonoBehaviour
     {
         var m = Vector3.zero;
 
-        m.x = xAxis * Time.deltaTime * MoveSpeed;
-        m.z = yAxis * Time.deltaTime * MoveSpeed;
+        m.x = xAxis * Time.deltaTime * MoveSpeed * SpeedModifier;
+        m.z = yAxis * Time.deltaTime * MoveSpeed * SpeedModifier;
         controller.Move(m);
         animator.SetFloat("Forward", m.magnitude);
     }
@@ -132,4 +162,24 @@ public class Player : MonoBehaviour
         animator.SetBool("PerformRoll", false);
     }
 
+    public void Dash()
+    {
+        if(!Weapon.CompareTag("MeleeWeapon")) return;
+        SpeedModifier = 2.5f;
+        isDashing = true;
+        this.canMove = false;
+        this.canRotate = false;
+        animator.SetBool("PerformDash", true);
+
+    }
+    public void DashEnd()
+    {
+        isDashing = false;
+        SpeedModifier = Weapon.SpeedModifier;
+        this.canMove = true;
+        this.canRotate = true;
+        currentDashTime = 0f;
+        animator.SetBool("PerformDash", false);
+    }
+     
 }

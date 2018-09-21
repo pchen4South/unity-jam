@@ -15,10 +15,9 @@ public class Shield : AbstractWeapon
     [SerializeField]
     AudioSource swingSound;
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        SpeedModifier = 0.5f;        
     }
 
     public override void PullTrigger(Player player){
@@ -33,4 +32,10 @@ public class Shield : AbstractWeapon
         shieldState = RiotShieldState.Ready;
         anim.SetBool("swinging", false);
     }
+
+    private void OnDestroy() {
+        player.SpeedModifier = 1f;
+    }
+
+
 }

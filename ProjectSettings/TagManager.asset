@@ -10,6 +10,7 @@ TagManager:
   - Ground
   - SpawnPoint
   - JumpPad
+  - MeleeWeapon
   layers:
   - Default
   - TransparentFX
