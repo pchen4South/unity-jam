@@ -169,6 +169,7 @@ public class GameMode : MonoBehaviour
 
 			//added for roll / dash
 			var rollTrue = Input.GetKey("r");
+			var dashTrue = Input.GetKey("f");
 
 			if (canShoot && triggerDown && p.Weapon)
 			{
@@ -211,10 +212,10 @@ public class GameMode : MonoBehaviour
 
 				//added for roll/dash
 				if(rollTrue && !p.isRolling){
-					//p.RollInDirection(xAxis, yAxis);
+					p.RollInDirection(xAxis, yAxis);
 				}
 
-				if(rollTrue){
+				if(dashTrue){
 					p.Dash();
 				}
 
