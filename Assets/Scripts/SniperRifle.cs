@@ -23,6 +23,10 @@ public class SniperRifle : AbstractWeapon
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 
+    private void Awake() {
+        WeaponName = "Sniper"; 
+        AmmoCount = -1;   
+    }
     void Update() 
     { 
         if (state == SniperRifleState.Reload && remainingReloadTime <= 0f)

@@ -52,6 +52,8 @@ public class PlayerHUDManager : Object
 			playerHUDPool[i].transform.SetParent(parent, false);
 			playerHUDPool[i].UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
 			playerHUDPool[i].UpdatePosition(camera, parent, playerStates[i].player.transform.position);
+			playerHUDPool[i].UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
+			playerHUDPool[i].UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
 			i++;
 		}
 		while (i < playerHUDPool.Length)
@@ -169,6 +171,7 @@ public class GameMode : MonoBehaviour
 
 			//added for roll / dash
 			var rollTrue = Input.GetKey("r");
+			var dashTrue = Input.GetKey("f");
 
 			if (canShoot && triggerDown && p.Weapon)
 			{
@@ -211,10 +214,10 @@ public class GameMode : MonoBehaviour
 
 				//added for roll/dash
 				if(rollTrue && !p.isRolling){
-					//p.RollInDirection(xAxis, yAxis);
+					p.RollInDirection(xAxis, yAxis);
 				}
 
-				if(rollTrue){
+				if(dashTrue){
 					p.Dash();
 				}
 			}

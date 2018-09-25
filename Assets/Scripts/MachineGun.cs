@@ -40,7 +40,9 @@ public class MachineGun : AbstractWeapon
     void Awake()
     {
         //AmmoCount = MagazineSize;
+        AmmoCount = -1;
         FlashInstance = Instantiate(muzzleFlash, transform);
+        WeaponName = "Machine Gun";
     }
 
     void LateUpdate()

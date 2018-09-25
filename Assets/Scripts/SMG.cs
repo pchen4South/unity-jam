@@ -28,8 +28,7 @@ public class SMG : AbstractWeapon {
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
-    float AmmoCount = 0f;
-    public float MagazineSize = 25f;
+    public int MagazineSize = 25;
     public float ReloadTime = 1f;
 
     public float maxBulletSpread;
@@ -56,6 +55,7 @@ public class SMG : AbstractWeapon {
 
         em = CasingsInstance.emission;
         em.enabled = false;
+        WeaponName = "SMG";
     }
 
     void Reload()

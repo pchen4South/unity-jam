@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-
+using System.Collections;
+using System.Collections.Generic;
 public class Player : MonoBehaviour 
 {
     public enum PlayerStatus { Alive, Dead, Invincible }
+    public enum MoveSkillStatus { Ready, OnCooldown }
 
     [SerializeField] PlayerIndicator playerIndicator;
     [SerializeField] SkinnedMeshRenderer meshRenderer;
@@ -11,12 +13,15 @@ public class Player : MonoBehaviour
     [SerializeField] AudioSource takeDamageSound;
     [SerializeField] AudioSource deathSound;
     [SerializeField] AudioSource spawnSound;
+    [SerializeField] AudioSource dashSound;
 
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
     public float SpeedModifier = 1f;
     public float RollDuration = 0.125f;
     public float DashDuration = 0.25f;
+    public float MoveSkillCooldown = 1f;
+    public float MoveSkillRecoveryTime = .1f;
     public System.Action<int, int> OnDeath;
 
     public AbstractWeapon Weapon;
@@ -25,12 +30,15 @@ public class Player : MonoBehaviour
     public bool canMove = true;
     public bool canRotate = true;
 	public PlayerStatus status = PlayerStatus.Alive;
+    public MoveSkillStatus moveStatus = MoveSkillStatus.Ready;
     float currentRollTime = 0f;
     float currentDashTime = 0f;
     public bool isRolling = false;
     public bool isDashing = false;
     float rollX;
     float rollY;
+    float MoveSkillTimer = 0f;
+
 
     Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
    void OnDrawGizmos()
@@ -63,9 +71,7 @@ public class Player : MonoBehaviour
         // }
 
         if(isDashing && currentDashTime <= DashDuration){
-            
             var dashDir = transform.forward.normalized;
-            Debug.Log("dash " + dashDir);
             var m = Vector3.zero;
             m.x = dashDir.x  * Time.deltaTime * MoveSpeed * SpeedModifier;
             m.z = dashDir.z * Time.deltaTime * MoveSpeed * SpeedModifier;
@@ -77,7 +83,15 @@ public class Player : MonoBehaviour
             DashEnd();
         }
 
+        if(moveStatus == MoveSkillStatus.OnCooldown){
+            MoveSkillTimer += Time.deltaTime;
+            if (MoveSkillTimer >= MoveSkillCooldown){
+                MoveSkillTimer = 0f;
+                moveStatus = MoveSkillStatus.Ready;
+            } 
+        }
 
+        
     }
 
     public void SetColor(Color color)
@@ -164,7 +178,8 @@ public class Player : MonoBehaviour
 
     public void Dash()
     {
-        if(!Weapon.CompareTag("MeleeWeapon")) return;
+        if(!Weapon.CompareTag("MeleeWeapon") || moveStatus != MoveSkillStatus.Ready) return;
+        dashSound.Play();
         SpeedModifier = 2.5f;
         isDashing = true;
         this.canMove = false;
@@ -175,11 +190,18 @@ public class Player : MonoBehaviour
     public void DashEnd()
     {
         isDashing = false;
+        moveStatus = MoveSkillStatus.OnCooldown;
+        StartCoroutine("MoveSkillRecovery");
+        currentDashTime = 0f;
+        animator.SetBool("PerformDash", false);
+        
+    }
+
+    IEnumerator MoveSkillRecovery(){
+        yield return new WaitForSeconds(MoveSkillRecoveryTime);
         SpeedModifier = Weapon.SpeedModifier;
         this.canMove = true;
         this.canRotate = true;
-        currentDashTime = 0f;
-        animator.SetBool("PerformDash", false);
     }
      
 }
