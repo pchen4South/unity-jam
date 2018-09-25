@@ -52,6 +52,8 @@ public class PlayerHUDManager : Object
 			playerHUDPool[i].transform.SetParent(parent, false);
 			playerHUDPool[i].UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
 			playerHUDPool[i].UpdatePosition(camera, parent, playerStates[i].player.transform.position);
+			playerHUDPool[i].UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
+			playerHUDPool[i].UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
 			i++;
 		}
 		while (i < playerHUDPool.Length)

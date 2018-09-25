@@ -27,8 +27,8 @@ public class Shotgun : AbstractWeapon {
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
-    float AmmoCount = 0f;
-	public float MagazineSize = 4f;
+    //float AmmoCount = 0f;
+	public int MagazineSize = 4;
 	public float ReloadTime = 2f;
 
     [Header("State")]
@@ -41,9 +41,9 @@ public class Shotgun : AbstractWeapon {
 
 
 	void Start(){
+        WeaponName = "Shotgun";
         AmmoCount = MagazineSize;       
 		FlashInstance = Instantiate(muzzleFlash, transform);
-        
     }
 
     void Reload(){

@@ -19,17 +19,18 @@ public class Shield : AbstractWeapon
 
     void Start()
     {
+        WeaponName = "Shield";
         SpeedModifier = 0.5f;        
         player.SpeedModifier = SpeedModifier;
         DamageCooldown = swingTime;
         hitBoxActiveParticles.Stop();
+        AmmoCount = -1;
     }
 
     #region Weapon Trigger Overrides
     public override void PullTrigger(Player player){
         if(shieldState != RiotShieldState.Ready)
             return;
-        //player.canRotate = false;
         swingSound.Play();
         anim.SetBool("swinging", true);
     }
@@ -41,7 +42,6 @@ public class Shield : AbstractWeapon
 
     #region Animation Event Functions
     public void AttackEnd(){
-        //player.canRotate = true;
         shieldState = RiotShieldState.Ready;
         hitBoxActiveParticles.Stop();
     }
