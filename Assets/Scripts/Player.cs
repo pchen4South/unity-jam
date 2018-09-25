@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] AudioSource takeDamageSound;
     [SerializeField] AudioSource deathSound;
     [SerializeField] AudioSource spawnSound;
+    [SerializeField] AudioSource dashSound;
 
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
@@ -178,6 +179,7 @@ public class Player : MonoBehaviour
     public void Dash()
     {
         if(!Weapon.CompareTag("MeleeWeapon") || moveStatus != MoveSkillStatus.Ready) return;
+        dashSound.Play();
         SpeedModifier = 2.5f;
         isDashing = true;
         this.canMove = false;
