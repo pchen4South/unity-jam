@@ -190,8 +190,8 @@ public class GameMode : MonoBehaviour
 				{
 					Vector2 pvp = shakeable.shakyCamera.WorldToScreenPoint(p.transform.position);
 					Vector2 mouse = c.controllers.Mouse.screenPosition;
-					direction = new Vector3(mouse.x - pvp.x, 0, mouse.y - pvp.y);
 
+					direction = new Vector3(mouse.x - pvp.x, 0, mouse.y - pvp.y);
 					if (direction.magnitude > 0f)
 					{
 						p.transform.LookAt(direction, Vector3.up);
@@ -201,8 +201,8 @@ public class GameMode : MonoBehaviour
 				{
 					var lookXAxis = c.GetAxis(5);
 					var lookYAxis = c.GetAxis(6);
-					direction = new Vector3(lookXAxis, 0f, lookYAxis);
 
+					direction = new Vector3(lookXAxis, 0f, lookYAxis);
 					if (direction.magnitude > 0f)
 					{
 						p.transform.LookAt(direction, Vector3.up);
@@ -217,7 +217,6 @@ public class GameMode : MonoBehaviour
 				if(rollTrue){
 					p.Dash();
 				}
-
 			}
 		}
 

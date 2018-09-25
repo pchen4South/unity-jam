@@ -396,6 +396,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game
       objectReference: {fileID: 0}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
+      propertyPath: WeaponPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 5760404808585814101, guid: 4aa1abadd20bde44a9766dd34488a6e9, type: 3}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
+      propertyPath: WeaponPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 114041474202030304, guid: c67f5d97841b54741ac008d689ca8bc0, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
 --- !u!1 &203914706
