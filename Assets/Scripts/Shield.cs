@@ -8,19 +8,13 @@ public class Shield : AbstractWeapon
     RiotShieldState shieldState = RiotShieldState.Ready;
 
     [Header("Cached References")]
-    [SerializeField]
-    Animator anim;
-    [SerializeField]
-    public float swingTime = 1f;
-
-    [SerializeField]
-    AudioSource swingSound;
-
-    [SerializeField]
-    BoxCollider hitBox;
-
+    [SerializeField]    Animator anim;
+    [SerializeField]    public float swingTime = 1f;
+    [SerializeField]    ParticleSystem hitBoxActiveParticles;
+    [SerializeField]    AudioSource swingSound;
+    [SerializeField]    BoxCollider hitBox;
+    [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
     public int DamageAmount = 1;
-
     float DamageCooldown;
 
     void Start()
@@ -28,6 +22,7 @@ public class Shield : AbstractWeapon
         SpeedModifier = 0.5f;        
         player.SpeedModifier = SpeedModifier;
         DamageCooldown = swingTime;
+        hitBoxActiveParticles.Stop();
     }
 
     #region Weapon Trigger Overrides
@@ -35,7 +30,6 @@ public class Shield : AbstractWeapon
         if(shieldState != RiotShieldState.Ready)
             return;
         //player.canRotate = false;
-        
         swingSound.Play();
         anim.SetBool("swinging", true);
     }
@@ -49,9 +43,11 @@ public class Shield : AbstractWeapon
     public void AttackEnd(){
         //player.canRotate = true;
         shieldState = RiotShieldState.Ready;
+        hitBoxActiveParticles.Stop();
     }
 
     public void AttackHitBoxActive(){
+        hitBoxActiveParticles.Play();
         shieldState = RiotShieldState.Swinging;
     }
     #endregion
@@ -68,6 +64,9 @@ public class Shield : AbstractWeapon
 
         if(hitPlayer.PlayerNumber != player.PlayerNumber){
             hitPlayer.Damage(DamageAmount, player.PlayerNumber);
+
+            var hitParticles = Instantiate(HitPlayerParticlePrefab, hitPlayer.transform.position, player.transform.rotation);
+            Destroy(hitParticles.gameObject, 2f);
 
             //set shieldstate into Damaging here so that only 1 hit per swing is applied as damage
             shieldState = RiotShieldState.Damaging;
