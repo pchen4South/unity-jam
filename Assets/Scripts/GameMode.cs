@@ -77,6 +77,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] UI ui;
 	[SerializeField] Canvas screenSpaceUICanvas;
 	[SerializeField] AudioSource BackgroundMusic;
+	[SerializeField] AudioSource CountdownAudio;
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
 
 	public float RespawnTimer = 3f;
@@ -88,6 +89,7 @@ public class GameMode : MonoBehaviour
 	GameState state = GameState.Countdown;
 	int winningPlayerIndex;
 	float remainingCountdownDuration;
+	bool CountdownStarted = false;
 
 	// TODO: I like the idea of not using Start for this but making an explicit method?
 	void Start()
@@ -124,6 +126,11 @@ public class GameMode : MonoBehaviour
 
 		if (state == GameState.Countdown)
 		{
+			if(!CountdownStarted){
+				CountdownStarted = true;
+				CountdownAudio.Play();
+			}
+
 			canMove = true;
 			canRotate = true;
 			canShoot = false;
@@ -131,6 +138,7 @@ public class GameMode : MonoBehaviour
 			ui.countdownNumber.text = Mathf.CeilToInt(remainingCountdownDuration).ToString();
 			if (remainingCountdownDuration <= 0f)
 			{
+				CountdownStarted = false;
 				state = GameState.Live;
 				ui.animator.SetTrigger("Close");
 			}
@@ -256,6 +264,9 @@ public class GameMode : MonoBehaviour
 		{
 			winningPlayerIndex = killerIndex;
 			state = GameState.Victory;
+			ui.countdownNumber.text = "Player " + (winningPlayerIndex + 1).ToString() + " Wins!";
+			ui.animator.SetTrigger("Open");
+			
 		}
 		else
 		{
