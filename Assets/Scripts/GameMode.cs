@@ -212,12 +212,21 @@ public class GameMode : MonoBehaviour
 				{
 					var lookXAxis = c.GetAxis(5);
 					var lookYAxis = c.GetAxis(6);
-					direction = new Vector3(lookXAxis, 0f, lookYAxis);
 
-					if (direction.magnitude > 0f)
+					var angle = Mathf.Atan2(lookXAxis,lookYAxis) * Mathf.Rad2Deg;
+                	var lookrot = Quaternion.Euler(0, angle, 0);
+
+					if (lookXAxis != 0.0f || lookYAxis != 0.0f)
 					{
-						p.transform.LookAt(direction, Vector3.up);
+						p.transform.rotation = lookrot;
 					}
+					else if (lookXAxis < .01f && lookYAxis < .01f){
+						var input = new Vector3(xAxis, 0, yAxis);
+
+						if(input != Vector3.zero) p.transform.forward = input.normalized;
+            		}
+
+
 				}
 
 				//added for roll/dash
