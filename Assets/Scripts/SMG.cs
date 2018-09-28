@@ -101,11 +101,13 @@ public class SMG : AbstractWeapon {
         Vector3 fireDirection = player.transform.forward;        
         float currentSpread = Mathf.Lerp(0.0f, maxBulletSpread, fireTime / timeToMaxSpread);
         float randomOffsetX= Random.Range(-currentSpread, currentSpread);
-        float randomOffsetY= Random.Range(-currentSpread, currentSpread);
+
+        //dont need randomoffsetY anymore since we only want spread in 1 dimension
+        //float randomOffsetY= Random.Range(-currentSpread, currentSpread);
 
         //apply random inaccuracy to raycast
         ray.origin = muzzle;
-        ray.direction = new Vector3(fireDirection.x  + randomOffsetX, fireDirection.y, fireDirection.z + randomOffsetY);
+        ray.direction = new Vector3(fireDirection.x  + randomOffsetX, fireDirection.y, fireDirection.z);
 
         var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
 
