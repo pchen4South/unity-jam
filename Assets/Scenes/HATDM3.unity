@@ -768,26 +768,6 @@ PrefabInstance:
       propertyPath: WeaponPrefabs.Array.data[2]
       value: 
       objectReference: {fileID: 5760404808585814101, guid: 4aa1abadd20bde44a9766dd34488a6e9, type: 3}
-    - target: {fileID: 1985157680151360815, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1985157680151360815, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
-      propertyPath: m_FontData.m_VerticalOverflow
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1985157680151360815, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
-      propertyPath: m_FontData.m_FontSize
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1985157680151360815, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: d475fa2eadcfd4747ab448b6f7fb16fd, type: 3}
-    - target: {fileID: 1985157680151360815, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
-      propertyPath: m_FontData.m_LineSpacing
-      value: 1.2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
 --- !u!1 &386692302
