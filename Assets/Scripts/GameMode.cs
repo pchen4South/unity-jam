@@ -274,7 +274,7 @@ public class GameMode : MonoBehaviour
 
 		if (killerPlayerState.weaponIndex >= gunCount - 1)
 		{
-			HandleVictory(killerPlayerState.player);
+			StartCoroutine(HandleVictory(killerPlayerState.player));
 		}
 		else
 		{
@@ -284,12 +284,13 @@ public class GameMode : MonoBehaviour
 		}
 	}
 
-	void HandleVictory(Player winningPlayer){
+	IEnumerator HandleVictory(Player winningPlayer){
+			yield return new WaitForSeconds(2f);
 			winningPlayerIndex = winningPlayer.PlayerNumber;
 			state = GameState.Victory;
 			winningPlayer.SetAsVictor();
 
-			WinningPlayerModel.StartWinSequence();
+			WinningPlayerModel.StartWinSequence(winningPlayer);
 			ui.countdownNumber.fontSize = 50;
 			ui.countdownNumber.text = "\n\n\nPlayer " + (winningPlayerIndex + 1).ToString() + " Wins!";
 			ui.animator.SetTrigger("Open");
