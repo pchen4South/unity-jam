@@ -11,6 +11,7 @@ TagManager:
   - SpawnPoint
   - JumpPad
   - MeleeWeapon
+  - SecondaryCamera
   layers:
   - Default
   - TransparentFX

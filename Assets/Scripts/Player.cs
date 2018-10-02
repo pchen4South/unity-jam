@@ -218,5 +218,9 @@ public class Player : MonoBehaviour
         this.canMove = true;
         this.canRotate = true;
     }
+
+    public void SetAsVictor(){
+        animator.SetBool("PlayerWins", true);
+    }
      
 }
