@@ -7,13 +7,14 @@ public class Player : MonoBehaviour
     public enum MoveSkillStatus { Ready, OnCooldown }
 
     [SerializeField] PlayerIndicator playerIndicator;
-    [SerializeField] SkinnedMeshRenderer meshRenderer;
+    [SerializeField] public SkinnedMeshRenderer meshRenderer;
     [SerializeField] CharacterController controller;
     [SerializeField] Animator animator;
     [SerializeField] AudioSource takeDamageSound;
     [SerializeField] AudioSource deathSound;
     [SerializeField] AudioSource spawnSound;
     [SerializeField] AudioSource dashSound;
+    [SerializeField] ParticleSystem PlayerSpawnParticles;
 
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
@@ -155,8 +156,22 @@ public class Player : MonoBehaviour
 		Health = MaxHealth;
         canMove = true;
         canRotate = true;
-
 		transform.SetPositionAndRotation(t.position, t.rotation);
+
+        var particles = Instantiate(PlayerSpawnParticles, new Vector3(transform.position.x, transform.position.y + .1f, transform.position.z), transform.rotation);
+        var children = particles.GetComponentsInChildren<ParticleSystem>();
+
+        foreach (var p in children){
+            var particleScript = p.GetComponent<SetParticleColor>();
+            if(particleScript != null){
+                particleScript.startColor = meshRenderer.material.color != null ? meshRenderer.material.color : Color.white;
+                particleScript.SetColor();
+            }
+        }
+
+        particles.Play();
+        Destroy(particles, 2f);
+
         animator.SetBool("PlayDeathAnimation", false);
         spawnSound.Play();
 	}

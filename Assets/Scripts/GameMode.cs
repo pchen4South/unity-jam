@@ -77,6 +77,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] UI ui;
 	[SerializeField] Canvas screenSpaceUICanvas;
 	[SerializeField] AudioSource BackgroundMusic;
+	[SerializeField] AudioSource CountdownAudio;
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
 
 	public float RespawnTimer = 3f;
@@ -88,6 +89,7 @@ public class GameMode : MonoBehaviour
 	GameState state = GameState.Countdown;
 	int winningPlayerIndex;
 	float remainingCountdownDuration;
+	bool CountdownStarted = false;
 
 	// TODO: I like the idea of not using Start for this but making an explicit method?
 	void Start()
@@ -124,6 +126,11 @@ public class GameMode : MonoBehaviour
 
 		if (state == GameState.Countdown)
 		{
+			if(!CountdownStarted){
+				CountdownStarted = true;
+				CountdownAudio.Play();
+			}
+
 			canMove = true;
 			canRotate = true;
 			canShoot = false;
@@ -131,6 +138,7 @@ public class GameMode : MonoBehaviour
 			ui.countdownNumber.text = Mathf.CeilToInt(remainingCountdownDuration).ToString();
 			if (remainingCountdownDuration <= 0f)
 			{
+				CountdownStarted = false;
 				state = GameState.Live;
 				ui.animator.SetTrigger("Close");
 			}
@@ -204,12 +212,18 @@ public class GameMode : MonoBehaviour
 				{
 					var lookXAxis = c.GetAxis(5);
 					var lookYAxis = c.GetAxis(6);
+					var angle = Mathf.Atan2(lookXAxis,lookYAxis) * Mathf.Rad2Deg;
+                	var lookrot = Quaternion.Euler(0, angle, 0);
 
-					direction = new Vector3(lookXAxis, 0f, lookYAxis);
-					if (direction.magnitude > 0f)
+					if (lookXAxis != 0.0f || lookYAxis != 0.0f)
 					{
-						p.transform.LookAt(direction, Vector3.up);
+						p.transform.rotation = lookrot;
 					}
+					else if (lookXAxis < .01f && lookYAxis < .01f){
+						var input = new Vector3(xAxis, 0, yAxis);
+
+						if(input != Vector3.zero) p.transform.forward = input.normalized;
+            		}
 				}
 
 				//added for roll/dash
@@ -255,6 +269,9 @@ public class GameMode : MonoBehaviour
 		{
 			winningPlayerIndex = killerIndex;
 			state = GameState.Victory;
+			ui.countdownNumber.text = "Player " + (winningPlayerIndex + 1).ToString() + " Wins!";
+			ui.animator.SetTrigger("Open");
+			
 		}
 		else
 		{

@@ -2618,6 +2618,7 @@ MonoBehaviour:
   deathSound: {fileID: 82204234171632710}
   spawnSound: {fileID: 82464947360962388}
   dashSound: {fileID: 657500250040007399}
+  PlayerSpawnParticles: {fileID: 1325223781625550397, guid: 29ea9f641d099be438dea10ab30a287b, type: 3}
   MaxHealth: 3
   MoveSpeed: 12
   SpeedModifier: 1
