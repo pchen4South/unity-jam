@@ -288,12 +288,18 @@ public class GameMode : MonoBehaviour
 			yield return new WaitForSeconds(2f);
 			winningPlayerIndex = winningPlayer.PlayerNumber;
 			state = GameState.Victory;
-			winningPlayer.SetAsVictor();
 
+			winningPlayer.SetAsVictor();
 			WinningPlayerModel.StartWinSequence(winningPlayer);
+
 			ui.countdownNumber.fontSize = 50;
 			ui.countdownNumber.text = "\n\n\nPlayer " + (winningPlayerIndex + 1).ToString() + " Wins!";
 			ui.animator.SetTrigger("Open");
+
+			Color color = new Color();
+			color.a = 0;
+			ui.PanelImage.color = color;
+
 			shakeable.transform.position = WinCamSpawn.transform.position;
 			shakeable.transform.rotation = WinCamSpawn.transform.rotation;
 	}

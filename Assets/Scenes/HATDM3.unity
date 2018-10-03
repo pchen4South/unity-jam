@@ -5101,6 +5101,17 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &202701146 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8649018481497787702, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
+  m_PrefabInstance: {fileID: 270696224}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &203914706
 GameObject:
   m_ObjectHideFlags: 0
@@ -5392,6 +5403,10 @@ PrefabInstance:
       propertyPath: WinningPlayerModel
       value: 
       objectReference: {fileID: 1332606754}
+    - target: {fileID: 6881177747668719463, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
+      propertyPath: PanelImage
+      value: 
+      objectReference: {fileID: 202701146}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
 --- !u!43 &308167520
