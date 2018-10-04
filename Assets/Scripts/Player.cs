@@ -32,13 +32,14 @@ public class Player : MonoBehaviour
     public bool canRotate = true;
 	public PlayerStatus status = PlayerStatus.Alive;
     public MoveSkillStatus moveStatus = MoveSkillStatus.Ready;
-    float currentRollTime = 0f;
     float currentDashTime = 0f;
-    public bool isRolling = false;
     public bool isDashing = false;
-    float rollX;
-    float rollY;
     float MoveSkillTimer = 0f;
+
+    //IK Targets
+    Transform LeftHandIKTarget;
+    Transform RightHandIKTarget;
+    public float IkWeight =1f;
 
 
     Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
@@ -55,21 +56,6 @@ public class Player : MonoBehaviour
     void Update() 
     {
         controller.Move(GROUNDED_DOWNWARD_VELOCITY);
-
-        //Roll logic
-        //keep for now
-        // if(isRolling && currentRollTime <= RollDuration){
-        //     this.canMove = false;
-        //     this.canRotate = false;
-
-        //     var m = Vector3.zero;
-                
-        //     m.x = rollX * Time.deltaTime * MoveSpeed * RollModifier;
-        //     m.z = rollY * Time.deltaTime * MoveSpeed * RollModifier;
-
-        //     controller.Move(m);
-        //     currentRollTime += Time.deltaTime;
-        // }
 
         if(isDashing && currentDashTime <= DashDuration){
             var dashDir = transform.forward.normalized;
@@ -95,6 +81,17 @@ public class Player : MonoBehaviour
         
     }
 
+    private void OnAnimatorIK(int layerIndex) {
+        if(LeftHandIKTarget != null && RightHandIKTarget != null){
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, IkWeight);
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, IkWeight);
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, LeftHandIKTarget.position);
+            animator.SetIKPosition(AvatarIKGoal.RightHand, RightHandIKTarget.position);
+        }
+    }
+
+
+
     public void SetColor(Color color)
     {
         playerIndicator.meshRenderer.material.color = color;
@@ -119,6 +116,12 @@ public class Player : MonoBehaviour
         }
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
+
+        Debug.Log("setwep");
+        //set IK targets
+        LeftHandIKTarget = Weapon.LeftHandIKTarget;
+        RightHandIKTarget = Weapon.RightHandIKTarget;
+
         canRotate = true;
         canMove = true;
     }
@@ -176,20 +179,7 @@ public class Player : MonoBehaviour
         spawnSound.Play();
 	}
 
-    public void RollInDirection(float xAxis, float yAxis){
-        rollX  = xAxis;
-        rollY = yAxis;
-        isRolling = true;
-        animator.SetBool("PerformRoll", true);
-    }
-
-    public void RollEnd(){
-        isRolling = false;
-        currentRollTime = 0f;
-        this.canMove = true;
-        this.canRotate = true;
-        animator.SetBool("PerformRoll", false);
-    }
+    #region moveskills
 
     public void Dash()
     {
@@ -211,6 +201,7 @@ public class Player : MonoBehaviour
         animator.SetBool("PerformDash", false);
         
     }
+    #endregion
 
     IEnumerator MoveSkillRecovery(){
         yield return new WaitForSeconds(MoveSkillRecoveryTime);

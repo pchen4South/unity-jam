@@ -101,10 +101,23 @@ public class GameMode : MonoBehaviour
 
 		remainingCountdownDuration = CountdownDuration;
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+		
+		//make a copy of spawnPoints in a List so that we can assign unique starting spawns
+		List<GameObject> spawnPointsCopy = new List<GameObject>();
+		foreach(var sp in spawnPoints){
+			spawnPointsCopy.Add(sp);
+		}
+
+
 		playerStates = new PlayerState[playerCount];
 		for (var i = 0; i < playerCount; i++)
 		{
-			var sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
+			// choose a spawn point from the copied list, then remove it
+			var spawnpoint = Random.Range(0, spawnPointsCopy.Count);
+			var sp = spawnPointsCopy[spawnpoint];
+			spawnPointsCopy.RemoveAt(spawnpoint);
+			
+			//spawn a player and PlayerState, initialize Player's values
 			var player = Instantiate(PlayerPrefab);
 			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
 			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
@@ -181,7 +194,6 @@ public class GameMode : MonoBehaviour
 			var moving = xAxis != 0f || yAxis != 0f;
 
 			//added for roll / dash
-			var rollTrue = Input.GetKey("r");
 			var dashTrue = Input.GetKey("f");
 
 			if (canShoot && triggerDown && p.Weapon)
@@ -230,11 +242,6 @@ public class GameMode : MonoBehaviour
             		}
 
 
-				}
-
-				//added for roll/dash
-				if(rollTrue && !p.isRolling){
-					p.RollInDirection(xAxis, yAxis);
 				}
 
 				if(dashTrue){
