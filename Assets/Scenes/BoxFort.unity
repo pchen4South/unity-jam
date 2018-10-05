@@ -5522,6 +5522,14 @@ PrefabInstance:
       propertyPath: WeaponPrefabs.Array.data[5]
       value: 
       objectReference: {fileID: 5760404808585814101, guid: 4aa1abadd20bde44a9766dd34488a6e9, type: 3}
+    - target: {fileID: 82536754695568076, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 9e633c45c3eca564fa85e5dc774d5653, type: 3}
+    - target: {fileID: 82536754695568076, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
 --- !u!1 &288849688

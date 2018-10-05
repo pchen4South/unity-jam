@@ -293,6 +293,7 @@ public class GameMode : MonoBehaviour
 
 	IEnumerator HandleVictory(Player winningPlayer){
 			yield return new WaitForSeconds(2f);
+			BackgroundMusic.Stop();
 			winningPlayerIndex = winningPlayer.PlayerNumber;
 			state = GameState.Victory;
 
