@@ -37,6 +37,9 @@ public class Shotgun : AbstractWeapon {
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 	private GameObject FlashInstance;
+    
+    [SerializeField]    Transform IKTarget_L;
+    [SerializeField]    Transform IKTarget_R;
 
 
 
@@ -44,6 +47,8 @@ public class Shotgun : AbstractWeapon {
         WeaponName = "Shotgun";
         AmmoCount = MagazineSize;       
 		FlashInstance = Instantiate(muzzleFlash, transform);
+        LeftHandIKTarget = IKTarget_L;
+        RightHandIKTarget = IKTarget_R;
     }
 
     void Reload(){
