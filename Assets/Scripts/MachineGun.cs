@@ -15,10 +15,10 @@ public class MachineGun : AbstractWeapon
     GameObject HitParticlePrefab;
     [SerializeField]
     ParticleSystem HitPlayerParticlePrefab;
-    [SerializeField]
-    GameObject muzzleFlash;
-    [SerializeField]
-    Light muzzleFlashLight;
+    // [SerializeField]
+    // GameObject muzzleFlash;
+    // [SerializeField]
+    // Light muzzleFlashLight;
     [SerializeField]
     LineRenderer bulletTracer;
 
@@ -41,7 +41,7 @@ public class MachineGun : AbstractWeapon
     {
         //AmmoCount = MagazineSize;
         AmmoCount = -1;
-        FlashInstance = Instantiate(muzzleFlash, transform);
+        //FlashInstance = Instantiate(muzzleFlash, transform);
         WeaponName = "Machine Gun";
     }
 
@@ -72,26 +72,25 @@ public class MachineGun : AbstractWeapon
     {
         if (timeTillNextShot > 0)
             return;
-        
-        var muzzle = transform.position + transform.forward * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
         timeTillNextShot = fireRate;
 
-        FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
-        FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
+        // FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
+        // FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
 
-        muzzleFlashLight.enabled = true;
+        // muzzleFlashLight.enabled = true;
         fireSound.Play();
-        ray.origin = muzzle;
-        ray.direction = transform.forward;
+        ray.origin = Muzzle.position;
+        ray.direction = Muzzle.transform.forward;
 
         var didHit = Physics.Raycast(ray, out rayHit, layerMask);
-
+        /*
         if (!didHit)
             return;
+             */
 
-        bulletTracer.SetPosition(0, muzzle);
+        bulletTracer.SetPosition(0, Muzzle.position);
         bulletTracer.SetPosition(1, rayHit.point);
         bulletTracer.enabled = true;
         
@@ -123,6 +122,6 @@ public class MachineGun : AbstractWeapon
     {
         yield return new WaitForSeconds(shotTime);
         bulletTracer.enabled = false;
-        muzzleFlashLight.enabled = false;
+        // muzzleFlashLight.enabled = false;
     }
 }

@@ -5,23 +5,16 @@ using UnityEngine;
 public class Deagle : AbstractWeapon 
 {
     [Header("Cached references")]
-    [SerializeField]
-    AudioSource fireSound;
-    
-	[SerializeField]
-    AudioSource reloadSound;
-    [SerializeField]
-    ParticleSystem HitParticlePrefab;
-    [SerializeField]
-    ParticleSystem HitPlayerParticlePrefab;
-    [SerializeField]
-    GameObject muzzleFlash;
-	[SerializeField]
-    GameObject BulletHole;
-    [SerializeField]
-    Light muzzleFlashLight;
-    [SerializeField]
-    LineRenderer bulletTracer;
+    [SerializeField]    AudioSource fireSound;
+	[SerializeField]    AudioSource reloadSound;
+    [SerializeField]    ParticleSystem HitParticlePrefab;
+    [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
+    [SerializeField]    GameObject muzzleFlash;
+	[SerializeField]    GameObject BulletHole;
+    [SerializeField]    Light muzzleFlashLight;
+    [SerializeField]    LineRenderer bulletTracer;
+    [SerializeField]    Transform IKTarget_L;
+    [SerializeField]    Transform IKTarget_R;
 
     [Header("Config")]
     public float fireRate = .1f;
@@ -42,6 +35,8 @@ public class Deagle : AbstractWeapon
         AmmoCount = MagazineSize;   
         FlashInstance = Instantiate(muzzleFlash, transform);     
         WeaponName = "D. Eagle";
+        LeftHandIKTarget = IKTarget_L;
+        RightHandIKTarget = IKTarget_R;
     }
 
     void Reload(){

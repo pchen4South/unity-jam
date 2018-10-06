@@ -4,24 +4,16 @@ using UnityEngine;
 
 public class SMG : AbstractWeapon {
     [Header("Cached references")]
-    [SerializeField]
-    AudioSource fireSound;
-
-    [SerializeField]
-    AudioSource reloadSound;
-    [SerializeField]
-    ParticleSystem HitParticlePrefab;
-    [SerializeField]
-    ParticleSystem HitPlayerParticlePrefab;
-    [SerializeField]
-    GameObject muzzleFlash;
-    [SerializeField]
-    Light muzzleFlashLight;
-    [SerializeField]
-    LineRenderer bulletTracer;
-
-    [SerializeField]
-    ParticleSystem BulletCasings;
+    [SerializeField]    AudioSource fireSound;
+    [SerializeField]    AudioSource reloadSound;
+    [SerializeField]    ParticleSystem HitParticlePrefab;
+    [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
+    [SerializeField]    GameObject muzzleFlash;
+    [SerializeField]    Light muzzleFlashLight;
+    [SerializeField]    LineRenderer bulletTracer;
+    [SerializeField]    ParticleSystem BulletCasings;
+    [SerializeField]    Transform IKTarget_L;
+    [SerializeField]    Transform IKTarget_R;
 
     [Header("Config")]
     public float fireRate = .15f;
@@ -30,11 +22,8 @@ public class SMG : AbstractWeapon {
     public LayerMask layerMask = new LayerMask();
     public int MagazineSize = 25;
     public float ReloadTime = 1f;
-
     public float maxBulletSpread;
     public float timeToMaxSpread;
-
-
 
     [Header("State")]
     float timeTillNextShot = 0f;
@@ -56,6 +45,9 @@ public class SMG : AbstractWeapon {
         em = CasingsInstance.emission;
         em.enabled = false;
         WeaponName = "SMG";
+
+        LeftHandIKTarget = IKTarget_L;
+        RightHandIKTarget = IKTarget_R;
     }
 
     void Reload()

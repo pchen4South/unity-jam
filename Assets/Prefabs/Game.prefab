@@ -62,6 +62,8 @@ MonoBehaviour:
   - {fileID: 114131538142783484, guid: cfcb332d67619214087fa9778edd768a, type: 3}
   - {fileID: 114448926660466218, guid: 9d73e5b707a651543994b25b24e3483d, type: 3}
   - {fileID: 114182992549088776, guid: c884ac0c73577d0409855a5be84370b7, type: 3}
+  WinCamSpawn: {fileID: 0}
+  WinningPlayerModel: {fileID: 0}
   RespawnTimer: 3
   CountdownDuration: 3
 --- !u!82 &82536754695568076
