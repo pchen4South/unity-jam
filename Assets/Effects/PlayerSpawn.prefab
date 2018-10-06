@@ -13248,7 +13248,7 @@ ParticleSystem:
         m_RotationOrder: 4
     maxLights: 20
   TrailModule:
-    enabled: 0
+    enabled: 1
     mode: 0
     ratio: 1
     lifetime:
@@ -14135,7 +14135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particles: {fileID: 1325223782771816152}
-  player: {fileID: 0}
+  startColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1325223782994012746
 GameObject:
   m_ObjectHideFlags: 0
@@ -18847,4 +18847,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particles: {fileID: 1325223782994012743}
-  player: {fileID: 0}
+  startColor: {r: 0, g: 0, b: 0, a: 0}

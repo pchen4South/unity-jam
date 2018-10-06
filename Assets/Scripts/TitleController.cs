@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class TitleController : MonoBehaviour 
 {
-	public Text startText;
+	[SerializeField] Text startText;
+	[SerializeField] SpriteRenderer TitleText;
+	public Gradient TitleColor;
 	private bool IsFlashing = false;
 	public float textFlashTime = .25f;
 	public float buildingFadeInTime = 2f;
@@ -13,6 +15,8 @@ public class TitleController : MonoBehaviour
 	private Image Buildings;
 	private float titleRunTime = 0f;
 
+    public float strobeDuration = 2f;
+	
 	void Start() 
 	{
 		Buildings = gameObject.transform.Find("Buildings").GetComponent<Image>();
@@ -33,6 +37,10 @@ public class TitleController : MonoBehaviour
 		{
             StartCoroutine(FlashTextOff());       
         }
+
+		float t = Mathf.PingPong(Time.time / strobeDuration, 1f);
+        TitleText.color = TitleColor.Evaluate(t);
+
 	}
 
     IEnumerator FlashTextOff()

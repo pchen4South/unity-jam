@@ -79,11 +79,14 @@ public class GameMode : MonoBehaviour
 	[SerializeField] AudioSource BackgroundMusic;
 	[SerializeField] AudioSource CountdownAudio;
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
-
+	[SerializeField] GameObject WinCamSpawn;
+	[SerializeField] WinningPlayer WinningPlayerModel;
+	
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
 
 	GameObject[] spawnPoints;
+	
 	PlayerState[] playerStates;
 	PlayerHUDManager playerHUDManager;
 	GameState state = GameState.Countdown;
@@ -267,11 +270,7 @@ public class GameMode : MonoBehaviour
 
 		if (killerPlayerState.weaponIndex >= gunCount - 1)
 		{
-			winningPlayerIndex = killerIndex;
-			state = GameState.Victory;
-			ui.countdownNumber.text = "Player " + (winningPlayerIndex + 1).ToString() + " Wins!";
-			ui.animator.SetTrigger("Open");
-			
+			StartCoroutine(HandleVictory(killerPlayerState.player));
 		}
 		else
 		{
@@ -280,6 +279,27 @@ public class GameMode : MonoBehaviour
 			StartCoroutine(RespawnAfter(killedPlayerState, RespawnTimer));
 		}
 	}
+
+	IEnumerator HandleVictory(Player winningPlayer){
+			yield return new WaitForSeconds(2f);
+			winningPlayerIndex = winningPlayer.PlayerNumber;
+			state = GameState.Victory;
+
+			winningPlayer.SetAsVictor();
+			WinningPlayerModel.StartWinSequence(winningPlayer);
+
+			ui.countdownNumber.fontSize = 50;
+			ui.countdownNumber.text = "\n\n\nPlayer " + (winningPlayerIndex + 1).ToString() + " Wins!";
+			ui.animator.SetTrigger("Open");
+
+			Color color = new Color();
+			color.a = 0;
+			ui.PanelImage.color = color;
+
+			shakeable.transform.position = WinCamSpawn.transform.position;
+			shakeable.transform.rotation = WinCamSpawn.transform.rotation;
+	}
+
 
 	IEnumerator RespawnAfter(PlayerState ps, float seconds)
 	{
