@@ -5,13 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 627a6fbdf04900449ba605189a6833eb
+  - enabled: 1
+    path: Assets/Scenes/StageSelect.unity
+    guid: 312a140684eeb80418a3b3f520122a5d
   - enabled: 1
     path: Assets/Scenes/HATDM3.unity
     guid: f8a1fda668c52421abc4d31fd3c834c8
   - enabled: 1
-    path: Assets/Scenes/HATDM1.unity
-    guid: e1d21000264c94c388036f210301e0b2
+    path: Assets/Scenes/Castle.unity
+    guid: 13d1c753b523fac4e9d3612ba49f8c65
+  - enabled: 1
+    path: Assets/Scenes/BoxFort.unity
+    guid: 18bac5ae2014d7c4fa0e9db8cb345de1
   m_configObjects: {}
