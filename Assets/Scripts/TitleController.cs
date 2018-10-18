@@ -9,16 +9,21 @@ public class TitleController : MonoBehaviour
 {
 	[SerializeField] Text startText;
 	[SerializeField] SpriteRenderer TitleText;
-	public Rewired.Player playerController;
+	[SerializeField] ParticleSystem BulletTrail;
+
+	Rewired.Player playerController;
 	public Gradient TitleColor;
 	private bool IsFlashing = false;
 	public float textFlashTime = .25f;
 	public float buildingFadeInTime = 2f;
+	public AudioSource StartPressedSound;
 
 	private Image Buildings;
 	private float titleRunTime = 0f;
 
     public float strobeDuration = 2f;
+
+
 	
 	void Start() 
 	{
@@ -52,7 +57,7 @@ public class TitleController : MonoBehaviour
 			if(player.controllers.joystickCount > 0){
 				var startPressed = player.GetButtonDown("Start");
 				if(startPressed){
-					SceneManager.LoadScene("StageSelect");
+					StartPressed();
 				}
 			}
 		}
@@ -60,8 +65,20 @@ public class TitleController : MonoBehaviour
 		//for mouse/keyboard
 		var AnyKeyOrMouseClick = Input.anyKeyDown;
 		if(AnyKeyOrMouseClick){
-			SceneManager.LoadScene("StageSelect");
+			StartPressed();
 		}
+	}
+
+	void StartPressed(){
+		StartPressedSound.Play();
+		BulletTrail.Play();
+		textFlashTime = .1f;
+		StartCoroutine(GoToStageSelect());
+	}
+
+	IEnumerator GoToStageSelect(){
+		yield return new WaitForSeconds(2f);
+		SceneManager.LoadScene("StageSelect");
 	}
 
     IEnumerator FlashTextOff()
