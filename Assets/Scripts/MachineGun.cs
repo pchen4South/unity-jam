@@ -94,11 +94,11 @@ public class MachineGun : AbstractWeapon
         bulletTracer.SetPosition(1, rayHit.point);
         bulletTracer.enabled = true;
         
-        var isPlayer = rayHit.collider.CompareTag("Player");
+        var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
 
         if (isPlayer)
         {
-            var target = rayHit.collider.GetComponent<Player>();
+            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
             var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
 
             target.Damage(1, player.PlayerNumber);

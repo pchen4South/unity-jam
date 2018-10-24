@@ -115,13 +115,13 @@ public class SMG : AbstractWeapon {
         bulletTracer.SetPosition(0, muzzle);
         bulletTracer.SetPosition(1, rayHit.point);
         bulletTracer.enabled = true;
-        var isPlayer = rayHit.collider.CompareTag("Player");
+        var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
 
         // should move some of this code to player
         if (isPlayer)
         {
-            if(player.PlayerNumber != rayHit.collider.gameObject.GetComponent<Player>().PlayerNumber){
-                var target = rayHit.collider.GetComponent<Player>();
+            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
+            if(player.PlayerNumber != target.PlayerNumber){
                 var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
                 target.Damage(1, player.PlayerNumber);
                 Destroy(hitParticles.gameObject, 2f);

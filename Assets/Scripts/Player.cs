@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class Player : MonoBehaviour 
 {
+    #region variables
     public enum PlayerStatus { Alive, Dead, Invincible }
     public enum MoveSkillStatus { Ready, OnCooldown }
 
@@ -15,13 +16,15 @@ public class Player : MonoBehaviour
     [SerializeField] AudioSource spawnSound;
     [SerializeField] AudioSource dashSound;
     [SerializeField] ParticleSystem PlayerSpawnParticles;
+    [SerializeField]	GameObject Reticle;
+    [SerializeField]	SpriteRenderer Crosshair;
+    [SerializeField]	PlayerHitbox hitbox;
 
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
     public float SpeedModifier = 1f;
-    public float RollDuration = 0.125f;
     public float DashDuration = 0.25f;
-    public float MoveSkillCooldown = 1f;
+    public float MoveSkillCooldown = 2f;
     public float MoveSkillRecoveryTime = .1f;
     public System.Action<int, int> OnDeath;
 
@@ -31,56 +34,53 @@ public class Player : MonoBehaviour
     public bool canMove = true;
     public bool canRotate = true;
 	public PlayerStatus status = PlayerStatus.Alive;
+    
+    //Moveskill 
     public MoveSkillStatus moveStatus = MoveSkillStatus.Ready;
     float currentDashTime = 0f;
     public bool isDashing = false;
     float MoveSkillTimer = 0f;
+    Vector3 dashDir = Vector3.zero;
 
     //IK Targets
     Transform LeftHandIKTarget;
     Transform RightHandIKTarget;
     public float IkWeight =1f;
-
-
     Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
-   void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, transform.forward * 10f);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, Vector3.down * 10f);
-        Gizmos.color = controller.isGrounded ? Color.green : Color.gray;
-        Gizmos.DrawCube(transform.position + transform.up * 3f, Vector3.one * .2f);
+    #endregion
+
+    void Start(){
+        hitbox.player = this;
     }
 
     void Update() 
     {
+        //maybe can set this once somewhere
+        Crosshair.color = meshRenderer.material.color;
+        //apply constant downward vel
         controller.Move(GROUNDED_DOWNWARD_VELOCITY);
-
+        //calculate and execute dash
         if(isDashing && currentDashTime <= DashDuration){
-            var dashDir = transform.forward.normalized;
             var m = Vector3.zero;
             m.x = dashDir.x  * Time.deltaTime * MoveSpeed * SpeedModifier;
             m.z = dashDir.z * Time.deltaTime * MoveSpeed * SpeedModifier;
             controller.Move(m);
             currentDashTime += Time.deltaTime;
         }
+        //end dash
+        if(currentDashTime > DashDuration) DashEnd();
 
-        if(currentDashTime > DashDuration){
-            DashEnd();
-        }
-
+        //dash cooldown
         if(moveStatus == MoveSkillStatus.OnCooldown){
             MoveSkillTimer += Time.deltaTime;
             if (MoveSkillTimer >= MoveSkillCooldown){
                 MoveSkillTimer = 0f;
                 moveStatus = MoveSkillStatus.Ready;
             } 
-        }
-
-        
+        }        
     }
 
+    //Inverse Kinematics for guns
     private void OnAnimatorIK(int layerIndex) {
         if(LeftHandIKTarget != null && RightHandIKTarget != null){
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, IkWeight);
@@ -89,25 +89,24 @@ public class Player : MonoBehaviour
             animator.SetIKPosition(AvatarIKGoal.RightHand, RightHandIKTarget.position);
         }
     }
-
-
-
+    //Sets the color of the player and player indicator
     public void SetColor(Color color)
     {
         playerIndicator.meshRenderer.material.color = color;
         meshRenderer.material.color = color;
     }
-
+    //move character controller
     public void Move(float xAxis, float yAxis)
     {
-        var m = Vector3.zero;
+        if(status == PlayerStatus.Dead) return;
 
+        var m = Vector3.zero;
         m.x = xAxis * Time.deltaTime * MoveSpeed * SpeedModifier;
         m.z = yAxis * Time.deltaTime * MoveSpeed * SpeedModifier;
         controller.Move(m);
         animator.SetFloat("Forward", m.magnitude);
     }
-
+    //set the equipped weapon
     public void SetWeapon(AbstractWeapon newWeapon)
     {
         if (Weapon)
@@ -117,7 +116,6 @@ public class Player : MonoBehaviour
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
 
-        Debug.Log("setwep");
         //set IK targets
         LeftHandIKTarget = Weapon.LeftHandIKTarget;
         RightHandIKTarget = Weapon.RightHandIKTarget;
@@ -125,7 +123,7 @@ public class Player : MonoBehaviour
         canRotate = true;
         canMove = true;
     }
-
+    //damages the player
     public void Damage(int amountOfDamage, int attackerIndex)
     {
         if (status == PlayerStatus.Dead)
@@ -140,7 +138,7 @@ public class Player : MonoBehaviour
             Kill(attackerIndex);
         }
     }
-
+    //kill player
     public void Kill(int attackerIndex)
     {
         status = PlayerStatus.Dead;
@@ -152,7 +150,7 @@ public class Player : MonoBehaviour
         animator.SetBool("PlayDeathAnimation", true);
         deathSound.Play();
     }
-
+    //spawn new player
 	public void Spawn(Transform t)
 	{
         status = PlayerStatus.Alive;
@@ -174,16 +172,16 @@ public class Player : MonoBehaviour
 
         particles.Play();
         Destroy(particles, 2f);
-
         animator.SetBool("PlayDeathAnimation", false);
         spawnSound.Play();
 	}
 
     #region moveskills
-
-    public void Dash()
+    public void Dash(Vector3 direction)
     {
-        if(!Weapon.CompareTag("MeleeWeapon") || moveStatus != MoveSkillStatus.Ready) return;
+        //if(!Weapon.CompareTag("MeleeWeapon") || moveStatus != MoveSkillStatus.Ready) return;
+        if (direction == Vector3.zero) return;
+        dashDir = direction;
         dashSound.Play();
         SpeedModifier = 2.5f;
         isDashing = true;
@@ -201,15 +199,14 @@ public class Player : MonoBehaviour
         animator.SetBool("PerformDash", false);
         
     }
-    #endregion
-
     IEnumerator MoveSkillRecovery(){
         yield return new WaitForSeconds(MoveSkillRecoveryTime);
         SpeedModifier = Weapon.SpeedModifier;
         this.canMove = true;
         this.canRotate = true;
     }
-
+    #endregion
+    //helper to kick off the victory animation
     public void SetAsVictor(){
         animator.SetBool("PlayerWins", true);
     }

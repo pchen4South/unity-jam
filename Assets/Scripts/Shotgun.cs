@@ -40,9 +40,6 @@ public class Shotgun : AbstractWeapon {
     
     [SerializeField]    Transform IKTarget_L;
     [SerializeField]    Transform IKTarget_R;
-
-
-
 	void Start(){
         WeaponName = "Shotgun";
         AmmoCount = MagazineSize;       

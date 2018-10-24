@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Rewired;
 
 public class MapSelect_LoadOnClick : MonoBehaviour
 {
@@ -16,9 +17,7 @@ public class MapSelect_LoadOnClick : MonoBehaviour
 
     AbstractMap currentMap;
     int mapIndex = 0;
-
-
-
+    
     public void LoadScene(string MapName){
         LoadingScreen.SetActive(true);
         SceneManager.LoadScene(MapName);
@@ -37,6 +36,20 @@ public class MapSelect_LoadOnClick : MonoBehaviour
             UpArrow.interactable = true;
             DownArrow.interactable = true;
         }
+
+
+        //poll players controllers 
+		var players = ReInput.players;
+		for(int i = 0; i <= players.playerCount - 1 ; i++){
+			var player = players.GetPlayer(i);
+			if(player.controllers.joystickCount > 0){
+				var startPressed = player.GetButtonDown("Left");
+				if(startPressed){
+				
+				}
+			}
+		}
+		
     }
 
     public void UpArrowClicked(){

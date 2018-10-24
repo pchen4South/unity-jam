@@ -24,16 +24,17 @@ public class ShotgunHitDetect : MonoBehaviour
         
     }
 
-    
-    void OnParticleCollision(GameObject other)
+    private void OnParticleCollision(GameObject other)
     {
         int numCollisionEvents = ParticlePhysicsExtensions.GetCollisionEvents (blastRadius, other, collisionEvents);
         
         int i = 0;
         while (i < numCollisionEvents) 
         {
+            
             if(other.tag == "Player"){
                 var target = other.gameObject.GetComponent<Player>();
+                //var target = other.GetComponentInParent<PlayerHitbox>().player;
                 var targetPlayerNumber = target.PlayerNumber;
 
                 if(targetPlayerNumber != firingPlayerNumber){

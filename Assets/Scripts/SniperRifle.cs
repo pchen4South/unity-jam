@@ -75,9 +75,10 @@ public class SniperRifle : AbstractWeapon
             return;
 
         // TODO: should move some of this code to player
-        if (rayHit.collider.CompareTag("Player"))
+        if (rayHit.collider.CompareTag("PlayerHitbox"))
         {
-            var target = rayHit.collider.GetComponent<Player>();
+            //var target = rayHit.collider.GetComponent<Player>();
+            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
             var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
 
             target.Damage(1, player.PlayerNumber);

@@ -529,9 +529,12 @@ MonoBehaviour:
   RightHandIKTarget: {fileID: 6803092744379794515}
   fireSound: {fileID: 82043888457751424}
   reloadSound: {fileID: 82530650906356306}
-  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef, type: 3}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77, type: 3}
-  muzzleFlash: {fileID: 1956061264784194, guid: 0c8832a2e0bc8c944969fe1a480bb84c, type: 3}
+  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
+    type: 3}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
+  muzzleFlash: {fileID: 1956061264784194, guid: 0c8832a2e0bc8c944969fe1a480bb84c,
+    type: 3}
   muzzleFlashLight: {fileID: 108913146903628442}
   BlastRadius: {fileID: 578506019405434}
   fireRate: 1
@@ -4742,7 +4745,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 1025
+      m_Bits: 4294967295
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -4954,6 +4957,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0

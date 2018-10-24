@@ -54,6 +54,7 @@ public class PlayerHUDManager : Object
 			playerHUDPool[i].UpdatePosition(camera, parent, playerStates[i].player.transform.position);
 			playerHUDPool[i].UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
 			playerHUDPool[i].UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
+			//playerHUDManager.UpdatePlayerHUDs(playerStates, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform);
 			i++;
 		}
 		while (i < playerHUDPool.Length)
@@ -193,9 +194,10 @@ public class GameMode : MonoBehaviour
 			var yAxis = c.GetAxis(1);
 			var moving = xAxis != 0f || yAxis != 0f;
 
-			//added for roll / dash
-			var dashTrue = Input.GetKey("f");
 
+			//added for roll / dash
+			var dashTrue = c.GetButtonDown("Dash");
+			
 			if (canShoot && triggerDown && p.Weapon)
 			{
 				p.Weapon.PullTrigger(p);
@@ -204,7 +206,7 @@ public class GameMode : MonoBehaviour
 			{
 				p.Weapon.ReleaseTrigger(p);
 			}
-			if (canMove && moving && p.canMove)
+			if (canMove && moving && p.canMove && (Mathf.Abs(xAxis) >= .05f || Mathf.Abs(yAxis) >= .05f))
 			{
 				p.Move(xAxis, yAxis);
 			}
@@ -212,7 +214,8 @@ public class GameMode : MonoBehaviour
 			{
 
 				Vector3 direction = new Vector3();
-				if (c.controllers.hasMouse)
+				//if (c.controllers.hasMouse)
+				if (false)
 				{
 					Vector2 pvp = shakeable.shakyCamera.WorldToScreenPoint(p.transform.position);
 					Vector2 mouse = c.controllers.Mouse.screenPosition;
@@ -240,12 +243,11 @@ public class GameMode : MonoBehaviour
 
 						if(input != Vector3.zero) p.transform.forward = input.normalized;
             		}
-
-
 				}
 
 				if(dashTrue){
-					p.Dash();
+					var dashDir = new Vector3(xAxis, 0, yAxis);
+					p.Dash(dashDir);
 				}
 
 			}
