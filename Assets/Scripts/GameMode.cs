@@ -19,47 +19,65 @@ public class PlayerState
 	}
 }
 
+public class PlayerUI: Object{
+	public PlayerHUD HUD {get;set;}
+	public PlayerStatusUI PSUI {get;set;}
+}
+
 [System.Serializable]
 public class PlayerHUDManager : Object
 {
-	PlayerHUD[] playerHUDPool;
+	PlayerUI[] playerUIPool;
 
-	public PlayerHUDManager(PlayerHUD PlayerHUDPrefab, int maximumSize)
+	public PlayerHUDManager(PlayerHUD PlayerHUDPrefab, PlayerStatusUI PlayerStatusUIPrefab, int maximumSize)
 	{
-		playerHUDPool = new PlayerHUD[maximumSize];
+		playerUIPool = new PlayerUI[maximumSize];
 
-		for (var i = 0; i < playerHUDPool.Length; i++)
+		for (var i = 0; i < playerUIPool.Length; i++)
 		{
-			playerHUDPool[i] = Instantiate(PlayerHUDPrefab);
+			playerUIPool[i] = new PlayerUI();
+			var HUD = Instantiate(PlayerHUDPrefab);
+			var PSUI = Instantiate(PlayerStatusUIPrefab);
+			playerUIPool[i].HUD = HUD;
+			playerUIPool[i].PSUI = PSUI;
 		}
 	}
 
 	void OnDestroy()
 	{
-		for (var i = 0; i < playerHUDPool.Length; i++)
+		for (var i = 0; i < playerUIPool.Length; i++)
 		{
-			Destroy(playerHUDPool[i]);
+			Destroy(playerUIPool[i]);
 		}
 	}
 
-	public void UpdatePlayerHUDs(PlayerState[] playerStates, Camera camera, RectTransform parent)
+	public void UpdatePlayerHUDs(PlayerState[] playerStates, Camera camera, RectTransform parent, RectTransform bottomUIContainer )
 	{
 		var i = 0;
 
 		while (i < playerStates.Length)
 		{
-			playerHUDPool[i].gameObject.SetActive(true);
-			playerHUDPool[i].transform.SetParent(parent, false);
-			playerHUDPool[i].UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
-			playerHUDPool[i].UpdatePosition(camera, parent, playerStates[i].player.transform.position);
-			playerHUDPool[i].UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
-			playerHUDPool[i].UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
-			//playerHUDManager.UpdatePlayerHUDs(playerStates, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform);
+
+			playerUIPool[i].HUD.gameObject.SetActive(true);
+			playerUIPool[i].HUD.transform.SetParent(parent, false);
+			playerUIPool[i].HUD.UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
+			playerUIPool[i].HUD.UpdatePosition(camera, parent, playerStates[i].player.transform.position);
+			playerUIPool[i].HUD.UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
+			playerUIPool[i].HUD.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
+			
+			playerUIPool[i].PSUI.gameObject.SetActive(true);
+			playerUIPool[i].PSUI.transform.SetParent(bottomUIContainer.transform, false);
+			playerUIPool[i].PSUI.UpdateWeaponType(playerStates[i].player.Weapon.WeaponName);
+			playerUIPool[i].PSUI.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
+			playerUIPool[i].PSUI.UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
+			playerUIPool[i].PSUI.UpdatePlayerIdentity(playerStates[i].player.PlayerNumber, playerStates[i].player.meshRenderer.material.color);
+
 			i++;
 		}
-		while (i < playerHUDPool.Length)
+		while (i < playerUIPool.Length)
 		{
-			playerHUDPool[i].gameObject.SetActive(false);
+			playerUIPool[i].HUD.gameObject.SetActive(false);
+			playerUIPool[i].PSUI.gameObject.SetActive(false);
 			i++;
 		}
 	}
@@ -71,6 +89,8 @@ public class GameMode : MonoBehaviour
 
 	[SerializeField] Player PlayerPrefab;
 	[SerializeField] PlayerHUD PlayerHUDPrefab;
+	[SerializeField] PlayerStatusUI PlayerStatusUIPrefab;
+	[SerializeField] RectTransform PlayerUIArea;
 
 	[SerializeField] ColorScheme colorScheme;
 	[SerializeField] Shakeable shakeable;
@@ -98,7 +118,7 @@ public class GameMode : MonoBehaviour
 	// TODO: I like the idea of not using Start for this but making an explicit method?
 	void Start()
 	{
-		var playerCount = 2;
+		var playerCount = 4;
 
 		remainingCountdownDuration = CountdownDuration;
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -132,7 +152,7 @@ public class GameMode : MonoBehaviour
 			playerStates[i] = ps;
 		}
 
-		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, 8);
+		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, PlayerStatusUIPrefab, 8);
 	}
 
 	void Update()
@@ -267,7 +287,7 @@ public class GameMode : MonoBehaviour
 		}
 
 		// Update the player HUDs
-		playerHUDManager.UpdatePlayerHUDs(playerStates, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform);
+		playerHUDManager.UpdatePlayerHUDs(playerStates, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
 	}
 
 	void HandlePlayerDeath(int killedIndex, int killerIndex)

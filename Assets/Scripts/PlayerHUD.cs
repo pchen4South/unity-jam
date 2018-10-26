@@ -4,17 +4,20 @@ using UnityEngine.UI;
 public class PlayerHUD : MonoBehaviour 
 {
 	[SerializeField]	RectTransform rectTransform;
-	[SerializeField]	RectTransform reticle;
+	//[SerializeField]	RectTransform reticle;
 	[SerializeField]	GraphBar lifeBar;
 	[SerializeField] 	Text WeaponName;
 	[SerializeField] 	Text AmmoLabel;
 	[SerializeField] 	Text AmmoCount;
+	[SerializeField] 	Text PlayerNumber;
 
 	
 
 	public Vector2 screenSpaceOffset = Vector2.zero;
 	public Color healthyColor = Color.green;
 	public Color deadColor = Color.red;
+
+	public void UpdatePlayerIdentity(){}
 
 	public void UpdateHealth(int currentHealth, int maxHealth)
 	{
@@ -32,18 +35,7 @@ public class PlayerHUD : MonoBehaviour
 		position *= parent.sizeDelta;
 		position += screenSpaceOffset;
 
-		Vector2 position2 = worldPosition + new Vector3(0, .1f, 0);
-		// position2 -= new Vector2(.5f, .5f);
-		position2 *= parent.sizeDelta;
-		position2 += screenSpaceOffset;
-
-		reticle.anchoredPosition = position2;
-
 		rectTransform.anchoredPosition = position;
-	}
-
-	public void UpdateReticlePosition(){
-
 	}
 
 	public void UpdateWeaponText(string weaponName){
