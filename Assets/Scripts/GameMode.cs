@@ -51,7 +51,7 @@ public class PlayerHUDManager : Object
 		}
 	}
 
-	public void UpdatePlayerHUDs(PlayerState[] playerStates, Camera camera, RectTransform parent, RectTransform bottomUIContainer )
+	public void UpdatePlayerHUDs(PlayerState[] playerStates, AbstractWeapon[] WeaponPrefabs, Camera camera, RectTransform parent, RectTransform bottomUIContainer )
 	{
 		var i = 0;
 
@@ -67,10 +67,12 @@ public class PlayerHUDManager : Object
 			
 			playerUIPool[i].PSUI.gameObject.SetActive(true);
 			playerUIPool[i].PSUI.transform.SetParent(bottomUIContainer.transform, false);
-			playerUIPool[i].PSUI.UpdateWeaponType(playerStates[i].player.Weapon.WeaponName);
+			playerUIPool[i].PSUI.UpdateWeaponType(playerStates[i].player.Weapon.WeaponName, (playerStates[i].player.Weapon.MagazineSize));
 			playerUIPool[i].PSUI.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
 			playerUIPool[i].PSUI.UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
 			playerUIPool[i].PSUI.UpdatePlayerIdentity(playerStates[i].player.PlayerNumber, playerStates[i].player.meshRenderer.material.color);
+			playerUIPool[i].PSUI.UpdateWeaponProgress(playerStates[i].weaponIndex, WeaponPrefabs);
+			playerUIPool[i].PSUI.UpdateDashCooldown(playerStates[i].player.MoveSkillCooldown, playerStates[i].player.MoveSkillTimer);
 
 			i++;
 		}
@@ -287,7 +289,7 @@ public class GameMode : MonoBehaviour
 		}
 
 		// Update the player HUDs
-		playerHUDManager.UpdatePlayerHUDs(playerStates, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
+		playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
 	}
 
 	void HandlePlayerDeath(int killedIndex, int killerIndex)

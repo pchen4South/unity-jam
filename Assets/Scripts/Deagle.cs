@@ -21,7 +21,6 @@ public class Deagle : AbstractWeapon
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
-	public int MagazineSize = 7;
 	public float ReloadTime = 1f;
 
     [Header("State")]
@@ -32,6 +31,7 @@ public class Deagle : AbstractWeapon
 	private GameObject FlashInstance;
 
     void Awake(){
+        MagazineSize = 7;
         AmmoCount = MagazineSize;   
         FlashInstance = Instantiate(muzzleFlash, transform);     
         WeaponName = "D. Eagle";

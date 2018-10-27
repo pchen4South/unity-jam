@@ -20,7 +20,6 @@ public class SMG : AbstractWeapon {
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
-    public int MagazineSize = 25;
     public float ReloadTime = 1f;
     public float maxBulletSpread;
     public float timeToMaxSpread;
@@ -37,6 +36,7 @@ public class SMG : AbstractWeapon {
 
     void Awake()
     {
+        MagazineSize = 25;
         AmmoCount = MagazineSize;
         FlashInstance = Instantiate(muzzleFlash, transform);
         CasingsInstance = Instantiate(BulletCasings, transform);

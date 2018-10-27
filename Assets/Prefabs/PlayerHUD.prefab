@@ -41,7 +41,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 11.6}
-  m_SizeDelta: {x: 100, y: 10}
+  m_SizeDelta: {x: 80, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114303112821929430
 MonoBehaviour:
@@ -56,11 +56,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 224769210228315720}
-  reticle: {fileID: 0}
   lifeBar: {fileID: 6837001310679938132}
   WeaponName: {fileID: 6768376473107459530}
   AmmoLabel: {fileID: 5770316888768844098}
   AmmoCount: {fileID: 7866890776611541672}
+  PlayerNumber: {fileID: 0}
   screenSpaceOffset: {x: 0, y: 75}
   healthyColor: {r: 0, g: 1, b: 0, a: 0.5019608}
   deadColor: {r: 1, g: 0, b: 0, a: 0.5019608}
@@ -130,7 +130,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3776402736319688741
 RectTransform:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8832868206560743839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -307,7 +307,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0.000015258789}
-  m_SizeDelta: {x: 100, y: 10}
+  m_SizeDelta: {x: 80, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6837001310679938132
 MonoBehaviour:
@@ -375,7 +375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8215121952345952825
 RectTransform:
   m_ObjectHideFlags: 0

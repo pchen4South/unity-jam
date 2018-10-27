@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     public MoveSkillStatus moveStatus = MoveSkillStatus.Ready;
     float currentDashTime = 0f;
     public bool isDashing = false;
-    float MoveSkillTimer = 0f;
+    public float MoveSkillTimer = 0f;
     Vector3 dashDir = Vector3.zero;
 
     //IK Targets
@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
     public void Dash(Vector3 direction)
     {
         //if(!Weapon.CompareTag("MeleeWeapon") || moveStatus != MoveSkillStatus.Ready) return;
-        if (direction == Vector3.zero) return;
+        if( moveStatus != MoveSkillStatus.Ready || direction == Vector3.zero) return;
         dashDir = direction;
         dashSound.Play();
         SpeedModifier = 2.5f;
