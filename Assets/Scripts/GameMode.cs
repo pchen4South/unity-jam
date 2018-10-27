@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Rewired;
 
@@ -104,7 +105,11 @@ public class GameMode : MonoBehaviour
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
 	[SerializeField] GameObject WinCamSpawn;
 	[SerializeField] WinningPlayer WinningPlayerModel;
-	
+	[SerializeField] Text LeaderboardLabel;
+	[SerializeField] Text PlayerNumbers;
+	[SerializeField] Text GuncountText;
+
+
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
 
@@ -116,6 +121,10 @@ public class GameMode : MonoBehaviour
 	int winningPlayerIndex;
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;
+
+	List<string> Leaders = new List<string>();
+	int leadingLevel = 0;
+	int maxLevels = 0;
 
 	// TODO: I like the idea of not using Start for this but making an explicit method?
 	void Start()
@@ -152,7 +161,18 @@ public class GameMode : MonoBehaviour
 			ps.player.SetColor(colorScheme.playerColors[i]);
 			ps.player.Spawn(sp.transform);
 			playerStates[i] = ps;
+
+			//initialize leaderboard
+			Leaders.Add("P" + (i + 1).ToString() + " ");
+			leadingLevel = 1;
 		}
+
+		LeaderboardLabel.text = "Current Leaders";
+		string leaders = "";
+		maxLevels = WeaponPrefabs.Length;
+		Leaders.ForEach(s => leaders += s);
+		PlayerNumbers.text = leaders.Trim();
+		GuncountText.text = "1 / " + maxLevels.ToString();
 
 		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, PlayerStatusUIPrefab, 8);
 	}
@@ -311,6 +331,18 @@ public class GameMode : MonoBehaviour
 		{
 			killerPlayerState.weaponIndex++;
 			killerPlayerState.player.SetWeapon(WeaponPrefabs[killerPlayerState.weaponIndex]);
+
+			if(killerPlayerState.weaponIndex + 1 == leadingLevel){
+				LeaderboardLabel.text = "Current Leaders";
+			} else if (killerPlayerState.weaponIndex + 1 > leadingLevel){
+				LeaderboardLabel.text = "Current Leader";
+				Leaders = new List<string>();
+			}
+			GuncountText.text = (killerPlayerState.weaponIndex+1).ToString() + " / " + maxLevels.ToString();
+			string leaders = "";
+			Leaders.Add("P" + (killerIndex+1).ToString());
+			Leaders.ForEach(s => leaders += s + " ");
+			PlayerNumbers.text = leaders.Trim();
 			StartCoroutine(RespawnAfter(killedPlayerState, RespawnTimer));
 		}
 	}

@@ -25,6 +25,19 @@ public class PlayerStatusUI : MonoBehaviour
     public RectTransform AmmoLine2;
     public RectTransform AmmoLine3;
 
+    public RectTransform GunsContainer;
+    public Image GunsProgressBar;
+
+    public Image ShotgunIcon;
+    public Image DEIcon;
+    public Image  ShieldIcon;
+    public Image SniperIcon;
+    public Image GrenadeIcon;
+    public Image SMGIcon;
+    public Image BlasterIcon;
+    public Image MachinegunIcon;
+
+
     public int P1_X_Position = 200;
     public int P2_X_Position = 500;
     public int P3_X_Position = 1100;
@@ -35,8 +48,10 @@ public class PlayerStatusUI : MonoBehaviour
     int playerNumber = -1;
 
     List<Image> AmmoArray = new List<Image>();
+    List<Image> GunsArray = new List<Image>();
 
     bool WeaponDidChange = false;
+    bool InitializedGuns = false;
 
     void Update(){
 
@@ -113,6 +128,56 @@ public class PlayerStatusUI : MonoBehaviour
     }
 
     public void UpdateWeaponProgress(int WeaponIndex, AbstractWeapon[] WeaponPrefabs){
+        if(InitializedGuns != true){
+            var initialX = 20;
+
+            for(int i = 0; i < WeaponPrefabs.Length; i++){
+                Image NewImage;
+
+                switch(WeaponPrefabs[i].name){
+                    case "Shotgun":
+                        NewImage = Instantiate(ShotgunIcon);
+                        break;
+                    case "DEagle":
+                        NewImage = Instantiate(DEIcon);
+                        break;
+                    case "MachineGun":
+                        NewImage = Instantiate(MachinegunIcon);
+                        break;
+                    case "Sniper":
+                        NewImage = Instantiate(SniperIcon);
+                        break;
+                    case "SMG":
+                        NewImage = Instantiate(SMGIcon);
+                        break;
+                    case "Shield":
+                        NewImage = Instantiate(ShieldIcon);
+                        break;
+                    case "Grenade":
+                        NewImage = Instantiate(GrenadeIcon);
+                        break;
+                    case "Blaster":
+                        NewImage = Instantiate(BlasterIcon);
+                        break;
+                    default:
+                        NewImage = Instantiate(ShotgunIcon);
+                    break;
+                }
+                NewImage.transform.SetParent(GunsContainer, false);
+                NewImage.rectTransform.anchoredPosition = new Vector2(initialX + i * 32, 0);
+                GunsArray.Add(NewImage);
+            }
+            InitializedGuns = true;
+        }
+
+        var barwidth = GunsContainer.rect.width * GunsArray.Count / 8;
+        var prog = Mathf.Round(WeaponIndex * (barwidth / GunsArray.Count));
+        GunsProgressBar.rectTransform.sizeDelta = new Vector2(prog, 45);
+        GunsProgressBar.rectTransform.anchoredPosition = new Vector2(prog / 2, 0);
+
+        for(int j = 0; j < WeaponIndex; j++){
+            GunsArray[j].color = new Color(0,0,0,1);
+        }
 
     }
 

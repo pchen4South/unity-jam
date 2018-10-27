@@ -476,7 +476,7 @@ GameObject:
   - component: {fileID: 82043888457751424}
   - component: {fileID: 82530650906356306}
   m_Layer: 0
-  m_Name: PumpShotgun
+  m_Name: Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -525,6 +525,7 @@ MonoBehaviour:
   WeaponName: 
   SpeedModifier: 1
   AmmoCount: 0
+  MagazineSize: 5
   LeftHandIKTarget: {fileID: 9166273811160500689}
   RightHandIKTarget: {fileID: 6803092744379794515}
   fireSound: {fileID: 82043888457751424}
@@ -543,7 +544,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1024
-  MagazineSize: 5
   ReloadTime: 3.5
   IKTarget_L: {fileID: 0}
   IKTarget_R: {fileID: 0}

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 82866590645126048}
   - component: {fileID: 364224215712878701}
   m_Layer: 0
-  m_Name: SniperRifle
+  m_Name: Sniper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,15 +56,19 @@ MonoBehaviour:
   WeaponName: 
   SpeedModifier: 1
   AmmoCount: 0
+  MagazineSize: 0
   LeftHandIKTarget: {fileID: 668762116008130238}
   RightHandIKTarget: {fileID: 1298279610055978069}
   fireSound: {fileID: 82866590645126048}
   animator: {fileID: 95366874818472796}
   laserSight: {fileID: 364224215712878701}
   muzzleFlash: {fileID: 7288032748680465064}
-  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef, type: 3}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77, type: 3}
-  ProjectilePrefab: {fileID: 1126949053357362, guid: b37fc9248adb8bb4c86406fd9c583f83, type: 3}
+  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
+    type: 3}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
+  ProjectilePrefab: {fileID: 1126949053357362, guid: b37fc9248adb8bb4c86406fd9c583f83,
+    type: 3}
   PreFireDuration: 1
   ReloadDuration: 1
   layerMask:
@@ -4404,6 +4408,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0

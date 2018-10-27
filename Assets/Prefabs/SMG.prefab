@@ -846,7 +846,7 @@ GameObject:
   - component: {fileID: 108538391535675490}
   - component: {fileID: 120487154917152990}
   m_Layer: 0
-  m_Name: SubmachineGun
+  m_Name: SMG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -916,16 +916,21 @@ MonoBehaviour:
   WeaponName: 
   SpeedModifier: 1
   AmmoCount: 0
+  MagazineSize: 25
   LeftHandIKTarget: {fileID: 1268313550}
   RightHandIKTarget: {fileID: 1468077176}
   fireSound: {fileID: 82152436067349864}
   reloadSound: {fileID: 82005801961391834}
-  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef, type: 3}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77, type: 3}
-  muzzleFlash: {fileID: 1956061264784194, guid: 352c41eb01257e1479ae3f003f5284ea, type: 3}
+  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
+    type: 3}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
+  muzzleFlash: {fileID: 1956061264784194, guid: 352c41eb01257e1479ae3f003f5284ea,
+    type: 3}
   muzzleFlashLight: {fileID: 108538391535675490}
   bulletTracer: {fileID: 120487154917152990}
-  BulletCasings: {fileID: 198687578430086208, guid: d3ccacd954819c148afe49f96e587ac3, type: 3}
+  BulletCasings: {fileID: 198687578430086208, guid: d3ccacd954819c148afe49f96e587ac3,
+    type: 3}
   IKTarget_L: {fileID: 1268313550}
   IKTarget_R: {fileID: 1468077176}
   fireRate: 0.1
@@ -934,7 +939,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1025
-  MagazineSize: 25
   ReloadTime: 2
   maxBulletSpread: 0.5
   timeToMaxSpread: 0.5

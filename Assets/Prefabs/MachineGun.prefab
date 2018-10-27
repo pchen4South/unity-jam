@@ -3890,6 +3890,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0
@@ -8656,6 +8657,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0
@@ -13356,6 +13358,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0
@@ -14176,7 +14179,7 @@ GameObject:
   - component: {fileID: 8107039379890543543}
   - component: {fileID: 889717787902743453}
   m_Layer: 12
-  m_Name: MachineGun_08
+  m_Name: MachineGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14218,13 +14221,16 @@ MonoBehaviour:
   WeaponName: 
   SpeedModifier: 1
   AmmoCount: 0
+  MagazineSize: 0
   LeftHandIKTarget: {fileID: 4423406839948450669}
   RightHandIKTarget: {fileID: 7591128385553925945}
   fireSound: {fileID: 8107039379890543543}
   hitSound: {fileID: 8107039379890543543}
   hitPlayerSound: {fileID: 8107039379890543543}
-  HitParticlePrefab: {fileID: 1880468109313604, guid: cff46989bc6ae2041904a8c347b4b806, type: 3}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77, type: 3}
+  HitParticlePrefab: {fileID: 1880468109313604, guid: cff46989bc6ae2041904a8c347b4b806,
+    type: 3}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
   bulletTracer: {fileID: 889717787902743453}
   fireRate: 0.1
   shotTime: 0.01
@@ -14457,7 +14463,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100010}
-  m_LocalRotation: {x: 0.00000017881393, y: -2.2537532e-14, z: -0.00000012293457, w: 1}
+  m_LocalRotation: {x: 0.00000017881393, y: -2.2537532e-14, z: -0.00000012293457,
+    w: 1}
   m_LocalPosition: {x: 0.071216814, y: 0.09181586, z: 0.04558308}
   m_LocalScale: {x: 0.99999946, y: 1, z: 1.0000001}
   m_Children:
