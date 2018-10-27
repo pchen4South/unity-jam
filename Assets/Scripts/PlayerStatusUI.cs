@@ -47,6 +47,7 @@ public class PlayerStatusUI : MonoBehaviour
     int CurrentMaxAmmo = 0;
     int playerNumber = -1;
 
+    float timecounter = 0f;
     List<Image> AmmoArray = new List<Image>();
     List<Image> GunsArray = new List<Image>();
 
@@ -54,6 +55,7 @@ public class PlayerStatusUI : MonoBehaviour
     bool InitializedGuns = false;
 
     void Update(){
+        timecounter += Time.deltaTime;
 
         if (playerNumber == -1) return;
         switch(playerNumber){
@@ -178,7 +180,10 @@ public class PlayerStatusUI : MonoBehaviour
         for(int j = 0; j < WeaponIndex; j++){
             GunsArray[j].color = new Color(0,0,0,1);
         }
-
+        var activegun = GunsArray[WeaponIndex];
+        var origColor = activegun.color;
+        origColor.a = timecounter % 1;
+        activegun.color = origColor;
     }
 
     //private methods
@@ -202,7 +207,7 @@ public class PlayerStatusUI : MonoBehaviour
         } else {
             AmmoType = OtherAmmo;
         }
-
+        
         var x_counter = 16;
         var initialX = 8;
 
