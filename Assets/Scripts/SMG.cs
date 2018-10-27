@@ -20,7 +20,6 @@ public class SMG : AbstractWeapon {
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
-    public int MagazineSize = 25;
     public float ReloadTime = 1f;
     public float maxBulletSpread;
     public float timeToMaxSpread;
@@ -37,6 +36,7 @@ public class SMG : AbstractWeapon {
 
     void Awake()
     {
+        MagazineSize = 25;
         AmmoCount = MagazineSize;
         FlashInstance = Instantiate(muzzleFlash, transform);
         CasingsInstance = Instantiate(BulletCasings, transform);
@@ -115,13 +115,13 @@ public class SMG : AbstractWeapon {
         bulletTracer.SetPosition(0, muzzle);
         bulletTracer.SetPosition(1, rayHit.point);
         bulletTracer.enabled = true;
-        var isPlayer = rayHit.collider.CompareTag("Player");
+        var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
 
         // should move some of this code to player
         if (isPlayer)
         {
-            if(player.PlayerNumber != rayHit.collider.gameObject.GetComponent<Player>().PlayerNumber){
-                var target = rayHit.collider.GetComponent<Player>();
+            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
+            if(player.PlayerNumber != target.PlayerNumber){
                 var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
                 target.Damage(1, player.PlayerNumber);
                 Destroy(hitParticles.gameObject, 2f);

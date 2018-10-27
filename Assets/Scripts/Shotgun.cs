@@ -28,7 +28,6 @@ public class Shotgun : AbstractWeapon {
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
     //float AmmoCount = 0f;
-	public int MagazineSize = 4;
 	public float ReloadTime = 2f;
 
     [Header("State")]
@@ -40,11 +39,9 @@ public class Shotgun : AbstractWeapon {
     
     [SerializeField]    Transform IKTarget_L;
     [SerializeField]    Transform IKTarget_R;
-
-
-
 	void Start(){
         WeaponName = "Shotgun";
+        MagazineSize = 4;
         AmmoCount = MagazineSize;       
 		FlashInstance = Instantiate(muzzleFlash, transform);
         LeftHandIKTarget = IKTarget_L;

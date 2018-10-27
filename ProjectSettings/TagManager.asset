@@ -13,6 +13,7 @@ TagManager:
   - MeleeWeapon
   - SecondaryCamera
   - Water
+  - PlayerHitbox
   layers:
   - Default
   - TransparentFX

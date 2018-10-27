@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Rewired;
 
@@ -19,46 +20,67 @@ public class PlayerState
 	}
 }
 
+public class PlayerUI: Object{
+	public PlayerHUD HUD {get;set;}
+	public PlayerStatusUI PSUI {get;set;}
+}
+
 [System.Serializable]
 public class PlayerHUDManager : Object
 {
-	PlayerHUD[] playerHUDPool;
+	PlayerUI[] playerUIPool;
 
-	public PlayerHUDManager(PlayerHUD PlayerHUDPrefab, int maximumSize)
+	public PlayerHUDManager(PlayerHUD PlayerHUDPrefab, PlayerStatusUI PlayerStatusUIPrefab, int maximumSize)
 	{
-		playerHUDPool = new PlayerHUD[maximumSize];
+		playerUIPool = new PlayerUI[maximumSize];
 
-		for (var i = 0; i < playerHUDPool.Length; i++)
+		for (var i = 0; i < playerUIPool.Length; i++)
 		{
-			playerHUDPool[i] = Instantiate(PlayerHUDPrefab);
+			playerUIPool[i] = new PlayerUI();
+			var HUD = Instantiate(PlayerHUDPrefab);
+			var PSUI = Instantiate(PlayerStatusUIPrefab);
+			playerUIPool[i].HUD = HUD;
+			playerUIPool[i].PSUI = PSUI;
 		}
 	}
 
 	void OnDestroy()
 	{
-		for (var i = 0; i < playerHUDPool.Length; i++)
+		for (var i = 0; i < playerUIPool.Length; i++)
 		{
-			Destroy(playerHUDPool[i]);
+			Destroy(playerUIPool[i]);
 		}
 	}
 
-	public void UpdatePlayerHUDs(PlayerState[] playerStates, Camera camera, RectTransform parent)
+	public void UpdatePlayerHUDs(PlayerState[] playerStates, AbstractWeapon[] WeaponPrefabs, Camera camera, RectTransform parent, RectTransform bottomUIContainer )
 	{
 		var i = 0;
 
 		while (i < playerStates.Length)
 		{
-			playerHUDPool[i].gameObject.SetActive(true);
-			playerHUDPool[i].transform.SetParent(parent, false);
-			playerHUDPool[i].UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
-			playerHUDPool[i].UpdatePosition(camera, parent, playerStates[i].player.transform.position);
-			playerHUDPool[i].UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
-			playerHUDPool[i].UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
+
+			playerUIPool[i].HUD.gameObject.SetActive(true);
+			playerUIPool[i].HUD.transform.SetParent(parent, false);
+			playerUIPool[i].HUD.UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
+			playerUIPool[i].HUD.UpdatePosition(camera, parent, playerStates[i].player.transform.position);
+			playerUIPool[i].HUD.UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
+			playerUIPool[i].HUD.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
+			
+			playerUIPool[i].PSUI.gameObject.SetActive(true);
+			playerUIPool[i].PSUI.transform.SetParent(bottomUIContainer.transform, false);
+			playerUIPool[i].PSUI.UpdateWeaponType(playerStates[i].player.Weapon.WeaponName, (playerStates[i].player.Weapon.MagazineSize));
+			playerUIPool[i].PSUI.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
+			playerUIPool[i].PSUI.UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
+			playerUIPool[i].PSUI.UpdatePlayerIdentity(playerStates[i].player.PlayerNumber, playerStates[i].player.meshRenderer.material.color);
+			playerUIPool[i].PSUI.UpdateWeaponProgress(playerStates[i].weaponIndex, WeaponPrefabs);
+			playerUIPool[i].PSUI.UpdateDashCooldown(playerStates[i].player.MoveSkillCooldown, playerStates[i].player.MoveSkillTimer);
+
 			i++;
 		}
-		while (i < playerHUDPool.Length)
+		while (i < playerUIPool.Length)
 		{
-			playerHUDPool[i].gameObject.SetActive(false);
+			playerUIPool[i].HUD.gameObject.SetActive(false);
+			playerUIPool[i].PSUI.gameObject.SetActive(false);
 			i++;
 		}
 	}
@@ -70,6 +92,8 @@ public class GameMode : MonoBehaviour
 
 	[SerializeField] Player PlayerPrefab;
 	[SerializeField] PlayerHUD PlayerHUDPrefab;
+	[SerializeField] PlayerStatusUI PlayerStatusUIPrefab;
+	[SerializeField] RectTransform PlayerUIArea;
 
 	[SerializeField] ColorScheme colorScheme;
 	[SerializeField] Shakeable shakeable;
@@ -81,7 +105,11 @@ public class GameMode : MonoBehaviour
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
 	[SerializeField] GameObject WinCamSpawn;
 	[SerializeField] WinningPlayer WinningPlayerModel;
-	
+	[SerializeField] Text LeaderboardLabel;
+	[SerializeField] Text PlayerNumbers;
+	[SerializeField] Text GuncountText;
+
+
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
 
@@ -94,10 +122,14 @@ public class GameMode : MonoBehaviour
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;
 
+	List<string> Leaders = new List<string>();
+	int leadingLevel = 0;
+	int maxLevels = 0;
+
 	// TODO: I like the idea of not using Start for this but making an explicit method?
 	void Start()
 	{
-		var playerCount = 2;
+		var playerCount = 4;
 
 		remainingCountdownDuration = CountdownDuration;
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -129,9 +161,20 @@ public class GameMode : MonoBehaviour
 			ps.player.SetColor(colorScheme.playerColors[i]);
 			ps.player.Spawn(sp.transform);
 			playerStates[i] = ps;
+
+			//initialize leaderboard
+			Leaders.Add("P" + (i + 1).ToString() + " ");
+			leadingLevel = 1;
 		}
 
-		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, 8);
+		LeaderboardLabel.text = "Current Leaders";
+		string leaders = "";
+		maxLevels = WeaponPrefabs.Length;
+		Leaders.ForEach(s => leaders += s);
+		PlayerNumbers.text = leaders.Trim();
+		GuncountText.text = "1 / " + maxLevels.ToString();
+
+		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, PlayerStatusUIPrefab, 8);
 	}
 
 	void Update()
@@ -193,9 +236,10 @@ public class GameMode : MonoBehaviour
 			var yAxis = c.GetAxis(1);
 			var moving = xAxis != 0f || yAxis != 0f;
 
-			//added for roll / dash
-			var dashTrue = Input.GetKey("f");
 
+			//added for roll / dash
+			var dashTrue = c.GetButtonDown("Dash");
+			
 			if (canShoot && triggerDown && p.Weapon)
 			{
 				p.Weapon.PullTrigger(p);
@@ -204,7 +248,7 @@ public class GameMode : MonoBehaviour
 			{
 				p.Weapon.ReleaseTrigger(p);
 			}
-			if (canMove && moving && p.canMove)
+			if (canMove && moving && p.canMove && (Mathf.Abs(xAxis) >= .05f || Mathf.Abs(yAxis) >= .05f))
 			{
 				p.Move(xAxis, yAxis);
 			}
@@ -212,7 +256,8 @@ public class GameMode : MonoBehaviour
 			{
 
 				Vector3 direction = new Vector3();
-				if (c.controllers.hasMouse)
+				//if (c.controllers.hasMouse)
+				if (false)
 				{
 					Vector2 pvp = shakeable.shakyCamera.WorldToScreenPoint(p.transform.position);
 					Vector2 mouse = c.controllers.Mouse.screenPosition;
@@ -242,7 +287,8 @@ public class GameMode : MonoBehaviour
 				}
 
 				if(dashTrue){
-					p.Dash();
+					var dashDir = new Vector3(xAxis, 0, yAxis);
+					p.Dash(dashDir);
 				}
 			}
 		}
@@ -261,7 +307,7 @@ public class GameMode : MonoBehaviour
 		}
 
 		// Update the player HUDs
-		playerHUDManager.UpdatePlayerHUDs(playerStates, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform);
+		playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
 	}
 
 	void HandlePlayerDeath(int killedIndex, int killerIndex)
@@ -283,6 +329,18 @@ public class GameMode : MonoBehaviour
 		{
 			killerPlayerState.weaponIndex++;
 			killerPlayerState.player.SetWeapon(WeaponPrefabs[killerPlayerState.weaponIndex]);
+
+			if(killerPlayerState.weaponIndex + 1 == leadingLevel){
+				LeaderboardLabel.text = "Current Leaders";
+			} else if (killerPlayerState.weaponIndex + 1 > leadingLevel){
+				LeaderboardLabel.text = "Current Leader";
+				Leaders = new List<string>();
+			}
+			GuncountText.text = (killerPlayerState.weaponIndex+1).ToString() + " / " + maxLevels.ToString();
+			string leaders = "";
+			Leaders.Add("P" + (killerIndex+1).ToString());
+			Leaders.ForEach(s => leaders += s + " ");
+			PlayerNumbers.text = leaders.Trim();
 			StartCoroutine(RespawnAfter(killedPlayerState, RespawnTimer));
 		}
 	}

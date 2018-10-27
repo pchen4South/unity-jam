@@ -5,9 +5,10 @@ public abstract class AbstractWeapon : MonoBehaviour
 	public Transform Muzzle;
 	public Player player;
 
-	public string WeaponName = "";
+	public string WeaponName = "gun";
 	public float SpeedModifier = 1f;
 	public int AmmoCount = 0;
+	public int MagazineSize = 0;
 
 	public Transform LeftHandIKTarget;
 	public Transform RightHandIKTarget;

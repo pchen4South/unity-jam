@@ -21,7 +21,6 @@ public class Deagle : AbstractWeapon
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
     public LayerMask layerMask = new LayerMask();
-	public int MagazineSize = 7;
 	public float ReloadTime = 1f;
 
     [Header("State")]
@@ -32,6 +31,7 @@ public class Deagle : AbstractWeapon
 	private GameObject FlashInstance;
 
     void Awake(){
+        MagazineSize = 7;
         AmmoCount = MagazineSize;   
         FlashInstance = Instantiate(muzzleFlash, transform);     
         WeaponName = "D. Eagle";
@@ -86,11 +86,11 @@ public class Deagle : AbstractWeapon
         bulletTracer.SetPosition(0, muzzle);
         bulletTracer.SetPosition(1, rayHit.point);
         bulletTracer.enabled = true;
-        var isPlayer = rayHit.collider.CompareTag("Player");
+        var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
 
         if (isPlayer)
         {
-            var target = rayHit.collider.GetComponent<Player>();
+            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
             var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
 
             target.Damage(1, player.PlayerNumber);
