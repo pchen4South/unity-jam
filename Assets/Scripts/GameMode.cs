@@ -20,9 +20,10 @@ public class PlayerState
 	}
 }
 
-public class PlayerUI: Object{
-	public PlayerHUD HUD {get;set;}
-	public PlayerStatusUI PSUI {get;set;}
+public class PlayerUI: Object
+{
+	public PlayerHUD HUD { get; set; }
+	public PlayerStatusUI PSUI { get; set; }
 }
 
 [System.Serializable]
@@ -98,6 +99,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] AudioSource BackgroundMusic;
 	[SerializeField] AudioSource CountdownAudio;
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
+	[SerializeField] Minigame[] MinigamePrefabs;
 	[SerializeField] GameObject WinCamSpawn;
 	[SerializeField] WinningPlayer WinningPlayerModel;
 	[SerializeField] Text LeaderboardLabel;
@@ -111,6 +113,7 @@ public class GameMode : MonoBehaviour
 	PlayerState[] playerStates;
 	PlayerHUDManager playerHUDManager;
 	GameState state = GameState.Countdown;
+	Minigame Minigame;
 	int winningPlayerIndex;
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;
@@ -160,10 +163,6 @@ public class GameMode : MonoBehaviour
 
 	void Update()
 	{
-		var canMove = false;
-		var canRotate = false;
-		var canShoot = false;
-
 		if (state == GameState.Countdown)
 		{
 			if(!CountdownStarted)
@@ -172,9 +171,6 @@ public class GameMode : MonoBehaviour
 				CountdownAudio.Play();
 			}
 
-			canMove = true;
-			canRotate = true;
-			canShoot = false;
 			remainingCountdownDuration -= Time.deltaTime;
 			ui.countdownNumber.text = Mathf.CeilToInt(remainingCountdownDuration).ToString();
 			if (remainingCountdownDuration <= 0f)
@@ -186,16 +182,30 @@ public class GameMode : MonoBehaviour
 		}
 		else if (state == GameState.Live)
 		{
-			canMove = true;
-			canRotate = true;
-			canShoot = true;
+			if (Minigame)
+			{
+				for (var i = 0; i < playerStates.Length; i++)
+				{
+					Minigame.HandleMove(playerStates[i]);
+					Minigame.HandleDash(playerStates[i]);
+					Minigame.HandleRotate(playerStates[i]);
+					Minigame.HandleFire(playerStates[i]);
+				}
+			}
+			else
+			{
+				for (var i = 0; i < playerStates.Length; i++)
+				{
+					InputHelpers.BasicMove(playerStates[i]);
+					InputHelpers.BasicDash(playerStates[i]);
+					InputHelpers.BasicRotate(playerStates[i]);
+					InputHelpers.BasicPullTrigger(playerStates[i]);
+					InputHelpers.BasicReleaseTrigger(playerStates[i]);
+				}
+			}
 		}
 		else if (state == GameState.Victory)
 		{
-			canMove = false;
-			canRotate = false;
-			canShoot = false;
-
 			// check for Fire button presses to load next map
 			for (var i = 0; i < playerStates.Length; i++)
 			{
@@ -204,55 +214,6 @@ public class GameMode : MonoBehaviour
 				if (c.GetButtonDown("Fire"))
 				{
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-				}
-			}
-		}
-
-		for (var i = 0; i < playerStates.Length; i++)
-		{
-			var c = playerStates[i].playerController;
-			var p = playerStates[i].player;
-			var triggerDown = c.GetButton("Fire") || c.GetButtonRepeating("Fire");
-			var triggerUp = c.GetButtonUp("Fire");
-			var xAxis = c.GetAxis(0);
-			var yAxis = c.GetAxis(1);
-			var moving = xAxis != 0f || yAxis != 0f;
-			var dashTrue = c.GetButtonDown("Dash");
-			
-			if (canShoot && triggerDown && p.Weapon)
-			{
-				p.Weapon.PullTrigger(p);
-			}
-			if (canShoot && triggerUp && p.Weapon)
-			{
-				p.Weapon.ReleaseTrigger(p);
-			}
-			if (canMove && moving && p.canMove && (Mathf.Abs(xAxis) >= .05f || Mathf.Abs(yAxis) >= .05f))
-			{
-				p.Move(xAxis, yAxis);
-			}
-			if (canRotate && p.canRotate)
-			{
-				var lookXAxis = c.GetAxis(5);
-				var lookYAxis = c.GetAxis(6);
-				var angle = Mathf.Atan2(lookXAxis,lookYAxis) * Mathf.Rad2Deg;
-				var lookrot = Quaternion.Euler(0, angle, 0);
-
-				if (lookXAxis != 0.0f || lookYAxis != 0.0f)
-				{
-					p.transform.rotation = lookrot;
-				}
-				else if (lookXAxis < .01f && lookYAxis < .01f)
-				{
-					var input = new Vector3(xAxis, 0, yAxis);
-
-					if(input != Vector3.zero) p.transform.forward = input.normalized;
-				}
-
-				if(dashTrue)
-				{
-					var dashDir = new Vector3(xAxis, 0, yAxis);
-					p.Dash(dashDir);
 				}
 			}
 		}
@@ -302,7 +263,8 @@ public class GameMode : MonoBehaviour
 		}
 	}
 
-	IEnumerator HandleVictory(Player winningPlayer){
+	IEnumerator HandleVictory(Player winningPlayer)
+	{
 		yield return new WaitForSeconds(2f);
 		BackgroundMusic.Stop();
 		winningPlayerIndex = winningPlayer.PlayerNumber;

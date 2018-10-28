@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5309,6 +5309,11 @@ PrefabInstance:
       propertyPath: WeaponPrefabs.Array.size
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: MinigamePrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4508983614605128, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5658,6 +5663,11 @@ PrefabInstance:
       propertyPath: GuncountText
       value: 
       objectReference: {fileID: 1317702768}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: MinigamePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 588362683}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
 --- !u!1 &288849688
@@ -6176,6 +6186,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &588362681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 588362682}
+  - component: {fileID: 588362683}
+  m_Layer: 0
+  m_Name: DefaultMinigame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &588362682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588362681}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &588362683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588362681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ee798ddfc384ad88808c12ebd38448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &626380887 stripped
@@ -14447,7 +14500,7 @@ PrefabInstance:
     - target: {fileID: 4234633966860915360, guid: 28bc53c4fc628c44ab6411f10c7eb48d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4234633966860915360, guid: 28bc53c4fc628c44ab6411f10c7eb48d,
         type: 3}

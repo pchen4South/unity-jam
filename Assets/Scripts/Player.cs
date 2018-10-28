@@ -100,15 +100,18 @@ public class Player : MonoBehaviour
         meshRenderer.material.color = color;
     }
 
-    public void Move(float xAxis, float yAxis)
+    public void Move(Vector3 v)
     {
-        if(status == PlayerStatus.Dead) return;
+        if (!canMove)
+            return;
+        if (status == PlayerStatus.Dead) 
+            return;
 
-        var m = Vector3.zero;
-        m.x = xAxis * Time.deltaTime * MoveSpeed * SpeedModifier;
-        m.z = yAxis * Time.deltaTime * MoveSpeed * SpeedModifier;
-        controller.Move(m);
-        animator.SetFloat("Forward", m.magnitude);
+        var speed = Time.deltaTime * MoveSpeed * SpeedModifier;
+        var velocity = v * speed;
+
+        controller.Move(velocity);
+        animator.SetFloat("Forward", velocity.magnitude);
     }
 
     public void SetWeapon(AbstractWeapon newWeapon)
@@ -178,11 +181,12 @@ public class Player : MonoBehaviour
 	}
 
     #region moveskills
-    public void Dash(Vector3 direction)
+    public void Dash()
     {
-        if (moveStatus != MoveSkillStatus.Ready || direction == Vector3.zero) 
+        if (moveStatus != MoveSkillStatus.Ready)
             return;
-        dashDir = direction;
+
+        dashDir = transform.forward;
         dashSound.Play();
         SpeedModifier = 2.5f;
         isDashing = true;
