@@ -8,12 +8,11 @@ public abstract class AbstractMap : MonoBehaviour
 	public Image MapScreenshot;
 	public Text MapName;
 
-	public string GetMapName(){
+	public string GetMapName()
+	{
 		if(MapName != null)
 			return MapName.text;
 		else	
 			return "placeholder";
 	}
-
 }
-
