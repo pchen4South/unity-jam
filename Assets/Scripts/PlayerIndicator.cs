@@ -2,14 +2,14 @@
 
 public class PlayerIndicator : MonoBehaviour 
 {
-	public MeshRenderer meshRenderer;
 	public float rotationSpeed = 100f;
+	public Color color;
+
+	[SerializeField] MeshRenderer MeshRenderer;
 
 	void Update()
 	{
-		var radians = rotationSpeed * Time.time;
-
-		meshRenderer.material.SetFloat("_SinAngle", Mathf.Sin(radians));
-		meshRenderer.material.SetFloat("_CosAngle", Mathf.Cos(radians));
+		transform.rotation = Quaternion.AngleAxis(rotationSpeed * Time.time, Vector3.up);
+		MeshRenderer.material.color = color;
 	}
 }

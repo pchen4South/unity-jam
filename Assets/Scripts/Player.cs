@@ -16,9 +16,8 @@ public class Player : MonoBehaviour
     [SerializeField] AudioSource spawnSound;
     [SerializeField] AudioSource dashSound;
     [SerializeField] ParticleSystem PlayerSpawnParticles;
-    [SerializeField]	GameObject Reticle;
-    [SerializeField]	SpriteRenderer Crosshair;
-    [SerializeField]	PlayerHitbox hitbox;
+    [SerializeField] SpriteRenderer Crosshair;
+    [SerializeField] PlayerHitbox hitbox;
 
     public int MaxHealth = 3;
     public float MoveSpeed = 2f;
@@ -42,16 +41,9 @@ public class Player : MonoBehaviour
     public float MoveSkillTimer = 0f;
     Vector3 dashDir = Vector3.zero;
 
-    //IK Targets
-    Transform LeftHandIKTarget;
-    Transform RightHandIKTarget;
-    public float IkWeight =1f;
+    public float IkWeight = 1f;
     Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
     #endregion
-
-    void Start(){
-        hitbox.player = this;
-    }
 
     void Update() 
     {
@@ -59,16 +51,26 @@ public class Player : MonoBehaviour
         Crosshair.color = meshRenderer.material.color;
         //apply constant downward vel
         controller.Move(GROUNDED_DOWNWARD_VELOCITY);
+
         //calculate and execute dash
-        if(isDashing && currentDashTime <= DashDuration){
+        if (isDashing && currentDashTime <= DashDuration)
+        {
             var m = Vector3.zero;
             m.x = dashDir.x  * Time.deltaTime * MoveSpeed * SpeedModifier;
             m.z = dashDir.z * Time.deltaTime * MoveSpeed * SpeedModifier;
             controller.Move(m);
             currentDashTime += Time.deltaTime;
         }
+
         //end dash
-        if(currentDashTime > DashDuration) DashEnd();
+        if(currentDashTime > DashDuration) 
+        {
+            isDashing = false;
+            moveStatus = MoveSkillStatus.OnCooldown;
+            StartCoroutine(MoveSkillRecovery());
+            currentDashTime = 0f;
+            animator.SetBool("PerformDash", false);
+        }
 
         //dash cooldown
         if(moveStatus == MoveSkillStatus.OnCooldown){
@@ -81,21 +83,23 @@ public class Player : MonoBehaviour
     }
 
     //Inverse Kinematics for guns
-    private void OnAnimatorIK(int layerIndex) {
-        if(LeftHandIKTarget != null && RightHandIKTarget != null){
+    void OnAnimatorIK(int layerIndex) 
+    {
+        if (Weapon.LeftHandIKTarget != null && Weapon.RightHandIKTarget != null)
+        {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, IkWeight);
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, IkWeight);
-            animator.SetIKPosition(AvatarIKGoal.LeftHand, LeftHandIKTarget.position);
-            animator.SetIKPosition(AvatarIKGoal.RightHand, RightHandIKTarget.position);
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, Weapon.LeftHandIKTarget.position);
+            animator.SetIKPosition(AvatarIKGoal.RightHand, Weapon.RightHandIKTarget.position);
         }
     }
-    //Sets the color of the player and player indicator
+
     public void SetColor(Color color)
     {
-        playerIndicator.meshRenderer.material.color = color;
+        playerIndicator.color = color;
         meshRenderer.material.color = color;
     }
-    //move character controller
+
     public void Move(float xAxis, float yAxis)
     {
         if(status == PlayerStatus.Dead) return;
@@ -106,7 +110,7 @@ public class Player : MonoBehaviour
         controller.Move(m);
         animator.SetFloat("Forward", m.magnitude);
     }
-    //set the equipped weapon
+
     public void SetWeapon(AbstractWeapon newWeapon)
     {
         if (Weapon)
@@ -115,15 +119,10 @@ public class Player : MonoBehaviour
         }
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
-
-        //set IK targets
-        LeftHandIKTarget = Weapon.LeftHandIKTarget;
-        RightHandIKTarget = Weapon.RightHandIKTarget;
-
         canRotate = true;
         canMove = true;
     }
-    //damages the player
+
     public void Damage(int amountOfDamage, int attackerIndex)
     {
         if (status == PlayerStatus.Dead)
@@ -138,7 +137,7 @@ public class Player : MonoBehaviour
             Kill(attackerIndex);
         }
     }
-    //kill player
+
     public void Kill(int attackerIndex)
     {
         status = PlayerStatus.Dead;
@@ -150,7 +149,7 @@ public class Player : MonoBehaviour
         animator.SetBool("PlayDeathAnimation", true);
         deathSound.Play();
     }
-    //spawn new player
+
 	public void Spawn(Transform t)
 	{
         status = PlayerStatus.Alive;
@@ -162,9 +161,11 @@ public class Player : MonoBehaviour
         var particles = Instantiate(PlayerSpawnParticles, new Vector3(transform.position.x, transform.position.y + .1f, transform.position.z), transform.rotation);
         var children = particles.GetComponentsInChildren<ParticleSystem>();
 
-        foreach (var p in children){
+        foreach (var p in children)
+        {
             var particleScript = p.GetComponent<SetParticleColor>();
-            if(particleScript != null){
+            if(particleScript != null)
+            {
                 particleScript.startColor = meshRenderer.material.color != null ? meshRenderer.material.color : Color.white;
                 particleScript.SetColor();
             }
@@ -179,8 +180,8 @@ public class Player : MonoBehaviour
     #region moveskills
     public void Dash(Vector3 direction)
     {
-        //if(!Weapon.CompareTag("MeleeWeapon") || moveStatus != MoveSkillStatus.Ready) return;
-        if( moveStatus != MoveSkillStatus.Ready || direction == Vector3.zero) return;
+        if (moveStatus != MoveSkillStatus.Ready || direction == Vector3.zero) 
+            return;
         dashDir = direction;
         dashSound.Play();
         SpeedModifier = 2.5f;
@@ -188,27 +189,20 @@ public class Player : MonoBehaviour
         this.canMove = false;
         this.canRotate = false;
         animator.SetBool("PerformDash", true);
+    }
 
-    }
-    public void DashEnd()
+    IEnumerator MoveSkillRecovery()
     {
-        isDashing = false;
-        moveStatus = MoveSkillStatus.OnCooldown;
-        StartCoroutine("MoveSkillRecovery");
-        currentDashTime = 0f;
-        animator.SetBool("PerformDash", false);
-        
-    }
-    IEnumerator MoveSkillRecovery(){
         yield return new WaitForSeconds(MoveSkillRecoveryTime);
         SpeedModifier = Weapon.SpeedModifier;
         this.canMove = true;
         this.canRotate = true;
     }
     #endregion
+
     //helper to kick off the victory animation
-    public void SetAsVictor(){
+    public void SetAsVictor()
+    {
         animator.SetBool("PlayerWins", true);
     }
-     
 }
