@@ -37,10 +37,8 @@ public class PlayerHUDManager : Object
 		for (var i = 0; i < playerUIPool.Length; i++)
 		{
 			playerUIPool[i] = new PlayerUI();
-			var HUD = Instantiate(PlayerHUDPrefab);
-			var PSUI = Instantiate(PlayerStatusUIPrefab);
-			playerUIPool[i].HUD = HUD;
-			playerUIPool[i].PSUI = PSUI;
+			playerUIPool[i].HUD = Instantiate(PlayerHUDPrefab);
+			playerUIPool[i].PSUI = Instantiate(PlayerStatusUIPrefab);
 		}
 	}
 
@@ -58,7 +56,6 @@ public class PlayerHUDManager : Object
 
 		while (i < playerStates.Length)
 		{
-
 			playerUIPool[i].HUD.gameObject.SetActive(true);
 			playerUIPool[i].HUD.transform.SetParent(parent, false);
 			playerUIPool[i].HUD.UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
@@ -74,7 +71,6 @@ public class PlayerHUDManager : Object
 			playerUIPool[i].PSUI.UpdatePlayerIdentity(playerStates[i].player.PlayerNumber, playerStates[i].player.meshRenderer.material.color);
 			playerUIPool[i].PSUI.UpdateWeaponProgress(playerStates[i].weaponIndex, WeaponPrefabs);
 			playerUIPool[i].PSUI.UpdateDashCooldown(playerStates[i].player.MoveSkillCooldown, playerStates[i].player.MoveSkillTimer);
-
 			i++;
 		}
 		while (i < playerUIPool.Length)
@@ -97,7 +93,6 @@ public class GameMode : MonoBehaviour
 
 	[SerializeField] ColorScheme colorScheme;
 	[SerializeField] Shakeable shakeable;
-	[SerializeField] Graph graph;
 	[SerializeField] UI ui;
 	[SerializeField] Canvas screenSpaceUICanvas;
 	[SerializeField] AudioSource BackgroundMusic;
@@ -109,12 +104,10 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Text PlayerNumbers;
 	[SerializeField] Text GuncountText;
 
-
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
 
 	GameObject[] spawnPoints;
-	
 	PlayerState[] playerStates;
 	PlayerHUDManager playerHUDManager;
 	GameState state = GameState.Countdown;
@@ -126,30 +119,18 @@ public class GameMode : MonoBehaviour
 	int leadingLevel = 0;
 	int maxLevels = 0;
 
-	// TODO: I like the idea of not using Start for this but making an explicit method?
 	void Start()
 	{
 		var playerCount = 4;
 
-		remainingCountdownDuration = CountdownDuration;
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
-		
-		//make a copy of spawnPoints in a List so that we can assign unique starting spawns
-		List<GameObject> spawnPointsCopy = new List<GameObject>();
-		foreach(var sp in spawnPoints){
-			spawnPointsCopy.Add(sp);
-		}
-
-
+		remainingCountdownDuration = CountdownDuration;
 		playerStates = new PlayerState[playerCount];
+
 		for (var i = 0; i < playerCount; i++)
 		{
-			// choose a spawn point from the copied list, then remove it
-			var spawnpoint = Random.Range(0, spawnPointsCopy.Count);
-			var sp = spawnPointsCopy[spawnpoint];
-			spawnPointsCopy.RemoveAt(spawnpoint);
-			
 			//spawn a player and PlayerState, initialize Player's values
+			var spawnpoint = spawnPoints[i % spawnPoints.Length];
 			var player = Instantiate(PlayerPrefab);
 			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
 			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
@@ -159,7 +140,7 @@ public class GameMode : MonoBehaviour
 			ps.player.SetWeapon(WeaponPrefab);
 			ps.player.OnDeath = HandlePlayerDeath;
 			ps.player.SetColor(colorScheme.playerColors[i]);
-			ps.player.Spawn(sp.transform);
+			ps.player.Spawn(spawnpoint.transform);
 			playerStates[i] = ps;
 
 			//initialize leaderboard
@@ -185,7 +166,8 @@ public class GameMode : MonoBehaviour
 
 		if (state == GameState.Countdown)
 		{
-			if(!CountdownStarted){
+			if(!CountdownStarted)
+			{
 				CountdownStarted = true;
 				CountdownAudio.Play();
 			}
@@ -235,9 +217,6 @@ public class GameMode : MonoBehaviour
 			var xAxis = c.GetAxis(0);
 			var yAxis = c.GetAxis(1);
 			var moving = xAxis != 0f || yAxis != 0f;
-
-
-			//added for roll / dash
 			var dashTrue = c.GetButtonDown("Dash");
 			
 			if (canShoot && triggerDown && p.Weapon)
@@ -254,39 +233,24 @@ public class GameMode : MonoBehaviour
 			}
 			if (canRotate && p.canRotate)
 			{
+				var lookXAxis = c.GetAxis(5);
+				var lookYAxis = c.GetAxis(6);
+				var angle = Mathf.Atan2(lookXAxis,lookYAxis) * Mathf.Rad2Deg;
+				var lookrot = Quaternion.Euler(0, angle, 0);
 
-				Vector3 direction = new Vector3();
-				//if (c.controllers.hasMouse)
-				if (false)
+				if (lookXAxis != 0.0f || lookYAxis != 0.0f)
 				{
-					Vector2 pvp = shakeable.shakyCamera.WorldToScreenPoint(p.transform.position);
-					Vector2 mouse = c.controllers.Mouse.screenPosition;
-
-					direction = new Vector3(mouse.x - pvp.x, 0, mouse.y - pvp.y);
-					if (direction.magnitude > 0f)
-					{
-						p.transform.LookAt(direction, Vector3.up);
-					}
+					p.transform.rotation = lookrot;
 				}
-				else
+				else if (lookXAxis < .01f && lookYAxis < .01f)
 				{
-					var lookXAxis = c.GetAxis(5);
-					var lookYAxis = c.GetAxis(6);
-					var angle = Mathf.Atan2(lookXAxis,lookYAxis) * Mathf.Rad2Deg;
-                	var lookrot = Quaternion.Euler(0, angle, 0);
+					var input = new Vector3(xAxis, 0, yAxis);
 
-					if (lookXAxis != 0.0f || lookYAxis != 0.0f)
-					{
-						p.transform.rotation = lookrot;
-					}
-					else if (lookXAxis < .01f && lookYAxis < .01f){
-						var input = new Vector3(xAxis, 0, yAxis);
-
-						if(input != Vector3.zero) p.transform.forward = input.normalized;
-            		}
+					if(input != Vector3.zero) p.transform.forward = input.normalized;
 				}
 
-				if(dashTrue){
+				if(dashTrue)
+				{
 					var dashDir = new Vector3(xAxis, 0, yAxis);
 					p.Dash(dashDir);
 				}
@@ -295,16 +259,6 @@ public class GameMode : MonoBehaviour
 
 		// always push timescale back towards full-speed
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
-
-		// Update the graphs for gun status
-		var gunCount = WeaponPrefabs.Length;
-		for (var i = 0; i < playerStates.Length; i++)
-		{
-			var ps = playerStates[i];
-			var normalizedScale = (float)ps.weaponIndex / (float)gunCount;
-
-			graph.UpdateBar(i, colorScheme.playerColors[i], normalizedScale);
-		}
 
 		// Update the player HUDs
 		playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
@@ -330,9 +284,12 @@ public class GameMode : MonoBehaviour
 			killerPlayerState.weaponIndex++;
 			killerPlayerState.player.SetWeapon(WeaponPrefabs[killerPlayerState.weaponIndex]);
 
-			if(killerPlayerState.weaponIndex + 1 == leadingLevel){
+			if(killerPlayerState.weaponIndex + 1 == leadingLevel)
+			{
 				LeaderboardLabel.text = "Current Leaders";
-			} else if (killerPlayerState.weaponIndex + 1 > leadingLevel){
+			} 
+			else if (killerPlayerState.weaponIndex + 1 > leadingLevel)
+			{
 				LeaderboardLabel.text = "Current Leader";
 				Leaders = new List<string>();
 			}
@@ -346,26 +303,25 @@ public class GameMode : MonoBehaviour
 	}
 
 	IEnumerator HandleVictory(Player winningPlayer){
-			yield return new WaitForSeconds(2f);
-			BackgroundMusic.Stop();
-			winningPlayerIndex = winningPlayer.PlayerNumber;
-			state = GameState.Victory;
+		yield return new WaitForSeconds(2f);
+		BackgroundMusic.Stop();
+		winningPlayerIndex = winningPlayer.PlayerNumber;
+		state = GameState.Victory;
 
-			winningPlayer.SetAsVictor();
-			WinningPlayerModel.StartWinSequence(winningPlayer);
+		winningPlayer.SetAsVictor();
+		WinningPlayerModel.StartWinSequence(winningPlayer);
 
-			ui.countdownNumber.fontSize = 50;
-			ui.countdownNumber.text = "\n\n\nPlayer " + (winningPlayerIndex + 1).ToString() + " Wins!";
-			ui.animator.SetTrigger("Open");
+		ui.countdownNumber.fontSize = 50;
+		ui.countdownNumber.text = "\n\n\nPlayer " + (winningPlayerIndex + 1).ToString() + " Wins!";
+		ui.animator.SetTrigger("Open");
 
-			Color color = new Color();
-			color.a = 0;
-			ui.PanelImage.color = color;
+		Color color = new Color();
+		color.a = 0;
+		ui.PanelImage.color = color;
 
-			shakeable.transform.position = WinCamSpawn.transform.position;
-			shakeable.transform.rotation = WinCamSpawn.transform.rotation;
+		shakeable.transform.position = WinCamSpawn.transform.position;
+		shakeable.transform.rotation = WinCamSpawn.transform.rotation;
 	}
-
 
 	IEnumerator RespawnAfter(PlayerState ps, float seconds)
 	{
