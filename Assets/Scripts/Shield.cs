@@ -63,7 +63,7 @@ public class Shield : AbstractWeapon
         var hitPlayer = other.gameObject.GetComponent<Player>();
 
         if(hitPlayer.PlayerNumber != player.PlayerNumber){
-            hitPlayer.Damage(DamageAmount, player.PlayerNumber);
+            hitPlayer.OnDamage(player.PlayerNumber, hitPlayer.PlayerNumber, DamageAmount);
 
             var hitParticles = Instantiate(HitPlayerParticlePrefab, hitPlayer.transform.position, player.transform.rotation);
             Destroy(hitParticles.gameObject, 2f);

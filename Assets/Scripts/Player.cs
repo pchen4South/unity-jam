@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] CharacterController controller;
     [SerializeField] Animator animator;
     [SerializeField] AudioSource takeDamageSound;
+    [SerializeField] AudioSource fallDeathSound;
     [SerializeField] AudioSource deathSound;
     [SerializeField] AudioSource spawnSound;
     [SerializeField] AudioSource dashSound;
@@ -25,7 +26,9 @@ public class Player : MonoBehaviour
     public float DashDuration = 0.25f;
     public float MoveSkillCooldown = 2f;
     public float MoveSkillRecoveryTime = .1f;
-    public System.Action<int, int> OnDeath;
+
+    //attackerIndex victimIndex amountOfDamage
+    public System.Action<int, int, int> OnDamage;
 
     public AbstractWeapon Weapon;
     public int PlayerNumber = 0;
@@ -63,7 +66,7 @@ public class Player : MonoBehaviour
         }
 
         //end dash
-        if(currentDashTime > DashDuration) 
+        if (currentDashTime > DashDuration) 
         {
             isDashing = false;
             moveStatus = MoveSkillStatus.OnCooldown;
@@ -73,9 +76,11 @@ public class Player : MonoBehaviour
         }
 
         //dash cooldown
-        if(moveStatus == MoveSkillStatus.OnCooldown){
+        if (moveStatus == MoveSkillStatus.OnCooldown)
+        {
             MoveSkillTimer += Time.deltaTime;
-            if (MoveSkillTimer >= MoveSkillCooldown){
+            if (MoveSkillTimer >= MoveSkillCooldown)
+            {
                 MoveSkillTimer = 0f;
                 moveStatus = MoveSkillStatus.Ready;
             } 
@@ -104,6 +109,7 @@ public class Player : MonoBehaviour
     {
         if (!canMove)
             return;
+
         if (status == PlayerStatus.Dead) 
             return;
 
@@ -120,37 +126,33 @@ public class Player : MonoBehaviour
         {
             Destroy(Weapon.gameObject);
         }
-        Weapon = Instantiate(newWeapon, transform);
-        Weapon.player = this;
         canRotate = true;
         canMove = true;
+        Weapon = Instantiate(newWeapon, transform);
+        Weapon.player = this;
     }
 
-    public void Damage(int amountOfDamage, int attackerIndex)
+    public void Damage(int damageAmount)
     {
-        if (status == PlayerStatus.Dead)
-            return;
-
-        Health = Mathf.Max(0, Health - amountOfDamage);
+        Health = Mathf.Max(0, Health - damageAmount);
         animator.SetTrigger("Hit");
         takeDamageSound.Play();
-
-        if (Health <= 0)
-        {
-            Kill(attackerIndex);
-        }
     }
 
-    public void Kill(int attackerIndex)
+    public void Kill()
     {
         status = PlayerStatus.Dead;
         Health = 0;
         canMove = false;
         canRotate = false;
-
-        OnDeath.Invoke(PlayerNumber, attackerIndex);
         animator.SetBool("PlayDeathAnimation", true);
         deathSound.Play();
+    }
+
+    public void KillByFalling()
+    {
+        status = PlayerStatus.Dead;
+        fallDeathSound.Play();
     }
 
 	public void Spawn(Transform t)

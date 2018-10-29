@@ -93,7 +93,7 @@ public class Deagle : AbstractWeapon
             var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
             var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
 
-            target.Damage(1, player.PlayerNumber);
+            target.OnDamage.Invoke(player.PlayerNumber, target.PlayerNumber, 1);
             Destroy(hitParticles.gameObject, 2f);
         }
         else

@@ -32,13 +32,14 @@ public class ShotgunHitDetect : MonoBehaviour
         while (i < numCollisionEvents) 
         {
             
-            if(other.tag == "Player"){
+            if (other.tag == "Player")
+            {
                 var target = other.gameObject.GetComponent<Player>();
-                //var target = other.GetComponentInParent<PlayerHitbox>().player;
                 var targetPlayerNumber = target.PlayerNumber;
 
-                if(targetPlayerNumber != firingPlayerNumber){
-                    target.Damage(1, firingPlayerNumber);
+                if(targetPlayerNumber != firingPlayerNumber)
+                {
+                    target.OnDamage(firingPlayerNumber, target.PlayerNumber, 1);
                 }
             }
             i++;

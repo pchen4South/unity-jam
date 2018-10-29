@@ -108,6 +108,7 @@ public class GameMode : MonoBehaviour
 
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
+	public float killHeight = -1000f;
 
 	GameObject[] spawnPoints;
 	PlayerState[] playerStates;
@@ -118,10 +119,6 @@ public class GameMode : MonoBehaviour
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;
 
-	List<string> Leaders = new List<string>();
-	int leadingLevel = 0;
-	int maxLevels = 0;
-
 	void Start()
 	{
 		var playerCount = 4;
@@ -129,6 +126,7 @@ public class GameMode : MonoBehaviour
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 		remainingCountdownDuration = CountdownDuration;
 		playerStates = new PlayerState[playerCount];
+		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, PlayerStatusUIPrefab, 8);
 
 		for (var i = 0; i < playerCount; i++)
 		{
@@ -141,24 +139,11 @@ public class GameMode : MonoBehaviour
 			ps.player.PlayerNumber = i;
 			ps.player.name = "Player " + i;
 			ps.player.SetWeapon(WeaponPrefab);
-			ps.player.OnDeath = HandlePlayerDeath;
+			ps.player.OnDamage = HandlePlayerDamage;
 			ps.player.SetColor(colorScheme.playerColors[i]);
 			ps.player.Spawn(spawnpoint.transform);
 			playerStates[i] = ps;
-
-			//initialize leaderboard
-			Leaders.Add("P" + (i + 1).ToString() + " ");
-			leadingLevel = 1;
 		}
-
-		LeaderboardLabel.text = "Current Leaders";
-		string leaders = "";
-		maxLevels = WeaponPrefabs.Length;
-		Leaders.ForEach(s => leaders += s);
-		PlayerNumbers.text = leaders.Trim();
-		GuncountText.text = "1 / " + maxLevels.ToString();
-
-		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, PlayerStatusUIPrefab, 8);
 	}
 
 	void Update()
@@ -173,6 +158,7 @@ public class GameMode : MonoBehaviour
 
 			remainingCountdownDuration -= Time.deltaTime;
 			ui.countdownNumber.text = Mathf.CeilToInt(remainingCountdownDuration).ToString();
+
 			if (remainingCountdownDuration <= 0f)
 			{
 				CountdownStarted = false;
@@ -194,6 +180,7 @@ public class GameMode : MonoBehaviour
 			}
 			else
 			{
+				// These are the "default" behaviors when no minigames are present
 				for (var i = 0; i < playerStates.Length; i++)
 				{
 					InputHelpers.BasicMove(playerStates[i]);
@@ -203,15 +190,46 @@ public class GameMode : MonoBehaviour
 					InputHelpers.BasicReleaseTrigger(playerStates[i]);
 				}
 			}
+
+			// kill players that have fallen off the map
+			for (var i = 0; i < playerStates.Length; i++)
+			{
+				var notDead = playerStates[i].player.status != Player.PlayerStatus.Dead;
+				var belowKillHeight = playerStates[i].player.transform.position.y < killHeight;
+
+				if (notDead && belowKillHeight)
+				{
+					playerStates[i].player.KillByFalling();
+					StartCoroutine(RespawnAfter(playerStates[i], RespawnTimer));
+				}
+			}
+
+			// calculate current top level
+			var topLevel = 1;
+			for (var i = 0; i < playerStates.Length; i++)
+			{
+				topLevel = Mathf.Max(topLevel, playerStates[i].weaponIndex + 1);
+			}
+
+			// find all current leaders
+			var leaders = "";
+			for (var i = 0; i < playerStates.Length; i++)
+			{
+				leaders += playerStates[i].weaponIndex == topLevel 
+					? "P" + i + ", "
+					: "";
+			}
+
+			LeaderboardLabel.text = "Current Leaders";
+			GuncountText.text = topLevel + " / " + WeaponPrefabs.Length;
+			PlayerNumbers.text = leaders;
+			playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
 		}
 		else if (state == GameState.Victory)
 		{
-			// check for Fire button presses to load next map
 			for (var i = 0; i < playerStates.Length; i++)
 			{
-				var c = playerStates[i].playerController;
-
-				if (c.GetButtonDown("Fire"))
+				if (playerStates[i].playerController.GetButtonDown("Fire"))
 				{
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				}
@@ -220,46 +238,47 @@ public class GameMode : MonoBehaviour
 
 		// always push timescale back towards full-speed
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
-
-		// Update the player HUDs
-		playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
 	}
 
-	void HandlePlayerDeath(int killedIndex, int killerIndex)
+	void HandlePlayerDamage(int attackerIndex, int victimIndex, int damageAmount)
 	{
-		var killedPlayerState = playerStates[killedIndex];
-		var killerPlayerState = playerStates[killerIndex];
-		var gunCount = WeaponPrefabs.Length;
+		// TODO: This is an event that probably should be handled by a minigame.. consider how to do this
+		var validVictim = victimIndex >= 0 && victimIndex < playerStates.Length;
+		var validAttacker = victimIndex >= 0 && victimIndex < playerStates.Length;
 
-		shakeable.AddIntensity(1f);
-		Time.timeScale = .1f;
-		killedPlayerState.deathCount++;
-		killerPlayerState.killCount++;
+		if (!validVictim)
+			return;
 
-		if (killerPlayerState.weaponIndex >= gunCount - 1)
+		var victim = playerStates[victimIndex];
+		var victimShouldDie = damageAmount >= victim.player.Health;
+
+		if (victimShouldDie)
 		{
-			StartCoroutine(HandleVictory(killerPlayerState.player));
+			Time.timeScale = .1f;
+			victim.player.Kill();
+			shakeable.AddIntensity(1f);
+			StartCoroutine(RespawnAfter(victim, RespawnTimer));
+
+			if (validAttacker)
+			{
+				var attacker = playerStates[attackerIndex];
+				var attackerShouldWin = attacker.weaponIndex >= WeaponPrefabs.Length - 1;
+				
+				if (attackerShouldWin)
+				{
+					StartCoroutine(HandleVictory(attacker.player));
+				}
+				else
+				{
+					attacker.weaponIndex++;
+					attacker.player.SetWeapon(WeaponPrefabs[attacker.weaponIndex]);
+				}
+			}
 		}
 		else
 		{
-			killerPlayerState.weaponIndex++;
-			killerPlayerState.player.SetWeapon(WeaponPrefabs[killerPlayerState.weaponIndex]);
-
-			if(killerPlayerState.weaponIndex + 1 == leadingLevel)
-			{
-				LeaderboardLabel.text = "Current Leaders";
-			} 
-			else if (killerPlayerState.weaponIndex + 1 > leadingLevel)
-			{
-				LeaderboardLabel.text = "Current Leader";
-				Leaders = new List<string>();
-			}
-			GuncountText.text = (killerPlayerState.weaponIndex+1).ToString() + " / " + maxLevels.ToString();
-			string leaders = "";
-			Leaders.Add("P" + (killerIndex+1).ToString());
-			Leaders.ForEach(s => leaders += s + " ");
-			PlayerNumbers.text = leaders.Trim();
-			StartCoroutine(RespawnAfter(killedPlayerState, RespawnTimer));
+			victim.player.Damage(damageAmount);
+			shakeable.AddIntensity(.3f);
 		}
 	}
 
@@ -276,10 +295,7 @@ public class GameMode : MonoBehaviour
 		ui.countdownNumber.fontSize = 50;
 		ui.countdownNumber.text = "\n\n\nPlayer " + (winningPlayerIndex + 1).ToString() + " Wins!";
 		ui.animator.SetTrigger("Open");
-
-		Color color = new Color();
-		color.a = 0;
-		ui.PanelImage.color = color;
+		ui.PanelImage.color = new Color(0, 0, 0, 0);
 
 		shakeable.transform.position = WinCamSpawn.transform.position;
 		shakeable.transform.rotation = WinCamSpawn.transform.rotation;
