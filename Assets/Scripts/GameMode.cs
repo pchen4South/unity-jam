@@ -118,6 +118,10 @@ public class GameMode : MonoBehaviour
 	int winningPlayerIndex;
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;
+	float GameTimer = 0;
+
+	//testing var
+	bool didSpawnMinigame = false;
 
 	void Start()
 	{
@@ -168,18 +172,33 @@ public class GameMode : MonoBehaviour
 		}
 		else if (state == GameState.Live)
 		{
+			GameTimer += Time.deltaTime;
 			if (Minigame)
 			{
-				for (var i = 0; i < playerStates.Length; i++)
-				{
-					Minigame.HandleMove(playerStates[i]);
-					Minigame.HandleDash(playerStates[i]);
-					Minigame.HandleRotate(playerStates[i]);
-					Minigame.HandleFire(playerStates[i]);
+				if (Minigame.MinigameIsRunning()){
+					for (var i = 0; i < playerStates.Length; i++)
+					{
+						Minigame.HandleMove(playerStates[i]);
+						Minigame.HandleDash(playerStates[i]);
+						Minigame.HandleRotate(playerStates[i]);
+						Minigame.HandleFire(playerStates[i]);
+					}
+				} else if (Minigame.MinigameResultsReady()){
+					var MinigameResults = Minigame.Results;
+					//DoSomeShitWithTheResults();
+					Debug.Log("did some shit with the minigame results");
+					Minigame.SetMinigameToReady();
+					Destroy(Minigame);
 				}
 			}
 			else
 			{
+				// Temp code for testing
+				if(GameTimer >= 5f && didSpawnMinigame == false){ 
+					Minigame = Instantiate(MinigamePrefabs[0]);
+					Minigame.BeginMinigame();
+					didSpawnMinigame = true;
+				}
 				// These are the "default" behaviors when no minigames are present
 				for (var i = 0; i < playerStates.Length; i++)
 				{

@@ -21,10 +21,20 @@ public static class InputHelpers
 
     public static void BasicRotate(PlayerState p)
     {
-        p.player.transform.forward
-            =  DirectionFromAxes(p.playerController, 5, 6) // try looking stick
-            ?? DirectionFromAxes(p.playerController, 0, 1) // fall back to move stick
-            ?? p.player.transform.forward;                 // use the current value
+        // p.player.transform.forward
+        //     =  DirectionFromAxes(p.playerController, 5, 6)             // try looking stick
+        //     ?? DirectionFromAxes(p.playerController, 0, 1)             // fall back to move stick
+        //     ?? p.player.transform.forward;                 // use the current value
+            
+        if( DirectionFromAxes(p.playerController, 5, 6)   != Vector3.zero){
+             p.player.transform.forward
+            =  DirectionFromAxes(p.playerController, 5, 6).Value;
+        } else if(DirectionFromAxes(p.playerController, 0, 1)   != Vector3.zero){
+             p.player.transform.forward
+            =  DirectionFromAxes(p.playerController, 0, 1).Value;
+        } else {
+            p.player.transform.forward = p.player.transform.forward;
+        }
     }
 
     public static void BasicDash(PlayerState p)
