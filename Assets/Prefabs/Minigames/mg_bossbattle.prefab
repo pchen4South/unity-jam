@@ -27,7 +27,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 9205924223393851253}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -43,7 +44,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7788a45124cc9341a6d9385c8a0455b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinigameDuration: 10
+  MinigameDuration: 30
   MinigameAliveTimer: 0
+  MinigameIntroScreen: {fileID: 2203156609999738126}
   Boss: {fileID: 2749579509201295045, guid: 4a03b5a47b084b74a8d4bde7d95ec018, type: 3}
   StageElementsToModify: []
+  IntroTimer: 5
+--- !u!224 &9205924223393851253 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6655308269292271915, guid: 7077149c12e819e4da82824bdb6e60f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2566599692119924318}
+  m_PrefabAsset: {fileID: 0}
+--- !u!223 &2203156609999738126 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 4399255500424334160, guid: 7077149c12e819e4da82824bdb6e60f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2566599692119924318}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2566599692119924318
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5844757875479816119}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7077149c12e819e4da82824bdb6e60f6, type: 3}

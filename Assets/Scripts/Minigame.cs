@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MinigamePlayer{
     public int PlayerNumber = 0;
@@ -17,10 +18,12 @@ public abstract class Minigame : MonoBehaviour
 {
     // Ready = ready to run minigame, running = game is running, ended = game is done but needs to calculate results / effects, 
     // ResultsReady = Ready for main loop to consume results and set the minigame to MG_State.Ready
-    enum MG_State { Ready, Running, Ended, ResultsReady}
+    enum MG_State { Ready, Intro, Running, Ended, ResultsReady}
     [SerializeField] public float MinigameDuration = 5f;
     [SerializeField] public float MinigameAliveTimer = 0f;
     
+    [SerializeField] public Canvas MinigameIntroScreen;
+
     MG_State MinigameState = MG_State.Ready;
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 // Parent methods
@@ -16,17 +17,30 @@ public class mg_bossbattle : Minigame
     [SerializeField] public GameObject Boss;
     [SerializeField] public GameObject[] StageElementsToModify;
 
+    public float IntroTimer = 10f;
+    GameObject IntroscreenObject;
+
+
+
+    // introscreen and prepareminigame need to be refactored, i think move into the abstract class based on state machine
     public override void PrepareMinigame(){
+        MinigameIntroScreen.gameObject.SetActive(true);
+        StartCoroutine(Introscreen());
+    }
+
+    IEnumerator Introscreen(){
+        yield return new WaitForSeconds(IntroTimer);
+        MinigameIntroScreen.gameObject.SetActive(false);
         var boss_instance = Instantiate(Boss);
         StageElementsToModify = GameObject.FindGameObjectsWithTag("Disable_BossBattle");
         foreach(var ele in StageElementsToModify){
             ele.SetActive(false);
         }
-        Destroy(boss_instance, MinigameDuration);
+
+        Destroy(boss_instance, MinigameDuration - IntroTimer);
     }
 
     public override void HandleMinigameCompleted(){
-        Debug.Log("boss battle ended");
         foreach(var ele in StageElementsToModify){
             ele.SetActive(true);
         }
