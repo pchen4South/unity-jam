@@ -43,3 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7788a45124cc9341a6d9385c8a0455b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MinigameDuration: 10
+  MinigameAliveTimer: 0
+  Boss: {fileID: 2749579509201295045, guid: 4a03b5a47b084b74a8d4bde7d95ec018, type: 3}
+  StageElementsToModify: []

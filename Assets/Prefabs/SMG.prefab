@@ -938,7 +938,7 @@ MonoBehaviour:
   muzzleOffset: 0.5
   layerMask:
     serializedVersion: 2
-    m_Bits: 1025
+    m_Bits: 33793
   ReloadTime: 2
   maxBulletSpread: 0.5
   timeToMaxSpread: 0.5
