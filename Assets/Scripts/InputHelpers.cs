@@ -47,17 +47,28 @@ public static class InputHelpers
 
     public static void BasicPullTrigger(PlayerState p)
     {
+        // if (p.playerController.GetButton("Fire") || p.playerController.GetButtonRepeating("Fire"))
+        // {
+        //     p.player.Weapon?.PullTrigger(p.player);
+        // }
+
+
         if (p.playerController.GetButton("Fire") || p.playerController.GetButtonRepeating("Fire"))
         {
-            p.player.Weapon?.PullTrigger(p.player);
+            p.player.Wep?.PullTrigger(p.player);
         }
+
     }
 
     public static void BasicReleaseTrigger(PlayerState p)
     {
+        // if (p.playerController.GetButtonUp("Fire"))
+        // {
+        //     p.player.Weapon.ReleaseTrigger(p.player);
+        // }
         if (p.playerController.GetButtonUp("Fire"))
         {
-            p.player.Weapon.ReleaseTrigger(p.player);
+            p.player.Wep.ReleaseTrigger(p.player);
         }
     }
 }

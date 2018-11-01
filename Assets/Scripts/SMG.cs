@@ -121,9 +121,9 @@ public class SMG : AbstractWeapon {
         if (isPlayer)
         {
             var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
-            if(player.PlayerNumber != target.PlayerNumber){
+            if(player.ID != target.ID){
                 var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-                target.OnDamage(player.PlayerNumber, target.PlayerNumber, 1);
+                target.OnDamage(player.ID, target.ID, 1);
                 Destroy(hitParticles.gameObject, 2f);
             }
         }

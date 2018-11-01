@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class Player : MonoBehaviour 
+public class Player : AbstractCharacter 
 {
     #region variables
-    public enum PlayerStatus { Alive, Dead, Invincible }
+    public enum PlayerStatus { Alive, Dead, Spawning }
     public enum MoveSkillStatus { Ready, OnCooldown }
 
     [SerializeField] PlayerIndicator playerIndicator;
@@ -20,18 +20,19 @@ public class Player : MonoBehaviour
     [SerializeField] SpriteRenderer Crosshair;
     [SerializeField] PlayerHitbox hitbox;
 
-    public int MaxHealth = 3;
     public float MoveSpeed = 2f;
     public float SpeedModifier = 1f;
     public float DashDuration = 0.25f;
     public float MoveSkillCooldown = 2f;
     public float MoveSkillRecoveryTime = .1f;
 
-    //attackerIndex victimIndex amountOfDamage
-    public System.Action<int, int, int> OnDamage;
+
 
     public AbstractWeapon Weapon;
-    public int PlayerNumber = 0;
+
+    //TESTWEP
+    public AbstractWep Wep;
+
     public int Health = 1;
     public bool canMove = true;
     public bool canRotate = true;
@@ -45,8 +46,12 @@ public class Player : MonoBehaviour
     Vector3 dashDir = Vector3.zero;
 
     public float IkWeight = 1f;
-    Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
+    
     #endregion
+
+    Player(){
+        ENTITY_TYPE = "PLAYERCHARACTER";
+    }
 
     void Update() 
     {
@@ -88,16 +93,31 @@ public class Player : MonoBehaviour
     }
 
     //Inverse Kinematics for guns
+    // void OnAnimatorIK(int layerIndex) 
+    // {
+    //     if (Weapon.LeftHandIKTarget != null && Weapon.RightHandIKTarget != null)
+    //     {
+    //         animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, IkWeight);
+    //         animator.SetIKPositionWeight(AvatarIKGoal.RightHand, IkWeight);
+    //         animator.SetIKPosition(AvatarIKGoal.LeftHand, Weapon.LeftHandIKTarget.position);
+    //         animator.SetIKPosition(AvatarIKGoal.RightHand, Weapon.RightHandIKTarget.position);
+    //     }
+    // }
+
+    //TESTWEP
     void OnAnimatorIK(int layerIndex) 
     {
-        if (Weapon.LeftHandIKTarget != null && Weapon.RightHandIKTarget != null)
+        if (Wep.LeftHandIKTarget != null && Wep.RightHandIKTarget != null)
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, IkWeight);
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, IkWeight);
-            animator.SetIKPosition(AvatarIKGoal.LeftHand, Weapon.LeftHandIKTarget.position);
-            animator.SetIKPosition(AvatarIKGoal.RightHand, Weapon.RightHandIKTarget.position);
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, Wep.LeftHandIKTarget.position);
+            animator.SetIKPosition(AvatarIKGoal.RightHand, Wep.RightHandIKTarget.position);
         }
     }
+
+
+
 
     public void SetColor(Color color)
     {
@@ -130,6 +150,19 @@ public class Player : MonoBehaviour
         canMove = true;
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
+    }
+
+    //TESTWEP
+    public void SetWep(AbstractWep newWeapon)
+    {
+        if (Wep)
+        {
+            Destroy(Wep.gameObject);
+        }
+        canRotate = true;
+        canMove = true;
+        Wep = Instantiate(newWeapon, transform);
+        Wep.player = this;
     }
 
     public void Damage(int damageAmount)
@@ -200,7 +233,7 @@ public class Player : MonoBehaviour
     IEnumerator MoveSkillRecovery()
     {
         yield return new WaitForSeconds(MoveSkillRecoveryTime);
-        SpeedModifier = Weapon.SpeedModifier;
+        //SpeedModifier = Weapon.SpeedModifier;
         this.canMove = true;
         this.canRotate = true;
     }

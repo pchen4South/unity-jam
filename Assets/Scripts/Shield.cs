@@ -62,8 +62,8 @@ public class Shield : AbstractWeapon
         if(shieldState != RiotShieldState.Swinging || !other.CompareTag("Player")) return;
         var hitPlayer = other.gameObject.GetComponent<Player>();
 
-        if(hitPlayer.PlayerNumber != player.PlayerNumber){
-            hitPlayer.OnDamage(player.PlayerNumber, hitPlayer.PlayerNumber, DamageAmount);
+        if(hitPlayer.ID != player.ID){
+            hitPlayer.OnDamage(player.ID, hitPlayer.ID, DamageAmount);
 
             var hitParticles = Instantiate(HitPlayerParticlePrefab, hitPlayer.transform.position, player.transform.rotation);
             Destroy(hitParticles.gameObject, 2f);

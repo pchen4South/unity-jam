@@ -15,7 +15,7 @@ public class ShotgunHitDetect : MonoBehaviour
     void Start()
     {
         collisionEvents = new List<ParticleCollisionEvent> ();
-        firingPlayerNumber = this.GetComponentInParent<Player>().PlayerNumber;
+        firingPlayerNumber = this.GetComponentInParent<Player>().ID;
     }
 
     // Update is called once per frame
@@ -35,11 +35,11 @@ public class ShotgunHitDetect : MonoBehaviour
             if (other.tag == "Player")
             {
                 var target = other.gameObject.GetComponent<Player>();
-                var targetPlayerNumber = target.PlayerNumber;
+                var targetPlayerNumber = target.ID;
 
                 if(targetPlayerNumber != firingPlayerNumber)
                 {
-                    target.OnDamage(firingPlayerNumber, target.PlayerNumber, 1);
+                    target.OnDamage(firingPlayerNumber, target.ID, 1);
                 }
             }
             i++;

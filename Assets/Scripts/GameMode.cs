@@ -69,7 +69,7 @@ public class PlayerHUDManager : Object
 			playerUIPool[i].PSUI.UpdateWeaponType(playerStates[i].player.Weapon.WeaponName, (playerStates[i].player.Weapon.MagazineSize));
 			playerUIPool[i].PSUI.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
 			playerUIPool[i].PSUI.UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
-			playerUIPool[i].PSUI.UpdatePlayerIdentity(playerStates[i].player.PlayerNumber, playerStates[i].player.meshRenderer.material.color);
+			playerUIPool[i].PSUI.UpdatePlayerIdentity(playerStates[i].player.ID, playerStates[i].player.meshRenderer.material.color);
 			playerUIPool[i].PSUI.UpdateWeaponProgress(playerStates[i].weaponIndex, WeaponPrefabs);
 			playerUIPool[i].PSUI.UpdateDashCooldown(playerStates[i].player.MoveSkillCooldown, playerStates[i].player.MoveSkillTimer);
 			i++;
@@ -99,6 +99,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] AudioSource BackgroundMusic;
 	[SerializeField] AudioSource CountdownAudio;
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
+	[SerializeField] AbstractWep[] WepPrefabs;
 	[SerializeField] Minigame[] MinigamePrefabs;
 	[SerializeField] GameObject WinCamSpawn;
 	[SerializeField] WinningPlayer WinningPlayerModel;
@@ -123,6 +124,46 @@ public class GameMode : MonoBehaviour
 	//testing var
 	bool didSpawnMinigame = false;
 
+	//hit processing
+	List<ValidHit> NewHits = new List<ValidHit>();
+	List<ValidHit> HitsToBeProcessed = new List<ValidHit>();
+	List<ValidHit> ProcessedHits = new List<ValidHit>();
+	public void AddValidHit(ValidHit NewHit){
+		HitsToBeProcessed.Add(NewHit);
+	}
+	
+	void ProcessNewValidHits(){
+		//make a copy of the Hits array or it will complain
+		var HitArrayCopy = new List<ValidHit>(HitsToBeProcessed);
+
+		if( HitsToBeProcessed.Count == 0) return;
+		foreach(var Newhit in HitArrayCopy){
+			//player originated damage
+			if(Newhit.OriginatingEntityType == "PLAYERCHARACTER"){
+				int shooterPlayerNumber = Newhit.OriginatingEntityIdentifier;
+				//if player caused the hit on a player
+				if(Newhit.VictimEntityType == "PLAYERCHARACTER"){
+					var target = Newhit.VictimEntity;
+					Newhit.VictimEntity.OnDamage.Invoke(shooterPlayerNumber, target.ID, Newhit.DamageAmount);				
+				} 
+				//if player caused the hit on a NPC
+				else if(Newhit.VictimEntityType == "NPC"){
+
+				}
+			//npc originated damage
+			} else if(Newhit.OriginatingEntityType == "NPC"){
+
+			}
+			// all other sources of damage
+			else {
+
+			}
+
+			ProcessedHits.Add(Newhit);
+			HitsToBeProcessed.Remove(Newhit);
+		}
+	}
+
 	void Start()
 	{
 		var playerCount = 4;
@@ -138,15 +179,21 @@ public class GameMode : MonoBehaviour
 			var spawnpoint = spawnPoints[i % spawnPoints.Length];
 			var player = Instantiate(PlayerPrefab);
 			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
-			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
+			//WEPTEST - var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
 
-			ps.player.PlayerNumber = i;
+			var WeaponPrefab = WepPrefabs[ps.weaponIndex];
+			//ps.player.PlayerNumber = i;
+			ps.player.ID = i;
 			ps.player.name = "Player " + i;
-			ps.player.SetWeapon(WeaponPrefab);
-			ps.player.OnDamage = HandlePlayerDamage;
+			//WEPTEST - ps.player.SetWeapon(WeaponPrefab);
+			ps.player.SetWep(WeaponPrefab);
+			ps.player.OnDamage = HandlePVPDamage;
 			ps.player.SetColor(colorScheme.playerColors[i]);
 			ps.player.Spawn(spawnpoint.transform);
 			playerStates[i] = ps;
+
+			//added valid hit event registration here
+			ps.player.Wep.OnValidHitOccurred += AddValidHit;
 		}
 	}
 
@@ -173,6 +220,9 @@ public class GameMode : MonoBehaviour
 		else if (state == GameState.Live)
 		{
 			GameTimer += Time.deltaTime;
+
+			ProcessNewValidHits();
+
 			if (Minigame)
 			{
 				if (Minigame.MinigameIsRunning()){
@@ -242,7 +292,7 @@ public class GameMode : MonoBehaviour
 			LeaderboardLabel.text = "Current Leaders";
 			GuncountText.text = topLevel + " / " + WeaponPrefabs.Length;
 			PlayerNumbers.text = leaders;
-			playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
+			//playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
 		}
 		else if (state == GameState.Victory)
 		{
@@ -259,7 +309,8 @@ public class GameMode : MonoBehaviour
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 	}
 
-	void HandlePlayerDamage(int attackerIndex, int victimIndex, int damageAmount)
+
+	void HandlePVPDamage(int attackerIndex, int victimIndex, int damageAmount)
 	{
 		// TODO: This is an event that probably should be handled by a minigame.. consider how to do this
 		var validVictim = victimIndex >= 0 && victimIndex < playerStates.Length;
@@ -305,7 +356,7 @@ public class GameMode : MonoBehaviour
 	{
 		yield return new WaitForSeconds(2f);
 		BackgroundMusic.Stop();
-		winningPlayerIndex = winningPlayer.PlayerNumber;
+		winningPlayerIndex = winningPlayer.ID;
 		state = GameState.Victory;
 
 		winningPlayer.SetAsVictor();

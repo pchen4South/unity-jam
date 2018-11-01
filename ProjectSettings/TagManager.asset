@@ -15,6 +15,7 @@ TagManager:
   - Water
   - PlayerHitbox
   - Disable_BossBattle
+  - NPCHitbox
   layers:
   - Default
   - TransparentFX
