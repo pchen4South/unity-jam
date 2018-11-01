@@ -14,7 +14,6 @@ public class Shield : AbstractWeapon
     [SerializeField]    AudioSource swingSound;
     [SerializeField]    BoxCollider hitBox;
     [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
-    public int DamageAmount = 1;
     float DamageCooldown;
 
     void Start()

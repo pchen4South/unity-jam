@@ -26,12 +26,7 @@ public class Player : AbstractCharacter
     public float MoveSkillCooldown = 2f;
     public float MoveSkillRecoveryTime = .1f;
 
-
-
     public AbstractWeapon Weapon;
-
-    //TESTWEP
-    public AbstractWep Wep;
 
     public int Health = 1;
     public bool canMove = true;
@@ -93,31 +88,16 @@ public class Player : AbstractCharacter
     }
 
     //Inverse Kinematics for guns
-    // void OnAnimatorIK(int layerIndex) 
-    // {
-    //     if (Weapon.LeftHandIKTarget != null && Weapon.RightHandIKTarget != null)
-    //     {
-    //         animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, IkWeight);
-    //         animator.SetIKPositionWeight(AvatarIKGoal.RightHand, IkWeight);
-    //         animator.SetIKPosition(AvatarIKGoal.LeftHand, Weapon.LeftHandIKTarget.position);
-    //         animator.SetIKPosition(AvatarIKGoal.RightHand, Weapon.RightHandIKTarget.position);
-    //     }
-    // }
-
-    //TESTWEP
     void OnAnimatorIK(int layerIndex) 
     {
-        if (Wep.LeftHandIKTarget != null && Wep.RightHandIKTarget != null)
+        if (Weapon.LeftHandIKTarget != null && Weapon.RightHandIKTarget != null)
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, IkWeight);
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, IkWeight);
-            animator.SetIKPosition(AvatarIKGoal.LeftHand, Wep.LeftHandIKTarget.position);
-            animator.SetIKPosition(AvatarIKGoal.RightHand, Wep.RightHandIKTarget.position);
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, Weapon.LeftHandIKTarget.position);
+            animator.SetIKPosition(AvatarIKGoal.RightHand, Weapon.RightHandIKTarget.position);
         }
     }
-
-
-
 
     public void SetColor(Color color)
     {
@@ -151,20 +131,6 @@ public class Player : AbstractCharacter
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
     }
-
-    //TESTWEP
-    public void SetWep(AbstractWep newWeapon)
-    {
-        if (Wep)
-        {
-            Destroy(Wep.gameObject);
-        }
-        canRotate = true;
-        canMove = true;
-        Wep = Instantiate(newWeapon, transform);
-        Wep.player = this;
-    }
-
     public void Damage(int damageAmount)
     {
         Health = Mathf.Max(0, Health - damageAmount);

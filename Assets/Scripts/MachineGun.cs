@@ -19,8 +19,6 @@ public class MachineGun : AbstractWeapon
     // GameObject muzzleFlash;
     // [SerializeField]
     // Light muzzleFlashLight;
-    [SerializeField]
-    LineRenderer bulletTracer;
 
     [Header("Config")]
     public float fireRate = .1f;
@@ -28,12 +26,11 @@ public class MachineGun : AbstractWeapon
     public float muzzleOffset = .5f;
     public float kickBackGrowthRate = 1f;
     public float kickBackDecayRate = -2f;
-    public LayerMask layerMask = new LayerMask();
 
     [Header("State")]
     float timeTillNextShot = 0f;
     Ray ray = new Ray();
-    RaycastHit rayHit = new RaycastHit();
+    RaycastHit rayHit = new RaycastHit(); 
     GameObject FlashInstance;
 
 
@@ -43,6 +40,7 @@ public class MachineGun : AbstractWeapon
         AmmoCount = -1;
         //FlashInstance = Instantiate(muzzleFlash, transform);
         WeaponName = "Machine Gun";
+        Debug.Log("hi");
     }
 
     void LateUpdate()

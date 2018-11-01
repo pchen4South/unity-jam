@@ -99,7 +99,6 @@ public class GameMode : MonoBehaviour
 	[SerializeField] AudioSource BackgroundMusic;
 	[SerializeField] AudioSource CountdownAudio;
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
-	[SerializeField] AbstractWep[] WepPrefabs;
 	[SerializeField] Minigame[] MinigamePrefabs;
 	[SerializeField] GameObject WinCamSpawn;
 	[SerializeField] WinningPlayer WinningPlayerModel;
@@ -179,21 +178,19 @@ public class GameMode : MonoBehaviour
 			var spawnpoint = spawnPoints[i % spawnPoints.Length];
 			var player = Instantiate(PlayerPrefab);
 			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
-			//WEPTEST - var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
+			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
 
-			var WeaponPrefab = WepPrefabs[ps.weaponIndex];
 			//ps.player.PlayerNumber = i;
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;
-			//WEPTEST - ps.player.SetWeapon(WeaponPrefab);
-			ps.player.SetWep(WeaponPrefab);
+			ps.player.SetWeapon(WeaponPrefab);
 			ps.player.OnDamage = HandlePVPDamage;
 			ps.player.SetColor(colorScheme.playerColors[i]);
 			ps.player.Spawn(spawnpoint.transform);
 			playerStates[i] = ps;
 
 			//added valid hit event registration here
-			ps.player.Wep.OnValidHitOccurred += AddValidHit;
+			ps.player.Weapon.OnValidHitOccurred += AddValidHit;
 		}
 	}
 
@@ -292,7 +289,7 @@ public class GameMode : MonoBehaviour
 			LeaderboardLabel.text = "Current Leaders";
 			GuncountText.text = topLevel + " / " + WeaponPrefabs.Length;
 			PlayerNumbers.text = leaders;
-			//playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
+			playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
 		}
 		else if (state == GameState.Victory)
 		{

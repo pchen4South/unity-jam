@@ -8,14 +8,12 @@ public class SniperRifle : AbstractWeapon
     [SerializeField] Animator animator;
     [SerializeField] LineRenderer laserSight;
     [SerializeField] ParticleSystem muzzleFlash;
-
     [SerializeField] ParticleSystem HitParticlePrefab;
     [SerializeField] ParticleSystem HitPlayerParticlePrefab;
     [SerializeField] GameObject ProjectilePrefab;
 
     public float PreFireDuration = 1f;
     public float ReloadDuration = 1f;
-    public LayerMask layerMask = new LayerMask();
 
     SniperRifleState state = SniperRifleState.Ready;
     float remainingReloadTime = 0f;

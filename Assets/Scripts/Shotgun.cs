@@ -26,7 +26,6 @@ public class Shotgun : AbstractWeapon {
     public float fireRate = .75f;
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
-    public LayerMask layerMask = new LayerMask();
     //float AmmoCount = 0f;
 	public float ReloadTime = 2f;
 

@@ -111,6 +111,7 @@ public class PlayerStatusUI : MonoBehaviour
 	}
 
     public void UpdatePlayerIdentity(int pNum, Color pColor){
+        Debug.Log("int " + pNum);
         playerNumber = pNum + 1;
         PlayerNumberText.text = "P" + playerNumber.ToString();
         PlayerNumberText.color = pColor;

@@ -10,7 +10,6 @@ public class SMG : AbstractWeapon {
     [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]    GameObject muzzleFlash;
     [SerializeField]    Light muzzleFlashLight;
-    [SerializeField]    LineRenderer bulletTracer;
     [SerializeField]    ParticleSystem BulletCasings;
     [SerializeField]    Transform IKTarget_L;
     [SerializeField]    Transform IKTarget_R;
@@ -19,7 +18,6 @@ public class SMG : AbstractWeapon {
     public float fireRate = .15f;
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
-    public LayerMask layerMask = new LayerMask();
     public float ReloadTime = 1f;
     public float maxBulletSpread;
     public float timeToMaxSpread;

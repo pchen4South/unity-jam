@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deagle : AbstractWeapon 
+public class Deagle : AbstractWeapon
 {
     [Header("Cached references")]
     [SerializeField]    AudioSource fireSound;
@@ -10,9 +10,7 @@ public class Deagle : AbstractWeapon
     [SerializeField]    ParticleSystem HitParticlePrefab;
     [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]    GameObject muzzleFlash;
-	[SerializeField]    GameObject BulletHole;
     [SerializeField]    Light muzzleFlashLight;
-    [SerializeField]    LineRenderer bulletTracer;
     [SerializeField]    Transform IKTarget_L;
     [SerializeField]    Transform IKTarget_R;
 
@@ -20,7 +18,6 @@ public class Deagle : AbstractWeapon
     public float fireRate = .1f;
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
-    public LayerMask layerMask = new LayerMask();
 	public float ReloadTime = 1f;
 
     [Header("State")]

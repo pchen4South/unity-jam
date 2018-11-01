@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blaster : AbstractWep {
+public class Blaster : AbstractWeapon {
 //  public Transform Muzzle;
 // 	public Player player;
 // 	public string WeaponName = "gun";

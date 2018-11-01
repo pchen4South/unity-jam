@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class AbstractWep : MonoBehaviour 
+public abstract class TestAbstractWep : MonoBehaviour 
 {
 	public Transform Muzzle;
 	public Player player;
