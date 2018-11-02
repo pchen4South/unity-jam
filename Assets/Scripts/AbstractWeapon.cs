@@ -4,7 +4,8 @@ public abstract class AbstractWeapon : MonoBehaviour
 {
 	public Transform Muzzle;
 	public Player player;
-
+	
+	[Header("Config")]
 	public string WeaponName = "gun";
 	public float SpeedModifier = 1f;
 	public int AmmoCount = 0;
@@ -12,9 +13,15 @@ public abstract class AbstractWeapon : MonoBehaviour
 	[SerializeField] public int DamageAmount = 1;
 	public Transform LeftHandIKTarget;
 	public Transform RightHandIKTarget;
+    public float fireRate = .1f;
+    public float shotTime = .01f;
+    public float muzzleOffset = .5f;
+	public float ReloadTime = 1f;
 	[SerializeField] public LineRenderer bulletTracer;
 	[SerializeField]  public GameObject BulletHole;
 	[SerializeField] public LayerMask layerMask = new LayerMask();
+	[SerializeField]  public Transform IKTarget_L;
+    [SerializeField]  public Transform IKTarget_R;
 
 	//Event Broadcasting
 	public delegate void ValidHitOccurredEvent(ValidHit NewHit);
@@ -44,12 +51,13 @@ public abstract class AbstractWeapon : MonoBehaviour
 		//Can prob refactor if player / npc have common baseclass
         if (isPlayer || isNPC)
         {
+			// Debug.Log("playerhit");
 			AbstractCharacter target;
 			if (isNPC)
 				target = rayHit.collider.GetComponent<BossMonster>();
 			else
 				target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
-			
+
 			NewHit.OriginatingEntityType = player.ENTITY_TYPE;
 			NewHit.OriginatingEntityIdentifier = player.ID;
 			NewHit.VictimEntityType = target.ENTITY_TYPE;

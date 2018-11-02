@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class Player : AbstractCharacter 
 {
     #region variables
-    public enum PlayerStatus { Alive, Dead, Spawning }
     public enum MoveSkillStatus { Ready, OnCooldown }
 
     [SerializeField] PlayerIndicator playerIndicator;
@@ -31,7 +30,7 @@ public class Player : AbstractCharacter
     public int Health = 1;
     public bool canMove = true;
     public bool canRotate = true;
-	public PlayerStatus status = PlayerStatus.Alive;
+	
     
     //Moveskill 
     public MoveSkillStatus moveStatus = MoveSkillStatus.Ready;
@@ -110,7 +109,7 @@ public class Player : AbstractCharacter
         if (!canMove)
             return;
 
-        if (status == PlayerStatus.Dead) 
+        if (status == CharacterStatus.Dead) 
             return;
 
         var speed = Time.deltaTime * MoveSpeed * SpeedModifier;
@@ -140,7 +139,7 @@ public class Player : AbstractCharacter
 
     public void Kill()
     {
-        status = PlayerStatus.Dead;
+        status = CharacterStatus.Dead;
         Health = 0;
         canMove = false;
         canRotate = false;
@@ -150,13 +149,13 @@ public class Player : AbstractCharacter
 
     public void KillByFalling()
     {
-        status = PlayerStatus.Dead;
+        status = CharacterStatus.Dead;
         fallDeathSound.Play();
     }
 
 	public void Spawn(Transform t)
 	{
-        status = PlayerStatus.Alive;
+        status = CharacterStatus.Alive;
 		Health = MaxHealth;
         canMove = true;
         canRotate = true;
@@ -210,4 +209,5 @@ public class Player : AbstractCharacter
     {
         animator.SetBool("PlayerWins", true);
     }
+
 }

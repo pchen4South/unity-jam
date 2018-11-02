@@ -19,16 +19,8 @@ public class Blaster : AbstractWeapon {
 	[SerializeField]    AudioSource reloadSound;
     [SerializeField]    GameObject muzzleFlash;
     [SerializeField]    Light muzzleFlashLight;
-    [SerializeField]    Transform IKTarget_L;
-    [SerializeField]    Transform IKTarget_R;
-    
 
-    [Header("Config")]
-    public float fireRate = .1f;
-    public float shotTime = .01f;
-    public float muzzleOffset = .5f;
     
-	public float ReloadTime = 1f;
     
     [Header("State")]
     float timeTillNextShot = 0f;

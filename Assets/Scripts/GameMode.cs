@@ -143,6 +143,7 @@ public class GameMode : MonoBehaviour
 				//if player caused the hit on a player
 				if(Newhit.VictimEntityType == "PLAYERCHARACTER"){
 					var target = Newhit.VictimEntity;
+					// Debug.Log("target: " + target.ID);
 					Newhit.VictimEntity.OnDamage.Invoke(shooterPlayerNumber, target.ID, Newhit.DamageAmount);				
 				} 
 				//if player caused the hit on a NPC
@@ -220,6 +221,8 @@ public class GameMode : MonoBehaviour
 
 			ProcessNewValidHits();
 
+			//Debug.Log("processed: " + ProcessedHits.Count);
+
 			if (Minigame)
 			{
 				if (Minigame.MinigameIsRunning()){
@@ -241,11 +244,11 @@ public class GameMode : MonoBehaviour
 			else
 			{
 				// Temp code for testing
-				if(GameTimer >= 5f && didSpawnMinigame == false){ 
-					Minigame = Instantiate(MinigamePrefabs[0]);
-					Minigame.BeginMinigame();
-					didSpawnMinigame = true;
-				}
+				// if(GameTimer >= 5f && didSpawnMinigame == false){ 
+				// 	Minigame = Instantiate(MinigamePrefabs[0]);
+				// 	Minigame.BeginMinigame();
+				// 	didSpawnMinigame = true;
+				// }
 				// These are the "default" behaviors when no minigames are present
 				for (var i = 0; i < playerStates.Length; i++)
 				{
@@ -260,7 +263,7 @@ public class GameMode : MonoBehaviour
 			// kill players that have fallen off the map
 			for (var i = 0; i < playerStates.Length; i++)
 			{
-				var notDead = playerStates[i].player.status != Player.PlayerStatus.Dead;
+				var notDead = !playerStates[i].player.IsDead();
 				var belowKillHeight = playerStates[i].player.transform.position.y < killHeight;
 
 				if (notDead && belowKillHeight)
@@ -317,7 +320,7 @@ public class GameMode : MonoBehaviour
 			return;
 
 		var victim = playerStates[victimIndex];
-		var victimShouldDie = damageAmount >= victim.player.Health;
+		var victimShouldDie = damageAmount >= victim.player.Health && !victim.player.IsDead();
 
 		if (victimShouldDie)
 		{
@@ -337,8 +340,12 @@ public class GameMode : MonoBehaviour
 				}
 				else
 				{
+					// Debug.Log("weaponindex increased from" + attacker.weaponIndex);
 					attacker.weaponIndex++;
+					// Debug.Log("weaponindex increased to" + attacker.weaponIndex);
 					attacker.player.SetWeapon(WeaponPrefabs[attacker.weaponIndex]);
+					//added valid hit event registration here
+					attacker.player.Weapon.OnValidHitOccurred += AddValidHit;
 				}
 			}
 		}

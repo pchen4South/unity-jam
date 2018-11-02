@@ -22,12 +22,6 @@ public class Shotgun : AbstractWeapon {
     [SerializeField]
 	ParticleSystem BlastRadius;
 
-    [Header("Config")]
-    public float fireRate = .75f;
-    public float shotTime = .01f;
-    public float muzzleOffset = .5f;
-    //float AmmoCount = 0f;
-	public float ReloadTime = 2f;
 
     [Header("State")]
     float timeTillNextShot = 0f;
@@ -35,9 +29,7 @@ public class Shotgun : AbstractWeapon {
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 	private GameObject FlashInstance;
-    
-    [SerializeField]    Transform IKTarget_L;
-    [SerializeField]    Transform IKTarget_R;
+
 	void Start(){
         WeaponName = "Shotgun";
         MagazineSize = 4;

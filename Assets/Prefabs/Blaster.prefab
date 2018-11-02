@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 4657832079556426380}
   - component: {fileID: 7875100396156423435}
   - component: {fileID: 5174722702354664396}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Blaster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,22 +64,22 @@ MonoBehaviour:
   DamageAmount: 1
   LeftHandIKTarget: {fileID: 0}
   RightHandIKTarget: {fileID: 2485249055867193156}
+  fireRate: 0.1
+  shotTime: 0.01
+  muzzleOffset: 0.5
+  ReloadTime: 1
   bulletTracer: {fileID: 5174722702354664396}
   BulletHole: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 33793
+  IKTarget_L: {fileID: 0}
+  IKTarget_R: {fileID: 2485249055867193156}
   fireSound: {fileID: 7875100396156423435}
   reloadSound: {fileID: 7875100396156423435}
   muzzleFlash: {fileID: 1988729232000814, guid: 35a31d7fb099a164f901cbf961ec55f7,
     type: 3}
   muzzleFlashLight: {fileID: 904159639615279183}
-  IKTarget_L: {fileID: 0}
-  IKTarget_R: {fileID: 2485249055867193156}
-  fireRate: 0.1
-  shotTime: 0.01
-  muzzleOffset: 0.5
-  ReloadTime: 1
 --- !u!82 &7875100396156423435
 AudioSource:
   m_ObjectHideFlags: 0
@@ -290,7 +290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8852976809647514562}
   - component: {fileID: 904159639615279183}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2485249055867193156}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RH_IK_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 392702603569340753}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,6 +479,42 @@ PrefabInstance:
     - target: {fileID: 400018, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100018, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100020, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100022, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100024, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100026, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100028, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100030, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100032, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1860c18daabe6a543a5955bc4a846a8f, type: 3}

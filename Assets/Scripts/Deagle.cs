@@ -11,14 +11,6 @@ public class Deagle : AbstractWeapon
     [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]    GameObject muzzleFlash;
     [SerializeField]    Light muzzleFlashLight;
-    [SerializeField]    Transform IKTarget_L;
-    [SerializeField]    Transform IKTarget_R;
-
-    [Header("Config")]
-    public float fireRate = .1f;
-    public float shotTime = .01f;
-    public float muzzleOffset = .5f;
-	public float ReloadTime = 1f;
 
     [Header("State")]
     float timeTillNextShot = 0f;
@@ -55,8 +47,7 @@ public class Deagle : AbstractWeapon
 
     public override void PullTrigger(Player player)
     {
-        if (timeTillNextShot > 0 || isReloading || AmmoCount == 0)
-            return;
+        if (timeTillNextShot > 0 || isReloading || AmmoCount == 0) return;
 
         AmmoCount -= 1;        
         var muzzle = transform.position + transform.forward * muzzleOffset;
@@ -66,40 +57,13 @@ public class Deagle : AbstractWeapon
         
 		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
         FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
-
         muzzleFlashLight.enabled = true;
         fireSound.Play();
-        ray.origin = muzzle;
-        ray.direction = transform.forward;
-
-        var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
-
+        CheckForValidHitscan(muzzle, transform.forward, layerMask);
+        
         if (AmmoCount == 0)
             Reload();
 
-        if (!didHit)
-            return;
-
-        bulletTracer.SetPosition(0, muzzle);
-        bulletTracer.SetPosition(1, rayHit.point);
-        bulletTracer.enabled = true;
-        var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
-
-        if (isPlayer)
-        {
-            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
-            var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-
-            target.OnDamage.Invoke(player.ID, target.ID, 1);
-            Destroy(hitParticles.gameObject, 2f);
-        }
-        else
-        {
-            GameObject bulletHole = Instantiate(BulletHole, rayHit.point, Quaternion.FromToRotation(Vector3.up, rayHit.normal));
-            var particleSystems = bulletHole.GetComponentsInChildren<ParticleSystem>();
-
-            Destroy(bulletHole, 3f);
-        }
     }
 
     IEnumerator PostShotCleanup()

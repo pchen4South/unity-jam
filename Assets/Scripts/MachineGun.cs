@@ -21,9 +21,7 @@ public class MachineGun : AbstractWeapon
     // Light muzzleFlashLight;
 
     [Header("Config")]
-    public float fireRate = .1f;
-    public float shotTime = .01f;
-    public float muzzleOffset = .5f;
+    
     public float kickBackGrowthRate = 1f;
     public float kickBackDecayRate = -2f;
 
@@ -40,7 +38,6 @@ public class MachineGun : AbstractWeapon
         AmmoCount = -1;
         //FlashInstance = Instantiate(muzzleFlash, transform);
         WeaponName = "Machine Gun";
-        Debug.Log("hi");
     }
 
     void LateUpdate()
@@ -68,52 +65,17 @@ public class MachineGun : AbstractWeapon
 
     public override void PullTrigger(Player player)
     {
-        if (timeTillNextShot > 0)
-            return;
+        if (timeTillNextShot > 0 || AmmoCount == 0) return;
+
+        AmmoCount -= 1;        
+        var muzzle = transform.position + transform.forward * muzzleOffset;
 
         StartCoroutine(PostShotCleanup());
         timeTillNextShot = fireRate;
-
-        // FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
-        // FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
-
-        // muzzleFlashLight.enabled = true;
-        fireSound.Play();
-        ray.origin = Muzzle.position;
-        ray.direction = Muzzle.transform.forward;
-
-        var didHit = Physics.Raycast(ray, out rayHit, layerMask);
-        /*
-        if (!didHit)
-            return;
-             */
-
-        bulletTracer.SetPosition(0, Muzzle.position);
-        bulletTracer.SetPosition(1, rayHit.point);
-        bulletTracer.enabled = true;
         
-        var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
+        fireSound.Play();
+        CheckForValidHitscan(muzzle, transform.forward, layerMask);
 
-        if (isPlayer)
-        {
-            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
-            var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-
-            target.OnDamage(player.ID, target.ID, 1);
-            hitPlayerSound.Play();
-            Destroy(hitParticles.gameObject, 2f);
-        }
-        else
-        {
-            var hitParticles = Instantiate(HitParticlePrefab) as GameObject;
-
-            hitSound.Play();
-            hitParticles.transform.position = rayHit.point;
-            hitParticles.transform.LookAt(transform, -Vector3.up);
-            //hitParticles.transform.Find("Burst").transform.LookAt(transform, Vector3.up);
-
-            Destroy(hitParticles, 2f);
-        }
     }
 
     IEnumerator PostShotCleanup()

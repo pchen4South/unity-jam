@@ -30,7 +30,7 @@ GameObject:
   - component: {fileID: 108596773343817414}
   - component: {fileID: 82201342655588438}
   - component: {fileID: 82502090231681022}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: DEagle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,8 +131,20 @@ MonoBehaviour:
   SpeedModifier: 1
   AmmoCount: 0
   MagazineSize: 7
+  DamageAmount: 1
   LeftHandIKTarget: {fileID: 0}
   RightHandIKTarget: {fileID: 0}
+  fireRate: 0.5
+  shotTime: 0.01
+  muzzleOffset: 0.5
+  ReloadTime: 2.5
+  bulletTracer: {fileID: 120651834082914050}
+  BulletHole: {fileID: 1175364153175438, guid: 85ce419632c40ad4fbf2fc5173dfafe3, type: 3}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 33793
+  IKTarget_L: {fileID: 2501237701852715752}
+  IKTarget_R: {fileID: 4964906307463415829}
   fireSound: {fileID: 82442640702138610}
   reloadSound: {fileID: 82502090231681022}
   HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
@@ -141,18 +153,7 @@ MonoBehaviour:
     type: 3}
   muzzleFlash: {fileID: 1956061264784194, guid: e7f33db831994c84ea2e51f2f4cbc166,
     type: 3}
-  BulletHole: {fileID: 1175364153175438, guid: 85ce419632c40ad4fbf2fc5173dfafe3, type: 3}
   muzzleFlashLight: {fileID: 108596773343817414}
-  bulletTracer: {fileID: 120651834082914050}
-  IKTarget_L: {fileID: 2501237701852715752}
-  IKTarget_R: {fileID: 4964906307463415829}
-  fireRate: 0.5
-  shotTime: 0.01
-  muzzleOffset: 0.5
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 33793
-  ReloadTime: 2.5
 --- !u!120 &120651834082914050
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -592,7 +593,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4964906307463415829}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RightIKTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +623,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2501237701852715752}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: LeftIKTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -791,6 +792,14 @@ PrefabInstance:
     - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_LocalScale.y
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}

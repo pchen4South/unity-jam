@@ -11,14 +11,8 @@ public class SMG : AbstractWeapon {
     [SerializeField]    GameObject muzzleFlash;
     [SerializeField]    Light muzzleFlashLight;
     [SerializeField]    ParticleSystem BulletCasings;
-    [SerializeField]    Transform IKTarget_L;
-    [SerializeField]    Transform IKTarget_R;
 
     [Header("Config")]
-    public float fireRate = .15f;
-    public float shotTime = .01f;
-    public float muzzleOffset = .5f;
-    public float ReloadTime = 1f;
     public float maxBulletSpread;
     public float timeToMaxSpread;
 

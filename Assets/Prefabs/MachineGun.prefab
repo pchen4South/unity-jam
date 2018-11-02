@@ -14222,8 +14222,20 @@ MonoBehaviour:
   SpeedModifier: 1
   AmmoCount: 0
   MagazineSize: 0
+  DamageAmount: 1
   LeftHandIKTarget: {fileID: 4423406839948450669}
   RightHandIKTarget: {fileID: 7591128385553925945}
+  fireRate: 0.1
+  shotTime: 0.01
+  muzzleOffset: 0.5
+  ReloadTime: 1
+  bulletTracer: {fileID: 889717787902743453}
+  BulletHole: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 33793
+  IKTarget_L: {fileID: 4423406839948450669}
+  IKTarget_R: {fileID: 7591128385553925945}
   fireSound: {fileID: 8107039379890543543}
   hitSound: {fileID: 8107039379890543543}
   hitPlayerSound: {fileID: 8107039379890543543}
@@ -14231,15 +14243,8 @@ MonoBehaviour:
     type: 3}
   HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
     type: 3}
-  bulletTracer: {fileID: 889717787902743453}
-  fireRate: 0.1
-  shotTime: 0.01
-  muzzleOffset: 0.5
   kickBackGrowthRate: 1
   kickBackDecayRate: -2
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 33793
 --- !u!82 &8107039379890543543
 AudioSource:
   m_ObjectHideFlags: 0
