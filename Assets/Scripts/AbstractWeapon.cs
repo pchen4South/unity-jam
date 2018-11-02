@@ -33,7 +33,9 @@ public abstract class AbstractWeapon : MonoBehaviour
 		Ray ray = new Ray();
 		RaycastHit rayHit = new RaycastHit();
 		ray.origin = muzzle;
-        ray.direction = transform.forward;
+        //ray.direction = transform.forward;
+		//test spray
+		ray.direction = weaponDir;
 
         var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
 		        

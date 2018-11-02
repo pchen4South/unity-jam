@@ -86,11 +86,10 @@ public class SMG : AbstractWeapon {
         float randomOffsetX= Random.Range(-currentSpread, currentSpread);
 
         //apply random inaccuracy to raycast
-        ray.origin = muzzle;
-        ray.direction = new Vector3(fireDirection.x  + randomOffsetX, fireDirection.y, fireDirection.z);
+        Vector3 shotDir = new Vector3(fireDirection.x  + randomOffsetX, fireDirection.y, fireDirection.z);
 
         //CheckForValidHitscan(muzzle, ray.direction, layerMask);
-        CheckForValidHitscan(muzzle, transform.forward, layerMask);
+        CheckForValidHitscan(muzzle, shotDir, layerMask);
 
         if (AmmoCount == 0)
             Reload();

@@ -929,7 +929,7 @@ MonoBehaviour:
   muzzleFlashLight: {fileID: 108538391535675490}
   BulletCasings: {fileID: 198687578430086208, guid: d3ccacd954819c148afe49f96e587ac3,
     type: 3}
-  maxBulletSpread: 0.5
+  maxBulletSpread: 1
   timeToMaxSpread: 0.5
 --- !u!82 &82152436067349864
 AudioSource:
