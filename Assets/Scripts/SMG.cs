@@ -68,17 +68,16 @@ public class SMG : AbstractWeapon {
         if (timeTillNextShot > 0 || isReloading || AmmoCount == 0)
             return;
 
+        //fireTime is for bullet spread
         fireTime += Time.deltaTime;
-
         AmmoCount -= 1;
-        var muzzle = transform.Find("silencer").position + (-transform.right) * muzzleOffset;
-
+        var muzzle = transform.position + transform.forward * muzzleOffset;
         StartCoroutine(PostShotCleanup());
+
         timeTillNextShot = fireRate;
 
         FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
         FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
-
         muzzleFlashLight.enabled = true;
         fireSound.Play();
 
@@ -86,39 +85,15 @@ public class SMG : AbstractWeapon {
         float currentSpread = Mathf.Lerp(0.0f, maxBulletSpread, fireTime / timeToMaxSpread);
         float randomOffsetX= Random.Range(-currentSpread, currentSpread);
 
-        //dont need randomoffsetY anymore since we only want spread in 1 dimension
-        //float randomOffsetY= Random.Range(-currentSpread, currentSpread);
-
         //apply random inaccuracy to raycast
         ray.origin = muzzle;
         ray.direction = new Vector3(fireDirection.x  + randomOffsetX, fireDirection.y, fireDirection.z);
 
-        var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
+        //CheckForValidHitscan(muzzle, ray.direction, layerMask);
+        CheckForValidHitscan(muzzle, transform.forward, layerMask);
 
         if (AmmoCount == 0)
             Reload();
-
-        if (!didHit)
-            return;
-
-        if (!isReloading)
-            em.enabled = true;
-
-        bulletTracer.SetPosition(0, muzzle);
-        bulletTracer.SetPosition(1, rayHit.point);
-        bulletTracer.enabled = true;
-        var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
-
-        // should move some of this code to player
-        if (isPlayer)
-        {
-            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
-            if(player.ID != target.ID){
-                var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-                target.OnDamage(player.ID, target.ID, 1);
-                Destroy(hitParticles.gameObject, 2f);
-            }
-        }
     }
 
     IEnumerator PostShotCleanup()
@@ -130,6 +105,7 @@ public class SMG : AbstractWeapon {
 
     public override void ReleaseTrigger(Player player)
     {
+        FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
         em.enabled = false;
         fireTime = 0f;
     }
