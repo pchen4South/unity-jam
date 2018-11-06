@@ -3,24 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-// Parent methods
-// public virtual void HandleMove(PlayerState p) {}
-// public virtual void HandleDash(PlayerState p) {}
-// public virtual void HandleRotate(PlayerState p) {}
-// public virtual void HandleFire(PlayerState p) {}
-// public virtual void HandlePlayerDamage(PlayerState attacker, PlayerState victim) {}
-
 public class mg_bossbattle : Minigame
 {
-
     [SerializeField] public BossMonster Boss;
     [SerializeField] public GameObject[] StageElementsToModify;
-
     public float IntroTimer = 10f;
     GameObject IntroscreenObject;
-
-
 
     // introscreen and prepareminigame need to be refactored, i think move into the abstract class based on state machine
     public override void PrepareMinigame(){
@@ -38,7 +26,7 @@ public class mg_bossbattle : Minigame
             ele.SetActive(false);
         }
         NPCS.Add(boss_instance.GetComponent<BossMonster>());
-        Destroy(boss_instance.gameObject, MinigameDuration - IntroTimer);
+        //Destroy(boss_instance.gameObject, MinigameDuration - IntroTimer);
     }
 
     public override void HandleMinigameCompleted(){
@@ -51,6 +39,19 @@ public class mg_bossbattle : Minigame
     }
 
     public override void TabulateResults(){
+        foreach(var npc in NPCS){
+            var hitList = npc.HitCounter;
+            foreach(var mgPlayer in Results.MinigamePlayersArray){
+                var HitsForPlayer = hitList.FindAll(i => i.attackerIndex == mgPlayer.PlayerNumber);
+                int totalDamageForPlayer = 0;
+                foreach(var hit in HitsForPlayer){
+                    totalDamageForPlayer += hit.damageAmount;
+                }
+                mgPlayer.TotalScoreEarned = totalDamageForPlayer;
+            }
+            Results.CalculatePlayerPlacement();
+            Destroy(npc.gameObject);
+        }
         SetMinigameToResultsReady();
     }
 

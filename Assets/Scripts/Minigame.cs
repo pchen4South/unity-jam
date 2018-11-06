@@ -6,11 +6,34 @@ using UnityEngine.UI;
 public class MinigamePlayer{
     public int PlayerNumber = 0;
     public int MinigamePlacing = 0;
-    public int ResultingScoreWonLost = 0;
+    public int TotalScoreEarned = 0;
+
+    public MinigamePlayer(int playerNumber){
+        PlayerNumber = playerNumber;
+    }
+    
 }
 
 public class MinigameResults{
     public List<MinigamePlayer> MinigamePlayersArray = new List<MinigamePlayer>();
+
+    static int SortByScore(MinigamePlayer p1, MinigamePlayer p2)
+     {
+         return p2.TotalScoreEarned.CompareTo(p1.TotalScoreEarned);
+     }
+    public void CalculatePlayerPlacement(){
+        MinigamePlayersArray.Sort(SortByScore);
+        var placeCounter = 1;
+        for(var i = 0; i < MinigamePlayersArray.Count; i++ ){
+            //Account for ties
+            if(i > 0){
+                if(MinigamePlayersArray[i].TotalScoreEarned == MinigamePlayersArray[i-1].TotalScoreEarned)
+                    placeCounter--;
+            }
+            MinigamePlayersArray[i].MinigamePlacing = placeCounter;
+            placeCounter++;
+        }
+    }
 }
 
 
@@ -27,11 +50,14 @@ public abstract class Minigame : MonoBehaviour
 
     MG_State MinigameState = MG_State.Ready;
 
-
     public MinigameResults Results = new MinigameResults();
 
-    public void BeginMinigame(){
+    public void BeginMinigame(PlayerState[] playerstates){
         if(MinigameState == MG_State.Ready){
+            for (var i = 0; i < playerstates.Length; i++){
+                var mg_player = new MinigamePlayer(playerstates[i].player.ID);
+                Results.MinigamePlayersArray.Add(mg_player);
+            }
             PrepareMinigame();
             MinigameState = MG_State.Running;
             MinigameAliveTimer = 0f;

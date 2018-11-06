@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class HitCounter{
+    public int attackerIndex;
+    public int damageAmount;
+    public HitCounter(int index, int dmg){
+        attackerIndex = index;
+        damageAmount = dmg;
+    }
+}
+
 public abstract class AbstractCharacter : MonoBehaviour
 {
     public enum CharacterStatus { Alive, Dead, Spawning }
@@ -10,6 +19,7 @@ public abstract class AbstractCharacter : MonoBehaviour
     public int MaxHealth = 3;
     public Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
     public CharacterStatus status = CharacterStatus.Alive;
+    public List<HitCounter> HitCounter = new List<HitCounter>();
 
     //ONDAMAGE Action
     //attackerIndex victimIndex amountOfDamage

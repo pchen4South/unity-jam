@@ -6,6 +6,7 @@ public class BossMonster : AbstractCharacter
 {
     public int Health = 0;
     public RectTransform HPBar;
+    
     BossMonster(){
         ENTITY_TYPE = "NPC";
     }
@@ -15,15 +16,15 @@ public class BossMonster : AbstractCharacter
     }
 
     public void DamageMonster(int attackerIndex, int damageAmount){
-        Debug.Log("Health " + Health);
-
         if(IsAlive()){
             Health = Mathf.Max(0, Health - damageAmount);
             HPBar.sizeDelta = new Vector2 (300 * Health / MaxHealth, HPBar.rect.height);
+            HitCounter.Add(new HitCounter(attackerIndex, damageAmount));
         }
     }
 
     private void OnDestroy() {
+        //unregister callback
         OnDamage = null;
     }
 }

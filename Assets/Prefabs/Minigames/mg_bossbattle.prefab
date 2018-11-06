@@ -56,7 +56,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7788a45124cc9341a6d9385c8a0455b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinigameDuration: 30
+  MinigameDuration: 10
   MinigameAliveTimer: 0
   MinigameIntroScreen: {fileID: 2203156609999738126}
   NPCS: []

@@ -247,9 +247,11 @@ public class GameMode : MonoBehaviour
 					}
 
 				} else if (Minigame.MinigameResultsReady()){
-					var MinigameResults = Minigame.Results;
 					//DoSomeShitWithTheResults();
-					Debug.Log("did some shit with the minigame results");
+					foreach(var res in Minigame.Results.MinigamePlayersArray){
+						Debug.Log("player: " + res.PlayerNumber + " place: " + res.MinigamePlacing + " score: " + res.TotalScoreEarned);
+					}
+					
 					Minigame.SetMinigameToReady();
 					Destroy(Minigame);
 				}
@@ -259,7 +261,7 @@ public class GameMode : MonoBehaviour
 				// Temp code for testing
 				if(GameTimer >= 5f && didSpawnMinigame == false){ 
 					Minigame = Instantiate(MinigamePrefabs[0]);
-					Minigame.BeginMinigame();
+					Minigame.BeginMinigame(playerStates);
 					didSpawnMinigame = true;
 				}
 				// These are the "default" behaviors when no minigames are present
