@@ -7,11 +7,9 @@ public class MinigamePlayer{
     public int PlayerNumber = 0;
     public int MinigamePlacing = 0;
     public int TotalScoreEarned = 0;
-
     public MinigamePlayer(int playerNumber){
         PlayerNumber = playerNumber;
-    }
-    
+    }   
 }
 
 public class MinigameResults{
@@ -81,6 +79,8 @@ public abstract class Minigame : MonoBehaviour
                 break;
         }
     }
+
+    //By Default the minigame uses the default controller handling, can override these to set custom behavior
     public virtual void HandleMove(PlayerState p) {
         InputHelpers.BasicMove(p);
     }

@@ -105,6 +105,9 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Text LeaderboardLabel;
 	[SerializeField] Text PlayerNumbers;
 	[SerializeField] Text GuncountText;
+	[SerializeField] Text ClockText;
+	[SerializeField] Text TimelineIndicator;
+	public int GameLengthInSeconds = 600;
 
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
@@ -222,10 +225,14 @@ public class GameMode : MonoBehaviour
 		else if (state == GameState.Live)
 		{
 			GameTimer += Time.deltaTime;
+			int gameElapsedSeconds = Mathf.RoundToInt(GameTimer);
+			int timerLeft = GameLengthInSeconds - gameElapsedSeconds;
+			int minutesLeft = Mathf.FloorToInt(timerLeft /60);
+			int secondsLeft = timerLeft % 60;
+			ClockText.text = minutesLeft.ToString("00") + ":" + secondsLeft.ToString("00");
+			TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / GameLengthInSeconds, 0);
 
 			ProcessNewValidHits();
-
-			//Debug.Log("processed: " + ProcessedHits.Count);
 
 			if (Minigame)
 			{
@@ -237,7 +244,6 @@ public class GameMode : MonoBehaviour
 						Minigame.HandleRotate(playerStates[i]);
 						Minigame.HandleFire(playerStates[i]);
 					}
-
 					//prob need to figure out where to put this so it doesnt get processed over and over
 					foreach(var n in Minigame.NPCS){
 						if(!NPCS.Contains(n)){
@@ -245,13 +251,10 @@ public class GameMode : MonoBehaviour
 							n.OnDamage += HandlePVEDamage;
 						}
 					}
-
 				} else if (Minigame.MinigameResultsReady()){
-					//DoSomeShitWithTheResults();
 					foreach(var res in Minigame.Results.MinigamePlayersArray){
 						Debug.Log("player: " + res.PlayerNumber + " place: " + res.MinigamePlacing + " score: " + res.TotalScoreEarned);
 					}
-					
 					Minigame.SetMinigameToReady();
 					Destroy(Minigame);
 				}
@@ -365,9 +368,7 @@ public class GameMode : MonoBehaviour
 				}
 				else
 				{
-					// Debug.Log("weaponindex increased from" + attacker.weaponIndex);
 					attacker.weaponIndex++;
-					// Debug.Log("weaponindex increased to" + attacker.weaponIndex);
 					attacker.player.SetWeapon(WeaponPrefabs[attacker.weaponIndex]);
 					//added valid hit event registration here
 					attacker.player.Weapon.OnValidHitOccurred += AddValidHit;
