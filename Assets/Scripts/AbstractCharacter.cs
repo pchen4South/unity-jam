@@ -11,13 +11,14 @@ public abstract class AbstractCharacter : MonoBehaviour
     public Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
     public CharacterStatus status = CharacterStatus.Alive;
 
+    //ONDAMAGE Action
     //attackerIndex victimIndex amountOfDamage
     public System.Action<int, int, int> OnDamage;
     public bool IsDead(){
         return status == CharacterStatus.Dead;
     }
     public bool IsAlive(){
-        return status == CharacterStatus.Dead;
+        return status == CharacterStatus.Alive;
     }
     public bool IsSpawning(){
         return status == CharacterStatus.Spawning;

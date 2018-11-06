@@ -23,6 +23,7 @@ public abstract class Minigame : MonoBehaviour
     [SerializeField] public float MinigameAliveTimer = 0f;
     
     [SerializeField] public Canvas MinigameIntroScreen;
+    [SerializeField] public List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
 
     MG_State MinigameState = MG_State.Ready;
 

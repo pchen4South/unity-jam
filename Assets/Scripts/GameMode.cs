@@ -127,6 +127,8 @@ public class GameMode : MonoBehaviour
 	List<ValidHit> NewHits = new List<ValidHit>();
 	List<ValidHit> HitsToBeProcessed = new List<ValidHit>();
 	List<ValidHit> ProcessedHits = new List<ValidHit>();
+	List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
+
 	public void AddValidHit(ValidHit NewHit){
 		HitsToBeProcessed.Add(NewHit);
 	}
@@ -148,7 +150,9 @@ public class GameMode : MonoBehaviour
 				} 
 				//if player caused the hit on a NPC
 				else if(Newhit.VictimEntityType == "NPC"){
-
+					var target = Newhit.VictimEntity;
+					Debug.Log("hit the boss");
+					Newhit.VictimEntity.OnDamage.Invoke(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
 				}
 			//npc originated damage
 			} else if(Newhit.OriginatingEntityType == "NPC"){
@@ -233,6 +237,15 @@ public class GameMode : MonoBehaviour
 						Minigame.HandleRotate(playerStates[i]);
 						Minigame.HandleFire(playerStates[i]);
 					}
+
+					//prob need to figure out where to put this so it doesnt get processed over and over
+					foreach(var n in Minigame.NPCS){
+						if(!NPCS.Contains(n)){
+							NPCS.Add(n);
+							n.OnDamage += HandlePVEDamage;
+						}
+					}
+
 				} else if (Minigame.MinigameResultsReady()){
 					var MinigameResults = Minigame.Results;
 					//DoSomeShitWithTheResults();
@@ -244,11 +257,11 @@ public class GameMode : MonoBehaviour
 			else
 			{
 				// Temp code for testing
-				// if(GameTimer >= 5f && didSpawnMinigame == false){ 
-				// 	Minigame = Instantiate(MinigamePrefabs[0]);
-				// 	Minigame.BeginMinigame();
-				// 	didSpawnMinigame = true;
-				// }
+				if(GameTimer >= 5f && didSpawnMinigame == false){ 
+					Minigame = Instantiate(MinigamePrefabs[0]);
+					Minigame.BeginMinigame();
+					didSpawnMinigame = true;
+				}
 				// These are the "default" behaviors when no minigames are present
 				for (var i = 0; i < playerStates.Length; i++)
 				{
@@ -309,6 +322,16 @@ public class GameMode : MonoBehaviour
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 	}
 
+	void HandlePVEDamage(int attackerIndex, int npc_index, int damageAmount){
+		var victim = NPCS[npc_index];
+		
+		//TODO: this needs to be looked at, should not always have to be boss monster
+		var victimGO = victim.gameObject;
+		if(victimGO != null){
+			var victimChar = victimGO.GetComponent<BossMonster>();
+			victimChar.DamageMonster(attackerIndex, damageAmount);
+		}
+	}
 
 	void HandlePVPDamage(int attackerIndex, int victimIndex, int damageAmount)
 	{

@@ -14,7 +14,7 @@ using UnityEngine.UI;
 public class mg_bossbattle : Minigame
 {
 
-    [SerializeField] public GameObject Boss;
+    [SerializeField] public BossMonster Boss;
     [SerializeField] public GameObject[] StageElementsToModify;
 
     public float IntroTimer = 10f;
@@ -31,13 +31,14 @@ public class mg_bossbattle : Minigame
     IEnumerator Introscreen(){
         yield return new WaitForSeconds(IntroTimer);
         MinigameIntroScreen.gameObject.SetActive(false);
-        var boss_instance = Instantiate(Boss);
+        BossMonster boss_instance = Instantiate(Boss);
+        boss_instance.Initialize();
         StageElementsToModify = GameObject.FindGameObjectsWithTag("Disable_BossBattle");
         foreach(var ele in StageElementsToModify){
             ele.SetActive(false);
         }
-
-        Destroy(boss_instance, MinigameDuration - IntroTimer);
+        NPCS.Add(boss_instance.GetComponent<BossMonster>());
+        Destroy(boss_instance.gameObject, MinigameDuration - IntroTimer);
     }
 
     public override void HandleMinigameCompleted(){
