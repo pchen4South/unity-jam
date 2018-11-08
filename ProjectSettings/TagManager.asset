@@ -16,6 +16,7 @@ TagManager:
   - PlayerHitbox
   - Disable_BossBattle
   - NPCHitbox
+  - UI_Resettable
   layers:
   - Default
   - TransparentFX

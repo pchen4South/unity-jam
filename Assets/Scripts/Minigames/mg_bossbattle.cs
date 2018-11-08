@@ -12,13 +12,14 @@ public class mg_bossbattle : Minigame
 
     // introscreen and prepareminigame need to be refactored, i think move into the abstract class based on state machine
     public override void PrepareMinigame(){
-        MinigameIntroScreen.gameObject.SetActive(true);
+        MinigameName = "BossBattle";
+        MinigameIntro.gameObject.SetActive(true);
         StartCoroutine(Introscreen());
     }
 
     IEnumerator Introscreen(){
         yield return new WaitForSeconds(IntroTimer);
-        MinigameIntroScreen.gameObject.SetActive(false);
+        MinigameIntro.gameObject.SetActive(false);
         BossMonster boss_instance = Instantiate(Boss);
         boss_instance.Initialize();
         StageElementsToModify = GameObject.FindGameObjectsWithTag("Disable_BossBattle");

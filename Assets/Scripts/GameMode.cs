@@ -85,8 +85,8 @@ public class PlayerHUDManager : Object
 
 public class GameMode : MonoBehaviour 
 {
+	#region GameMode Variables
 	public enum GameState { Countdown, Live, Victory };
-
 	[SerializeField] Player PlayerPrefab;
 	[SerializeField] PlayerHUD PlayerHUDPrefab;
 	[SerializeField] PlayerStatusUI PlayerStatusUIPrefab;
@@ -108,7 +108,6 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Text ClockText;
 	[SerializeField] Text TimelineIndicator;
 	public int GameLengthInSeconds = 600;
-
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
 	public float killHeight = -1000f;
@@ -122,7 +121,6 @@ public class GameMode : MonoBehaviour
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;
 	float GameTimer = 0;
-
 	//testing var
 	bool didSpawnMinigame = false;
 
@@ -131,45 +129,7 @@ public class GameMode : MonoBehaviour
 	List<ValidHit> HitsToBeProcessed = new List<ValidHit>();
 	List<ValidHit> ProcessedHits = new List<ValidHit>();
 	List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
-
-	public void AddValidHit(ValidHit NewHit){
-		HitsToBeProcessed.Add(NewHit);
-	}
-	
-	void ProcessNewValidHits(){
-		//make a copy of the Hits array or it will complain
-		var HitArrayCopy = new List<ValidHit>(HitsToBeProcessed);
-
-		if( HitsToBeProcessed.Count == 0) return;
-		foreach(var Newhit in HitArrayCopy){
-			//player originated damage
-			if(Newhit.OriginatingEntityType == "PLAYERCHARACTER"){
-				int shooterPlayerNumber = Newhit.OriginatingEntityIdentifier;
-				//if player caused the hit on a player
-				if(Newhit.VictimEntityType == "PLAYERCHARACTER"){
-					var target = Newhit.VictimEntity;
-					// Debug.Log("target: " + target.ID);
-					Newhit.VictimEntity.OnDamage.Invoke(shooterPlayerNumber, target.ID, Newhit.DamageAmount);				
-				} 
-				//if player caused the hit on a NPC
-				else if(Newhit.VictimEntityType == "NPC"){
-					var target = Newhit.VictimEntity;
-					Debug.Log("hit the boss");
-					Newhit.VictimEntity.OnDamage.Invoke(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
-				}
-			//npc originated damage
-			} else if(Newhit.OriginatingEntityType == "NPC"){
-
-			}
-			// all other sources of damage
-			else {
-
-			}
-
-			ProcessedHits.Add(Newhit);
-			HitsToBeProcessed.Remove(Newhit);
-		}
-	}
+	#endregion
 
 	void Start()
 	{
@@ -201,7 +161,6 @@ public class GameMode : MonoBehaviour
 			ps.player.Weapon.OnValidHitOccurred += AddValidHit;
 		}
 	}
-
 	void Update()
 	{
 		if (state == GameState.Countdown)
@@ -225,13 +184,7 @@ public class GameMode : MonoBehaviour
 		else if (state == GameState.Live)
 		{
 			GameTimer += Time.deltaTime;
-			int gameElapsedSeconds = Mathf.RoundToInt(GameTimer);
-			int timerLeft = GameLengthInSeconds - gameElapsedSeconds;
-			int minutesLeft = Mathf.FloorToInt(timerLeft /60);
-			int secondsLeft = timerLeft % 60;
-			ClockText.text = minutesLeft.ToString("00") + ":" + secondsLeft.ToString("00");
-			TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / GameLengthInSeconds, 0);
-
+			UpdateGameClock(GameTimer);
 			ProcessNewValidHits();
 
 			if (Minigame)
@@ -252,11 +205,11 @@ public class GameMode : MonoBehaviour
 						}
 					}
 				} else if (Minigame.MinigameResultsReady()){
-					foreach(var res in Minigame.Results.MinigamePlayersArray){
-						Debug.Log("player: " + res.PlayerNumber + " place: " + res.MinigamePlacing + " score: " + res.TotalScoreEarned);
-					}
-					Minigame.SetMinigameToReady();
-					Destroy(Minigame);
+					//Minigame.SetMinigameToReady();
+					//Destroy(Minigame, 10f);
+					Debug.Log("results ready");
+				} else if(Minigame.MinigameShouldDestroy()){
+					Destroy(Minigame.gameObject);
 				}
 			}
 			else
@@ -277,7 +230,6 @@ public class GameMode : MonoBehaviour
 					InputHelpers.BasicReleaseTrigger(playerStates[i]);
 				}
 			}
-
 			// kill players that have fallen off the map
 			for (var i = 0; i < playerStates.Length; i++)
 			{
@@ -290,14 +242,12 @@ public class GameMode : MonoBehaviour
 					StartCoroutine(RespawnAfter(playerStates[i], RespawnTimer));
 				}
 			}
-
 			// calculate current top level
 			var topLevel = 1;
 			for (var i = 0; i < playerStates.Length; i++)
 			{
 				topLevel = Mathf.Max(topLevel, playerStates[i].weaponIndex + 1);
 			}
-
 			// find all current leaders
 			var leaders = "";
 			for (var i = 0; i < playerStates.Length; i++)
@@ -306,7 +256,6 @@ public class GameMode : MonoBehaviour
 					? "P" + i + ", "
 					: "";
 			}
-
 			LeaderboardLabel.text = "Current Leaders";
 			GuncountText.text = topLevel + " / " + WeaponPrefabs.Length;
 			PlayerNumbers.text = leaders;
@@ -322,11 +271,9 @@ public class GameMode : MonoBehaviour
 				}
 			}
 		}
-
 		// always push timescale back towards full-speed
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 	}
-
 	void HandlePVEDamage(int attackerIndex, int npc_index, int damageAmount){
 		var victim = NPCS[npc_index];
 		
@@ -337,7 +284,6 @@ public class GameMode : MonoBehaviour
 			victimChar.DamageMonster(attackerIndex, damageAmount);
 		}
 	}
-
 	void HandlePVPDamage(int attackerIndex, int victimIndex, int damageAmount)
 	{
 		// TODO: This is an event that probably should be handled by a minigame.. consider how to do this
@@ -381,7 +327,6 @@ public class GameMode : MonoBehaviour
 			shakeable.AddIntensity(.3f);
 		}
 	}
-
 	IEnumerator HandleVictory(Player winningPlayer)
 	{
 		yield return new WaitForSeconds(2f);
@@ -400,10 +345,45 @@ public class GameMode : MonoBehaviour
 		shakeable.transform.position = WinCamSpawn.transform.position;
 		shakeable.transform.rotation = WinCamSpawn.transform.rotation;
 	}
-
 	IEnumerator RespawnAfter(PlayerState ps, float seconds)
 	{
 		yield return new WaitForSeconds(seconds);
 		ps.player.Spawn(spawnPoints[Random.Range(0, spawnPoints.Length)].transform);
+	}
+	void UpdateGameClock(float GameTimer){
+			int gameElapsedSeconds = Mathf.RoundToInt(GameTimer);
+			int timerLeft = GameLengthInSeconds - gameElapsedSeconds;
+			int minutesLeft = Mathf.FloorToInt(timerLeft /60);
+			int secondsLeft = timerLeft % 60;
+			ClockText.text = minutesLeft.ToString("00") + ":" + secondsLeft.ToString("00");
+			TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / GameLengthInSeconds, 0);
+	}
+	public void AddValidHit(ValidHit NewHit){
+		HitsToBeProcessed.Add(NewHit);
+	}
+	void ProcessNewValidHits(){
+		//make a copy of the Hits array or it will complain
+		var HitArrayCopy = new List<ValidHit>(HitsToBeProcessed);
+
+		if( HitsToBeProcessed.Count == 0) return;
+		foreach(var Newhit in HitArrayCopy){
+			//player originated damage
+			if(Newhit.OriginatingEntityType == "PLAYERCHARACTER"){
+				int shooterPlayerNumber = Newhit.OriginatingEntityIdentifier;
+				//if player caused the hit on a player or NPC
+				var target = Newhit.VictimEntity;
+				Newhit.VictimEntity.OnDamage.Invoke(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
+			//npc originated damage
+			} else if(Newhit.OriginatingEntityType == "NPC"){
+
+			}
+			// all other sources of damage
+			else {
+
+			}
+
+			ProcessedHits.Add(Newhit);
+			HitsToBeProcessed.Remove(Newhit);
+		}
 	}
 }
