@@ -40,6 +40,7 @@ public class mg_bossbattle : Minigame
     }
 
     public override void TabulateResults(){
+        Debug.Log("tabulate results");
         foreach(var npc in NPCS){
             var hitList = npc.HitCounter;
             foreach(var mgPlayer in Results.MinigamePlayersArray){

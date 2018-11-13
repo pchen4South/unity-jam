@@ -526,8 +526,20 @@ MonoBehaviour:
   SpeedModifier: 1
   AmmoCount: 0
   MagazineSize: 5
+  DamageAmount: 1
   LeftHandIKTarget: {fileID: 9166273811160500689}
   RightHandIKTarget: {fileID: 6803092744379794515}
+  fireRate: 1
+  shotTime: 0.1
+  muzzleOffset: 0.1
+  ReloadTime: 3.5
+  bulletTracer: {fileID: 0}
+  BulletHole: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  IKTarget_L: {fileID: 0}
+  IKTarget_R: {fileID: 0}
   fireSound: {fileID: 82043888457751424}
   reloadSound: {fileID: 82530650906356306}
   HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
@@ -538,15 +550,6 @@ MonoBehaviour:
     type: 3}
   muzzleFlashLight: {fileID: 108913146903628442}
   BlastRadius: {fileID: 578506019405434}
-  fireRate: 1
-  shotTime: 0.1
-  muzzleOffset: 0.1
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  ReloadTime: 3.5
-  IKTarget_L: {fileID: 0}
-  IKTarget_R: {fileID: 0}
 --- !u!108 &108913146903628442
 Light:
   m_ObjectHideFlags: 0
@@ -5777,8 +5780,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b3a59fb123bab46bd4365e6862a883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blastRadius: {fileID: 578506019405434}
-  HitPlayerParticlePrefab: {fileID: 0}
+  shotgunPellets: {fileID: 578506019405434}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
 --- !u!1 &2119658951617409568
 GameObject:
   m_ObjectHideFlags: 0

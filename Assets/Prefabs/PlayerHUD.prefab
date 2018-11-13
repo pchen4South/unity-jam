@@ -29,7 +29,7 @@ RectTransform:
   m_GameObject: {fileID: 1082933210811586}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 3776402736319688741}
   - {fileID: 8215121952345952825}
@@ -61,7 +61,7 @@ MonoBehaviour:
   AmmoLabel: {fileID: 5770316888768844098}
   AmmoCount: {fileID: 7866890776611541672}
   PlayerNumber: {fileID: 0}
-  screenSpaceOffset: {x: 0, y: 75}
+  screenSpaceOffset: {x: 0, y: 60}
   healthyColor: {r: 0, g: 1, b: 0, a: 0.5019608}
   deadColor: {r: 1, g: 0, b: 0, a: 0.5019608}
 --- !u!114 &114498681697424270

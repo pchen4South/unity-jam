@@ -32,7 +32,6 @@ public class Shotgun : AbstractWeapon {
 
 	void Start(){
         WeaponName = "Shotgun";
-        MagazineSize = 4;
         AmmoCount = MagazineSize;       
 		FlashInstance = Instantiate(muzzleFlash, transform);
         LeftHandIKTarget = IKTarget_L;

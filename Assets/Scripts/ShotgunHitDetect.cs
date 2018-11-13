@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class ShotgunHitDetect : MonoBehaviour
 {
-    public ParticleSystem blastRadius;
+    public ParticleSystem shotgunPellets;
     List<ParticleCollisionEvent> collisionEvents;
-    // Start is called before the first frame update
     int firingPlayerNumber;
     [SerializeField]
     ParticleSystem HitPlayerParticlePrefab;
-
 
     void Start()
     {
@@ -18,25 +16,17 @@ public class ShotgunHitDetect : MonoBehaviour
         firingPlayerNumber = this.GetComponentInParent<Player>().ID;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnParticleCollision(GameObject other)
     {
-        int numCollisionEvents = ParticlePhysicsExtensions.GetCollisionEvents (blastRadius, other, collisionEvents);
+        int numCollisionEvents = ParticlePhysicsExtensions.GetCollisionEvents(shotgunPellets, other, collisionEvents);
         
         int i = 0;
         while (i < numCollisionEvents) 
         {
-            
             if (other.tag == "Player")
             {
                 var target = other.gameObject.GetComponent<Player>();
                 var targetPlayerNumber = target.ID;
-
                 if(targetPlayerNumber != firingPlayerNumber)
                 {
                     target.OnDamage(firingPlayerNumber, target.ID, 1);
@@ -44,6 +34,5 @@ public class ShotgunHitDetect : MonoBehaviour
             }
             i++;
         }
-
     }
 }

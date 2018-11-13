@@ -9,9 +9,17 @@ public static class InputHelpers
 
     public static Vector3? DirectionFromAxes(Rewired.Player p, int a1, int a2)
     {
-        var v = Vector3.Normalize(VectorFromAxes(p, a1, a2));
+        //this code is for radial deadzone
+        float deadzone = 0.25f;
+        Vector3 stickInput =  Vector3.Normalize(VectorFromAxes(p, a1, a2));
+        
+        if(stickInput.magnitude < deadzone)
+             stickInput = Vector3.zero;
+        else
+            stickInput = stickInput.normalized * ((stickInput.magnitude - deadzone) / (1 - deadzone));
 
-        return v == Vector3.zero ? Vector3.zero : v;
+        //var v = Vector3.Normalize(VectorFromAxes(p, a1, a2));
+        return stickInput == Vector3.zero ? Vector3.zero : stickInput;
     }
 
     public static void BasicMove(PlayerState p)

@@ -121,8 +121,8 @@ public class GameMode : MonoBehaviour
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;
 	float GameTimer = 0;
-	//testing var
 	bool didSpawnMinigame = false;
+	MinigameResults ActiveMinigameResults;
 
 	//hit processing
 	List<ValidHit> NewHits = new List<ValidHit>();
@@ -148,7 +148,6 @@ public class GameMode : MonoBehaviour
 			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
 			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
 
-			//ps.player.PlayerNumber = i;
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;
 			ps.player.SetWeapon(WeaponPrefab);
@@ -205,17 +204,19 @@ public class GameMode : MonoBehaviour
 						}
 					}
 				} else if (Minigame.MinigameResultsReady()){
-					//Minigame.SetMinigameToReady();
-					//Destroy(Minigame, 10f);
-					Debug.Log("results ready");
+					//collect the results from the minigame in order to process them and apply prize/penalty to players
+					if(ActiveMinigameResults == null)
+						ActiveMinigameResults = Minigame.Results;
+					
 				} else if(Minigame.MinigameShouldDestroy()){
+					//wanted to ensure that the minigame results were collected / score screen shown before removing
 					Destroy(Minigame.gameObject);
 				}
 			}
 			else
 			{
 				// Temp code for testing
-				if(GameTimer >= 5f && didSpawnMinigame == false){ 
+				if(GameTimer >= 5f && didSpawnMinigame == false && MinigamePrefabs.Length > 0){ 
 					Minigame = Instantiate(MinigamePrefabs[0]);
 					Minigame.BeginMinigame(playerStates);
 					didSpawnMinigame = true;
@@ -252,12 +253,15 @@ public class GameMode : MonoBehaviour
 			var leaders = "";
 			for (var i = 0; i < playerStates.Length; i++)
 			{
-				leaders += playerStates[i].weaponIndex == topLevel 
-					? "P" + i + ", "
+				leaders += (playerStates[i].weaponIndex + 1) == topLevel 
+					? "P" + (i + 1) + ", "
 					: "";
 			}
 			LeaderboardLabel.text = "Current Leaders";
 			GuncountText.text = topLevel + " / " + WeaponPrefabs.Length;
+
+			leaders = leaders.TrimEnd(' ');
+			leaders = leaders.TrimEnd(',');
 			PlayerNumbers.text = leaders;
 			playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
 		}
@@ -355,6 +359,7 @@ public class GameMode : MonoBehaviour
 			int timerLeft = GameLengthInSeconds - gameElapsedSeconds;
 			int minutesLeft = Mathf.FloorToInt(timerLeft /60);
 			int secondsLeft = timerLeft % 60;
+			ClockText.gameObject.SetActive(true);
 			ClockText.text = minutesLeft.ToString("00") + ":" + secondsLeft.ToString("00");
 			TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / GameLengthInSeconds, 0);
 	}
@@ -362,7 +367,7 @@ public class GameMode : MonoBehaviour
 		HitsToBeProcessed.Add(NewHit);
 	}
 	void ProcessNewValidHits(){
-		//make a copy of the Hits array or it will complain
+		//make a copy of the Hits array because more hits can be added before processing is done
 		var HitArrayCopy = new List<ValidHit>(HitsToBeProcessed);
 
 		if( HitsToBeProcessed.Count == 0) return;
@@ -374,14 +379,9 @@ public class GameMode : MonoBehaviour
 				var target = Newhit.VictimEntity;
 				Newhit.VictimEntity.OnDamage.Invoke(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
 			//npc originated damage
-			} else if(Newhit.OriginatingEntityType == "NPC"){
-
-			}
+			} else if(Newhit.OriginatingEntityType == "NPC"){}
 			// all other sources of damage
-			else {
-
-			}
-
+			else {}
 			ProcessedHits.Add(Newhit);
 			HitsToBeProcessed.Remove(Newhit);
 		}

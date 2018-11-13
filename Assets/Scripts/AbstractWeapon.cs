@@ -55,10 +55,14 @@ public abstract class AbstractWeapon : MonoBehaviour
         {
 			// Debug.Log("playerhit");
 			AbstractCharacter target;
+			
 			if (isNPC)
 				target = rayHit.collider.GetComponent<BossMonster>();
 			else
 				target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
+			
+			//reject targets that are not alive
+			if(!target.IsAlive()) return;
 
 			NewHit.OriginatingEntityType = player.ENTITY_TYPE;
 			NewHit.OriginatingEntityIdentifier = player.ID;

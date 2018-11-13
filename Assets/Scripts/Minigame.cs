@@ -143,8 +143,12 @@ public abstract class Minigame : MonoBehaviour
         }
     }
 
-    public void SetMinigameToReady(){ MinigameState = MG_State.Ready; }
-    public void SetMinigameToResultsReady(){ MinigameState = MG_State.ResultsReady; }
+    public void SetMinigameToReady(){ 
+        if(MinigameState != MG_State.Ready) MinigameState = MG_State.Ready; 
+    }
+    public void SetMinigameToResultsReady(){ 
+        if(MinigameState != MG_State.ResultsReady) MinigameState = MG_State.ResultsReady; 
+    }
     public bool MinigameIsRunning(){ return MinigameState == MG_State.Running; }
     public bool MinigameResultsReady(){ return MinigameState == MG_State.ResultsReady; }
     public bool MinigameShouldDestroy(){return MinigameState == MG_State.Destroy;}
