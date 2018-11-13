@@ -6,10 +6,14 @@ public class PlayerIndicator : MonoBehaviour
 	public Color color;
 
 	[SerializeField] MeshRenderer MeshRenderer;
+	[SerializeField] float IndicatorAlpha;
 
 	void Update()
 	{
 		transform.rotation = Quaternion.AngleAxis(rotationSpeed * Time.time, Vector3.up);
-		MeshRenderer.material.color = color;
+		Color meshcolor = new Color();
+		meshcolor = color;
+		meshcolor.a = IndicatorAlpha;
+		MeshRenderer.material.color = meshcolor;
 	}
 }

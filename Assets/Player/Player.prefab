@@ -2163,7 +2163,7 @@ Transform:
   m_GameObject: {fileID: 1737719597809636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 4819939376976574}
   m_RootOrder: 0
@@ -2180,9 +2180,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19320a0cd362a44a1b44545651263cae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 100
+  rotationSpeed: -150
   color: {r: 0, g: 0, b: 0, a: 0}
   MeshRenderer: {fileID: 6807220126272435464}
+  IndicatorAlpha: 0.4
 --- !u!33 &3790404767286611257
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2536,7 +2537,7 @@ Transform:
   m_GameObject: {fileID: 1792604423125892}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4788347455251054}
   - {fileID: 4474772936947194}
@@ -2614,6 +2615,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae51a3403675bc409623d5204e74615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: 0
+  ENTITY_TYPE: PLAYERCHARACTER
+  MaxHealth: 3
+  GROUNDED_DOWNWARD_VELOCITY: {x: 0, y: -10, z: 0}
+  status: 0
   playerIndicator: {fileID: 114018842590632920}
   meshRenderer: {fileID: 137273324432325058}
   controller: {fileID: 143346210529754902}
@@ -2627,18 +2633,15 @@ MonoBehaviour:
     type: 3}
   Crosshair: {fileID: 4849069467871498262}
   hitbox: {fileID: 6837660099596985444}
-  MaxHealth: 3
   MoveSpeed: 12
   SpeedModifier: 1
   DashDuration: 0.25
   MoveSkillCooldown: 3
   MoveSkillRecoveryTime: 0.2
   Weapon: {fileID: 0}
-  PlayerNumber: 0
   Health: 1
   canMove: 1
   canRotate: 1
-  status: 0
   moveStatus: 0
   isDashing: 0
   MoveSkillTimer: 0
@@ -3511,8 +3514,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5124906292042320321}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 3}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 0, y: 1, z: 2.5}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.5}
   m_Children:
   - {fileID: 1489125144783485648}
   m_Father: {fileID: 4819939376976574}

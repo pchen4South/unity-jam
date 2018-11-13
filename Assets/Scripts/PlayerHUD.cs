@@ -4,12 +4,7 @@ using UnityEngine.UI;
 public class PlayerHUD : MonoBehaviour 
 {
 	[SerializeField]	RectTransform rectTransform;
-	//[SerializeField]	RectTransform reticle;
-	[SerializeField]	GraphBar lifeBar;
-	[SerializeField] 	Text WeaponName;
-	[SerializeField] 	Text AmmoLabel;
-	[SerializeField] 	Text AmmoCount;
-	[SerializeField] 	Text PlayerNumber;
+	[SerializeField]    RectTransform GreenHPBar;
 
 	
 
@@ -24,7 +19,7 @@ public class PlayerHUD : MonoBehaviour
 		var normalizedHealth = (float) currentHealth / (float) maxHealth;
 		var barColor = Color.Lerp(deadColor, healthyColor, normalizedHealth);
 
-		lifeBar.UpdateBar(barColor, normalizedHealth);
+		GreenHPBar.sizeDelta = new Vector2(normalizedHealth * 100, GreenHPBar.rect.height);
 	}
 
 	//playerHUDPool[i].UpdatePosition(camera, parent, playerStates[i].player.transform.position);
@@ -39,21 +34,22 @@ public class PlayerHUD : MonoBehaviour
 	}
 
 	public void UpdateWeaponText(string weaponName){
-		WeaponName.text = weaponName;
+		// WeaponName.text = weaponName;
+		return;
 	}
 	public void UpdateAmmoCount(int currentAmmo){
 
-		bool showAmmo = currentAmmo >= 0 ? true : false;
+		// bool showAmmo = currentAmmo >= 0 ? true : false;
 
-		if(showAmmo){
-			AmmoLabel.enabled = true;
-			AmmoCount.enabled = true;
-			AmmoCount.text = currentAmmo > 0 ? currentAmmo.ToString() : "Reloading";
-		}
-		else{
-			AmmoLabel.enabled = false;
-			AmmoCount.enabled = false;
-		}
-		
+		// if(showAmmo){
+		// 	AmmoLabel.enabled = true;
+		// 	AmmoCount.enabled = true;
+		// 	AmmoCount.text = currentAmmo > 0 ? currentAmmo.ToString() : "Reloading";
+		// }
+		// else{
+		// 	AmmoLabel.enabled = false;
+		// 	AmmoCount.enabled = false;
+		// }
+		return;
 	}
 }

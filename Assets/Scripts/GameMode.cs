@@ -294,8 +294,7 @@ public class GameMode : MonoBehaviour
 		var validVictim = victimIndex >= 0 && victimIndex < playerStates.Length;
 		var validAttacker = victimIndex >= 0 && victimIndex < playerStates.Length;
 
-		if (!validVictim)
-			return;
+		if (!validVictim) return;
 
 		var victim = playerStates[victimIndex];
 		var victimShouldDie = damageAmount >= victim.player.Health && !victim.player.IsDead();
