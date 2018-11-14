@@ -52,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 224769210228315720}
   GreenHPBar: {fileID: 1075588843767495760}
-  screenSpaceOffset: {x: 0, y: 30}
+  screenSpaceOffset: {x: 0, y: 40}
   healthyColor: {r: 0, g: 1, b: 0, a: 0.5019608}
   deadColor: {r: 1, g: 0, b: 0, a: 0.5019608}
 --- !u!222 &222790595965955006
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.08237815, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.08237815, a: 0.6}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
+  m_Color: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 0.5019608}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.13899964, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.13899964, b: 0, a: 0.5019608}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

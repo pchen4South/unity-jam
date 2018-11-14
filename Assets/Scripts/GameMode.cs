@@ -154,10 +154,11 @@ public class GameMode : MonoBehaviour
 
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;
+			ps.player.Spawn(spawnpoint.transform);
 			ps.player.SetWeapon(WeaponPrefab);
 			ps.player.OnDamage = HandlePVPDamage;
 			ps.player.SetColor(colorScheme.playerColors[i]);
-			ps.player.Spawn(spawnpoint.transform);
+			
 			playerStates[i] = ps;
 
 			//added valid hit event registration here
