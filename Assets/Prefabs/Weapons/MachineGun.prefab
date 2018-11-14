@@ -14218,7 +14218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Muzzle: {fileID: 2315545633511347624}
   player: {fileID: 0}
-  WeaponName: 
+  WeaponName: Machinegun
   SpeedModifier: 1
   AmmoCount: 0
   MagazineSize: 0

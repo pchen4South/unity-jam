@@ -3703,7 +3703,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
+    - serializedVersion: 3
       emitter: {fileID: 0}
       type: 0
       properties: 0
@@ -3891,6 +3891,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0
@@ -4856,18 +4857,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Muzzle: {fileID: 0}
   player: {fileID: 0}
-  WeaponName: 
+  WeaponName: Shield
   SpeedModifier: 1
   AmmoCount: 0
+  MagazineSize: 0
+  DamageAmount: 1
   LeftHandIKTarget: {fileID: 2262955000171180292}
   RightHandIKTarget: {fileID: 8078961024480431785}
+  fireRate: 0.1
+  shotTime: 0.01
+  muzzleOffset: 0.5
+  ReloadTime: 1
+  bulletTracer: {fileID: 0}
+  BulletHole: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  IKTarget_L: {fileID: 0}
+  IKTarget_R: {fileID: 0}
   anim: {fileID: 2718493226497778276}
   swingTime: 1
   hitBoxActiveParticles: {fileID: 8439537668930285238}
   swingSound: {fileID: 582779447934330973}
   hitBox: {fileID: 0}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77, type: 3}
-  DamageAmount: 1
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
 --- !u!95 &2718493226497778276
 Animator:
   serializedVersion: 3
@@ -8707,7 +8721,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
+    - serializedVersion: 3
       emitter: {fileID: 0}
       type: 0
       properties: 0
@@ -8895,6 +8909,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0

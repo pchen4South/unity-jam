@@ -5317,7 +5317,7 @@ PrefabInstance:
     - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
       propertyPath: MinigamePrefabs.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4508983614605128, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5717,6 +5717,17 @@ PrefabInstance:
       propertyPath: TimelineIndicator
       value: 
       objectReference: {fileID: 1682881362}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: PopupTextPrefab
+      value: 
+      objectReference: {fileID: 6588304211549869155, guid: 7caf6b4478634c34b9a5f861046f9c27,
+        type: 3}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: textParent
+      value: 
+      objectReference: {fileID: 1365567408}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
 --- !u!1 &288849688

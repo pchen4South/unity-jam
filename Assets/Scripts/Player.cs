@@ -129,6 +129,9 @@ public class Player : AbstractCharacter
         canMove = true;
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
+
+        FloatingTextController.CreateFloatingText("+" + Weapon.WeaponName, transform);
+
     }
     public void Damage(int damageAmount)
     {

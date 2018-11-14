@@ -107,6 +107,8 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Text GuncountText;
 	[SerializeField] Text ClockText;
 	[SerializeField] Text TimelineIndicator;
+	[SerializeField] RectTransform textParent;
+	[SerializeField] FloatingText PopupTextPrefab;
 	public int GameLengthInSeconds = 600;
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
@@ -129,10 +131,12 @@ public class GameMode : MonoBehaviour
 	List<ValidHit> HitsToBeProcessed = new List<ValidHit>();
 	List<ValidHit> ProcessedHits = new List<ValidHit>();
 	List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
+
 	#endregion
 
 	void Start()
 	{
+		FloatingTextController.Initialize(textParent, PopupTextPrefab);
 		var playerCount = 4;
 
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -159,6 +163,7 @@ public class GameMode : MonoBehaviour
 			//added valid hit event registration here
 			ps.player.Weapon.OnValidHitOccurred += AddValidHit;
 		}
+		
 	}
 	void Update()
 	{

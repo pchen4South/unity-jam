@@ -900,7 +900,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Muzzle: {fileID: 0}
   player: {fileID: 0}
-  WeaponName: 
+  WeaponName: SMG
   SpeedModifier: 1
   AmmoCount: 0
   MagazineSize: 25

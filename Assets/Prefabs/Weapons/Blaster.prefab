@@ -57,7 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Muzzle: {fileID: 392702603569340753}
   player: {fileID: 0}
-  WeaponName: gun
+  WeaponName: Blaster
   SpeedModifier: 1
   AmmoCount: 0
   MagazineSize: 10
