@@ -5,14 +5,25 @@ public class PlayerHUD : MonoBehaviour
 {
 	[SerializeField]	RectTransform rectTransform;
 	[SerializeField]    RectTransform GreenHPBar;
+	[SerializeField]    Slider ReloadIndicator;
+	[SerializeField]    GameObject ReloadBar;
 
-	
 
 	public Vector2 screenSpaceOffset = Vector2.zero;
 	public Color healthyColor = Color.green;
 	public Color deadColor = Color.red;
 
 	public void UpdatePlayerIdentity(){}
+	public void UpdatePlayerReloadIndicator(int reloadProgress){
+		//not reloading
+		if (reloadProgress == -1){
+			ReloadBar.SetActive(false);
+		//is reloading
+		} else {
+			ReloadBar.SetActive(true);
+			ReloadIndicator.value = reloadProgress;
+		}
+	}
 
 	public void UpdateHealth(int currentHealth, int maxHealth)
 	{

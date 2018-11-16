@@ -15,16 +15,11 @@ public class Blaster : AbstractWeapon {
 // 	public virtual void ReleaseTrigger(Player player){}
 
     [Header("Cached references")]
-    [SerializeField]    AudioSource fireSound;
-	[SerializeField]    AudioSource reloadSound;
     [SerializeField]    GameObject muzzleFlash;
     [SerializeField]    Light muzzleFlashLight;
 
-    
-    
     [Header("State")]
     float timeTillNextShot = 0f;
-    bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 	private GameObject FlashInstance;
@@ -36,16 +31,7 @@ public class Blaster : AbstractWeapon {
         LeftHandIKTarget = IKTarget_L;
         RightHandIKTarget = IKTarget_R;
     }
-    void Reload(){
-        isReloading = true;
-        reloadSound.Play();
-        StartCoroutine(ReloadTimer());
-    }
-    IEnumerator ReloadTimer(){
-        yield return new WaitForSeconds(ReloadTime);
-        AmmoCount = MagazineSize;
-        isReloading = false;
-    }
+
     void LateUpdate()
     {
         timeTillNextShot -= Time.deltaTime;   

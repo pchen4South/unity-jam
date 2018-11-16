@@ -5,11 +5,7 @@ using UnityEngine;
 public class Shotgun : AbstractWeapon {
 
  	[Header("Cached references")]
-    [SerializeField]
-    AudioSource fireSound;
 
-	[SerializeField]
-    AudioSource reloadSound;
     [SerializeField]
     ParticleSystem HitParticlePrefab;
     [SerializeField]
@@ -22,10 +18,8 @@ public class Shotgun : AbstractWeapon {
     [SerializeField]
 	ParticleSystem BlastRadius;
 
-
     [Header("State")]
     float timeTillNextShot = 0f;
-    bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
 	private GameObject FlashInstance;
@@ -38,19 +32,6 @@ public class Shotgun : AbstractWeapon {
         RightHandIKTarget = IKTarget_R;
     }
 
-    void Reload(){
-        isReloading = true;
-        reloadSound.Play();
-        StartCoroutine(ReloadTimer());
-    }
-
-    IEnumerator ReloadTimer(){
-        yield return new WaitForSeconds(ReloadTime);
-        AmmoCount = MagazineSize;
-        isReloading = false;
-    }
-
-	void Update(){	}
 
     void LateUpdate()
     {

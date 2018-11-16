@@ -5,23 +5,12 @@ using UnityEngine;
 public class MachineGun : AbstractWeapon 
 {
     [Header("Cached references")]
-    [SerializeField]
-    AudioSource fireSound;
-    [SerializeField]
-    AudioSource hitSound;
-    [SerializeField]
-    AudioSource hitPlayerSound;
-    [SerializeField]
-    GameObject HitParticlePrefab;
-    [SerializeField]
-    ParticleSystem HitPlayerParticlePrefab;
-    // [SerializeField]
-    // GameObject muzzleFlash;
-    // [SerializeField]
-    // Light muzzleFlashLight;
+    [SerializeField]    AudioSource hitSound;
+    [SerializeField]    AudioSource hitPlayerSound;
+    [SerializeField]    GameObject HitParticlePrefab;
+    [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
 
     [Header("Config")]
-    
     public float kickBackGrowthRate = 1f;
     public float kickBackDecayRate = -2f;
 
@@ -75,9 +64,7 @@ public class MachineGun : AbstractWeapon
         
         fireSound.Play();
         CheckForValidHitscan(muzzle, transform.forward, layerMask);
-
     }
-
     IEnumerator PostShotCleanup()
     {
         yield return new WaitForSeconds(shotTime);

@@ -1,11 +1,15 @@
-﻿using UnityEngine;
-
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 public abstract class AbstractWeapon : MonoBehaviour 
 {
 	public Transform Muzzle;
 	public Player player;
 	
 	[Header("Config")]
+	[SerializeField] public AudioSource fireSound;
+
+	[SerializeField] public AudioSource reloadSound;
 	public string WeaponName = "gun";
 	public float SpeedModifier = 1f;
 	public int AmmoCount = 0;
@@ -17,11 +21,14 @@ public abstract class AbstractWeapon : MonoBehaviour
     public float shotTime = .01f;
     public float muzzleOffset = .5f;
 	public float ReloadTime = 1f;
+	public bool isReloading = false;
 	[SerializeField] public LineRenderer bulletTracer;
 	[SerializeField]  public GameObject BulletHole;
 	[SerializeField] public LayerMask layerMask = new LayerMask();
 	[SerializeField]  public Transform IKTarget_L;
     [SerializeField]  public Transform IKTarget_R;
+
+	float reloadtimer = 0f;
 
 	//Event Broadcasting
 	public delegate void ValidHitOccurredEvent(ValidHit NewHit);
@@ -83,4 +90,32 @@ public abstract class AbstractWeapon : MonoBehaviour
 		if(OnValidHitOccurred != null) OnValidHitOccurred(NewHit);
 
 	}
+	
+	void Update(){
+		reloadtimer += Time.deltaTime;
+		Debug.Log("r: " + reloadtimer);
+	}
+
+    public void Reload(){
+        isReloading = true;
+		reloadtimer = 0;
+        reloadSound.Play();
+        StartCoroutine(ReloadTimer());
+    }
+
+    public IEnumerator ReloadTimer(){
+        yield return new WaitForSeconds(ReloadTime);
+        AmmoCount = MagazineSize;
+        isReloading = false;
+    }
+	
+	public int ReloadProgressPercent(){
+		int reloadProgress = 0;
+		if(isReloading)
+			reloadProgress = Mathf.RoundToInt(100 * reloadtimer / ReloadTime);
+		else	
+			reloadProgress = -1;
+		return reloadProgress;
+	}
+
 }

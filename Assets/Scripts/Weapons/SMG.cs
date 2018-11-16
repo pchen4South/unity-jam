@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SMG : AbstractWeapon {
     [Header("Cached references")]
-    [SerializeField]    AudioSource fireSound;
-    [SerializeField]    AudioSource reloadSound;
     [SerializeField]    ParticleSystem HitParticlePrefab;
     [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]    GameObject muzzleFlash;
@@ -18,7 +16,6 @@ public class SMG : AbstractWeapon {
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    bool isReloading = false;
     Ray ray = new Ray();
     RaycastHit rayHit = new RaycastHit();
     private GameObject FlashInstance;
@@ -40,22 +37,6 @@ public class SMG : AbstractWeapon {
 
         LeftHandIKTarget = IKTarget_L;
         RightHandIKTarget = IKTarget_R;
-    }
-
-    void Reload()
-    {
-        isReloading = true;
-        em.enabled = false;
-        reloadSound.Play();
-        fireTime = 0f;
-        StartCoroutine(ReloadTimer());
-    }
-
-    IEnumerator ReloadTimer()
-    {
-        yield return new WaitForSeconds(ReloadTime);
-        AmmoCount = MagazineSize;
-        isReloading = false;
     }
 
     void LateUpdate()

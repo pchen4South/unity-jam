@@ -63,6 +63,7 @@ public class PlayerHUDManager : Object
 			playerUIPool[i].HUD.UpdatePosition(camera, parent, playerStates[i].player.transform.position);
 			playerUIPool[i].HUD.UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
 			playerUIPool[i].HUD.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
+			playerUIPool[i].HUD.UpdatePlayerReloadIndicator(playerStates[i].player.Weapon.ReloadProgressPercent());
 			
 			playerUIPool[i].PSUI.gameObject.SetActive(true);
 			playerUIPool[i].PSUI.transform.SetParent(bottomUIContainer.transform, false);
@@ -84,7 +85,6 @@ public class PlayerHUDManager : Object
 	public void DisableUI(PlayerState[] playerStates){
 		
 		var i = 0;
-		Debug.Log("disableUI");
 		while (i < playerStates.Length)
 		{
 			playerUIPool[i].HUD.gameObject.SetActive(false);
@@ -314,7 +314,6 @@ public class GameMode : MonoBehaviour
 		//TODO: this needs to be looked at, should not always have to be boss monster
 		var victimGO = victim.gameObject;
 		if(victimGO != null){
-			Debug.Log("test");
 			var victimChar = victimGO.GetComponent<BossMonster>();
 			victimChar.DamageMonster(attackerIndex, damageAmount);
 		}

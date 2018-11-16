@@ -4,7 +4,6 @@ public class SniperRifle : AbstractWeapon
 {
     enum SniperRifleState { Ready, Prefire, Reload };
 
-    [SerializeField] AudioSource fireSound;
     [SerializeField] Animator animator;
     [SerializeField] LineRenderer laserSight;
     [SerializeField] ParticleSystem muzzleFlash;
