@@ -81,6 +81,17 @@ public class PlayerHUDManager : Object
 			i++;
 		}
 	}
+	public void DisableUI(PlayerState[] playerStates){
+		
+		var i = 0;
+		Debug.Log("disableUI");
+		while (i < playerStates.Length)
+		{
+			playerUIPool[i].HUD.gameObject.SetActive(false);
+			playerUIPool[i].PSUI.gameObject.SetActive(false);
+			i++;
+		}
+	}
 }
 
 public class GameMode : MonoBehaviour 
@@ -102,6 +113,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Minigame[] MinigamePrefabs;
 	[SerializeField] GameObject WinCamSpawn;
 	[SerializeField] WinningPlayer WinningPlayerModel;
+	[SerializeField] GameObject LeaderboardPanel;
 	[SerializeField] Text LeaderboardLabel;
 	[SerializeField] Text PlayerNumbers;
 	[SerializeField] Text GuncountText;
@@ -170,6 +182,8 @@ public class GameMode : MonoBehaviour
 	{
 		if (state == GameState.Countdown)
 		{
+			LeaderboardPanel.SetActive(false);
+			playerHUDManager.DisableUI(playerStates);
 			if(!CountdownStarted)
 			{
 				CountdownStarted = true;
@@ -249,7 +263,9 @@ public class GameMode : MonoBehaviour
 					StartCoroutine(RespawnAfter(playerStates[i], RespawnTimer));
 				}
 			}
+			
 			// calculate current top level
+			LeaderboardPanel.SetActive(true);
 			var topLevel = 1;
 			for (var i = 0; i < playerStates.Length; i++)
 			{
@@ -269,10 +285,18 @@ public class GameMode : MonoBehaviour
 			leaders = leaders.TrimEnd(' ');
 			leaders = leaders.TrimEnd(',');
 			PlayerNumbers.text = leaders;
-			playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
+
+			
+			playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, 
+				screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
+			
+			
 		}
 		else if (state == GameState.Victory)
 		{
+			playerHUDManager.DisableUI(playerStates);
+			LeaderboardPanel.SetActive(false);
+
 			for (var i = 0; i < playerStates.Length; i++)
 			{
 				if (playerStates[i].playerController.GetButtonDown("Fire"))
@@ -290,6 +314,7 @@ public class GameMode : MonoBehaviour
 		//TODO: this needs to be looked at, should not always have to be boss monster
 		var victimGO = victim.gameObject;
 		if(victimGO != null){
+			Debug.Log("test");
 			var victimChar = victimGO.GetComponent<BossMonster>();
 			victimChar.DamageMonster(attackerIndex, damageAmount);
 		}

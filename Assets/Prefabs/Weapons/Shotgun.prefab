@@ -538,8 +538,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1024
-  IKTarget_L: {fileID: 0}
-  IKTarget_R: {fileID: 0}
+  IKTarget_L: {fileID: 9166273811160500689}
+  IKTarget_R: {fileID: 6803092744379794515}
   fireSound: {fileID: 82043888457751424}
   reloadSound: {fileID: 82530650906356306}
   HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,

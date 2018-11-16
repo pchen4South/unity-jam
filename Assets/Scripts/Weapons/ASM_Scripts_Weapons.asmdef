@@ -1,0 +1,14 @@
+{
+    "name": "ASM_Scripts_Weapons",
+    "references": [
+        "ASMDEF_Scripts_Root"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
