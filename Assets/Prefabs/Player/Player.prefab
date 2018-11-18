@@ -2633,7 +2633,7 @@ MonoBehaviour:
     type: 3}
   Crosshair: {fileID: 4849069467871498262}
   hitbox: {fileID: 6837660099596985444}
-  MoveSpeed: 12
+  MoveSpeed: 8
   SpeedModifier: 1
   DashDuration: 0.25
   MoveSkillCooldown: 1.5

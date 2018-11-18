@@ -72,4 +72,28 @@ public static class InputHelpers
             p.player.Weapon.ReleaseTrigger(p.player);
         }
     }
+
+    public static bool MenuDownOrRight(Rewired.Player p){
+        if (p.GetAxis(0) > .5f || p.GetAxis(1) < -.5f){
+            return true;
+        } 
+        return false;
+    }
+
+    public static bool MenuUpOrLeft(Rewired.Player p){
+        if (p.GetAxis(0) < -.5f || p.GetAxis(1) > .5f){
+            return true;
+        } 
+        return false;
+    }
+
+    public static bool MenuAccept(Rewired.Player p){
+        // can add other buttons to this condition, so leaving it like this
+        if (p.GetButton("Fire")){
+            return true;
+        } 
+        return false;
+    }
+
+
 }

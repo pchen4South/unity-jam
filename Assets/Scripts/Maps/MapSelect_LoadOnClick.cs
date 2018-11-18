@@ -16,6 +16,9 @@ public class MapSelect_LoadOnClick : MonoBehaviour
     public Text CurrentMapLabel;
     AbstractMap currentMap;
     int mapIndex = 0;
+    // need a timer to delay inputs or else it will scroll thru all the choices instantly
+    [SerializeField] float inputDelayTimer = .25f;
+    float inputDelayCounter = 0;
     
     public void LoadScene(string MapName)
     {
@@ -30,6 +33,13 @@ public class MapSelect_LoadOnClick : MonoBehaviour
 
     void Update()
     {
+        if(inputDelayCounter > 0){
+            inputDelayCounter -= Time.deltaTime;
+        } else {
+            inputDelayCounter = 0;
+        }
+
+
         if(mapIndex == 0)
         {
             UpArrow.interactable = false;
@@ -50,12 +60,21 @@ public class MapSelect_LoadOnClick : MonoBehaviour
 		var players = ReInput.players;
 		for(int i = 0; i <= players.playerCount - 1 ; i++){
 			var player = players.GetPlayer(i);
-			if(player.controllers.joystickCount > 0){
-				var startPressed = player.GetButtonDown("Left");
-				if(startPressed)
-                {
-				
-				}
+
+        
+			if(player.controllers.joystickCount > 0 && inputDelayCounter == 0){   
+                 Debug.Log(player.GetAxis(0) + " " + player.GetAxis(1));
+                if(InputHelpers.MenuDownOrRight(player)){
+                    DownArrowClicked();
+                    inputDelayCounter = inputDelayTimer;
+                }
+                if(InputHelpers.MenuUpOrLeft(player)){
+                    UpArrowClicked();
+                    inputDelayCounter = inputDelayTimer;
+                }
+                if(InputHelpers.MenuAccept(player)){
+                    MapClick();
+                }
 			}
 		}
     }

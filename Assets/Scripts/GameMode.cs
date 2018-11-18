@@ -149,7 +149,7 @@ public class GameMode : MonoBehaviour
 	void Start()
 	{
 		FloatingTextController.Initialize(textParent, PopupTextPrefab);
-		var playerCount = 4;
+		var playerCount = 2;
 
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 		remainingCountdownDuration = CountdownDuration;
