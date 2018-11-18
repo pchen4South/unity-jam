@@ -24,6 +24,7 @@ public static class InputHelpers
 
     public static void BasicMove(PlayerState p)
     {
+        if(!p.player.IsAlive()) return;
         p.player.Move(VectorFromAxes(p.playerController, 0, 1));
     }
 
@@ -33,7 +34,7 @@ public static class InputHelpers
         //     =  DirectionFromAxes(p.playerController, 5, 6)             // try looking stick
         //     ?? DirectionFromAxes(p.playerController, 0, 1)             // fall back to move stick
         //     ?? p.player.transform.forward;                 // use the current value
-            
+        if(!p.player.IsAlive()) return;
         if( DirectionFromAxes(p.playerController, 5, 6)   != Vector3.zero){
              p.player.transform.forward
             =  DirectionFromAxes(p.playerController, 5, 6).Value;
@@ -47,14 +48,16 @@ public static class InputHelpers
 
     public static void BasicDash(PlayerState p)
     {
+        if(!p.player.IsAlive()) return;
         if (p.playerController.GetButtonDown("Dash"))
         {
-            p.player.Dash();
+            p.player.Dash(DirectionFromAxes(p.playerController, 0, 1).Value);
         }
     }
 
     public static void BasicPullTrigger(PlayerState p)
     {
+        if(!p.player.IsAlive()) return;
         if (p.playerController.GetButton("Fire") || p.playerController.GetButtonRepeating("Fire"))
         {
             p.player.Weapon?.PullTrigger(p.player);
@@ -63,6 +66,7 @@ public static class InputHelpers
 
     public static void BasicReleaseTrigger(PlayerState p)
     {
+        if(!p.player.IsAlive()) return;
         if (p.playerController.GetButtonUp("Fire"))
         {
             p.player.Weapon.ReleaseTrigger(p.player);

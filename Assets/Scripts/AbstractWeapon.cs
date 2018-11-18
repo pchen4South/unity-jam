@@ -34,8 +34,12 @@ public abstract class AbstractWeapon : MonoBehaviour
 	public delegate void ValidHitOccurredEvent(ValidHit NewHit);
 	public event ValidHitOccurredEvent OnValidHitOccurred;
 	
-	public virtual void PullTrigger(Player player){}
-	public virtual void ReleaseTrigger(Player player){}
+	public virtual void PullTrigger(Player player){
+		if(!player.IsAlive()) return;
+	}
+	public virtual void ReleaseTrigger(Player player){
+		if(!player.IsAlive()) return;
+	}
 	public virtual void CheckForValidHitscan(Vector3 muzzle, Vector3 weaponDir, LayerMask layerMask){
 		Ray ray = new Ray();
 		RaycastHit rayHit = new RaycastHit();
@@ -93,7 +97,6 @@ public abstract class AbstractWeapon : MonoBehaviour
 	
 	void Update(){
 		reloadtimer += Time.deltaTime;
-		Debug.Log("r: " + reloadtimer);
 	}
 
     public void Reload(){

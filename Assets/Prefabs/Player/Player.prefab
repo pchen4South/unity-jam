@@ -2636,7 +2636,7 @@ MonoBehaviour:
   MoveSpeed: 12
   SpeedModifier: 1
   DashDuration: 0.25
-  MoveSkillCooldown: 3
+  MoveSkillCooldown: 1.5
   MoveSkillRecoveryTime: 0.2
   Weapon: {fileID: 0}
   Health: 1

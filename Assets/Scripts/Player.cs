@@ -71,7 +71,6 @@ public class Player : AbstractCharacter
             moveStatus = MoveSkillStatus.OnCooldown;
             StartCoroutine(MoveSkillRecovery());
             currentDashTime = 0f;
-            animator.SetBool("PerformDash", false);
         }
 
         //dash cooldown
@@ -184,24 +183,24 @@ public class Player : AbstractCharacter
 	}
 
     #region moveskills
-    public void Dash()
+    public void Dash(Vector3 direction)
     {
         if (moveStatus != MoveSkillStatus.Ready)
             return;
 
-        dashDir = transform.forward;
+        // dashDir = transform.forward;
+        dashDir = direction;
         dashSound.Play();
         SpeedModifier = 2.5f;
         isDashing = true;
         this.canMove = false;
         this.canRotate = false;
-        animator.SetBool("PerformDash", true);
     }
 
     IEnumerator MoveSkillRecovery()
     {
         yield return new WaitForSeconds(MoveSkillRecoveryTime);
-        //SpeedModifier = Weapon.SpeedModifier;
+        SpeedModifier = Weapon.SpeedModifier;
         this.canMove = true;
         this.canRotate = true;
     }
