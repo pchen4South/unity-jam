@@ -20,8 +20,6 @@ public class Blaster : AbstractWeapon {
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    Ray ray = new Ray();
-    RaycastHit rayHit = new RaycastHit();
 	private GameObject FlashInstance;
     void Awake(){
         MagazineSize = 12;

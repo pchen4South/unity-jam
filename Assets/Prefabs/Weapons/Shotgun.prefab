@@ -522,6 +522,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Muzzle: {fileID: 0}
   player: {fileID: 0}
+  fireSound: {fileID: 82043888457751424}
+  reloadSound: {fileID: 82530650906356306}
   WeaponName: Shotgun
   SpeedModifier: 1
   AmmoCount: 0
@@ -533,6 +535,7 @@ MonoBehaviour:
   shotTime: 0.1
   muzzleOffset: 0.1
   ReloadTime: 3.5
+  isReloading: 0
   bulletTracer: {fileID: 0}
   BulletHole: {fileID: 0}
   layerMask:
@@ -540,8 +543,6 @@ MonoBehaviour:
     m_Bits: 1024
   IKTarget_L: {fileID: 9166273811160500689}
   IKTarget_R: {fileID: 6803092744379794515}
-  fireSound: {fileID: 82043888457751424}
-  reloadSound: {fileID: 82530650906356306}
   HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
     type: 3}
   HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,

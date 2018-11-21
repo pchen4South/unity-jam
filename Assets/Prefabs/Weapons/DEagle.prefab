@@ -1,5 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!4 &5550833144999834683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca,
+    type: 3}
+  m_PrefabInstance: {fileID: 5550833144999702203}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4043574624854644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4043228244797008105, guid: 401cb21dee144414ebf841079ef879d7,
@@ -121,17 +127,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Muzzle: {fileID: 0}
   player: {fileID: 0}
+  fireSound: {fileID: 82442640702138610}
+  reloadSound: {fileID: 82502090231681022}
   WeaponName: DEagle
   SpeedModifier: 1
   AmmoCount: 0
   MagazineSize: 7
-  DamageAmount: 1
+  DamageAmount: 2
   LeftHandIKTarget: {fileID: 0}
   RightHandIKTarget: {fileID: 0}
   fireRate: 0.5
   shotTime: 0.01
   muzzleOffset: 0.5
   ReloadTime: 2.5
+  isReloading: 0
   bulletTracer: {fileID: 120651834082914050}
   BulletHole: {fileID: 1175364153175438, guid: 85ce419632c40ad4fbf2fc5173dfafe3, type: 3}
   layerMask:
@@ -139,8 +148,6 @@ MonoBehaviour:
     m_Bits: 33793
   IKTarget_L: {fileID: 2501237701852715752}
   IKTarget_R: {fileID: 4964906307463415829}
-  fireSound: {fileID: 82442640702138610}
-  reloadSound: {fileID: 82502090231681022}
   HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
     type: 3}
   HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
@@ -638,12 +645,6 @@ Transform:
   m_Father: {fileID: 4354227693998282}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &5550833144999834683 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca,
-    type: 3}
-  m_PrefabInstance: {fileID: 5550833144999702203}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4040348125843458717
 PrefabInstance:
   m_ObjectHideFlags: 0

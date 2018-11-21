@@ -11,18 +11,15 @@ public class Shotgun : AbstractWeapon {
     [SerializeField]
     ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]
-    GameObject muzzleFlash;
+    public GameObject muzzleFlash;
 
     [SerializeField]
     Light muzzleFlashLight;
-    [SerializeField]
-	ParticleSystem BlastRadius;
+    [SerializeField]	ParticleSystem BlastRadius = null;
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    Ray ray = new Ray();
-    RaycastHit rayHit = new RaycastHit();
-	private GameObject FlashInstance;
+	GameObject FlashInstance = null;
 
 	void Start(){
         WeaponName = "Shotgun";
@@ -50,8 +47,10 @@ public class Shotgun : AbstractWeapon {
         StartCoroutine(PostShotCleanup());
         timeTillNextShot = fireRate;
         
-		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
-        FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
+        if(FlashInstance != null){
+            FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
+            FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
+        }
 
         muzzleFlashLight.enabled = true;
         fireSound.Play();

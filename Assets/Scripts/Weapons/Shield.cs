@@ -69,6 +69,7 @@ public class Shield : AbstractWeapon
 
             //set shieldstate into Damaging here so that only 1 hit per swing is applied as damage
             shieldState = RiotShieldState.Damaging;
+            
         }
     }
 

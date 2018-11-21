@@ -53,17 +53,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Muzzle: {fileID: 1054971937127985884}
   player: {fileID: 0}
+  fireSound: {fileID: 82866590645126048}
+  reloadSound: {fileID: 0}
   WeaponName: Sniper
   SpeedModifier: 1
   AmmoCount: 0
   MagazineSize: 0
-  DamageAmount: 1
+  DamageAmount: 6
   LeftHandIKTarget: {fileID: 668762116008130238}
   RightHandIKTarget: {fileID: 1298279610055978069}
   fireRate: 0.1
   shotTime: 0.01
   muzzleOffset: 0.5
   ReloadTime: 1
+  isReloading: 0
   bulletTracer: {fileID: 0}
   BulletHole: {fileID: 0}
   layerMask:
@@ -71,7 +74,6 @@ MonoBehaviour:
     m_Bits: 33792
   IKTarget_L: {fileID: 0}
   IKTarget_R: {fileID: 0}
-  fireSound: {fileID: 82866590645126048}
   animator: {fileID: 95366874818472796}
   laserSight: {fileID: 364224215712878701}
   muzzleFlash: {fileID: 7288032748680465064}

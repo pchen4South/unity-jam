@@ -5690,7 +5690,7 @@ PrefabInstance:
         type: 3}
       propertyPath: WeaponPrefabs.Array.data[6]
       value: 
-      objectReference: {fileID: 5760404808585814101, guid: 4aa1abadd20bde44a9766dd34488a6e9,
+      objectReference: {fileID: 114448926660466218, guid: 9d73e5b707a651543994b25b24e3483d,
         type: 3}
     - target: {fileID: 753164197098797133, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
@@ -5733,6 +5733,36 @@ PrefabInstance:
       propertyPath: LeaderboardPanel
       value: 
       objectReference: {fileID: 588088959}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: WeaponPrefabs.Array.data[7]
+      value: 
+      objectReference: {fileID: 114041474202030304, guid: c67f5d97841b54741ac008d689ca8bc0,
+        type: 3}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: WeaponPrefabs.Array.data[8]
+      value: 
+      objectReference: {fileID: 4760965816963615695, guid: cab1a7697f1a993468a22033d74677d5,
+        type: 3}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: WeaponPrefabs.Array.data[9]
+      value: 
+      objectReference: {fileID: 114247967539548830, guid: 475b9cb717c87fe40b0255d7e76138c4,
+        type: 3}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: WeaponPrefabs.Array.data[10]
+      value: 
+      objectReference: {fileID: 114131538142783484, guid: cfcb332d67619214087fa9778edd768a,
+        type: 3}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: WeaponPrefabs.Array.data[11]
+      value: 
+      objectReference: {fileID: 5760404808585814101, guid: 4aa1abadd20bde44a9766dd34488a6e9,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
 --- !u!1 &288849688

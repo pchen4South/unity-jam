@@ -2617,7 +2617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   ENTITY_TYPE: PLAYERCHARACTER
-  MaxHealth: 3
+  MaxHealth: 6
   GROUNDED_DOWNWARD_VELOCITY: {x: 0, y: -10, z: 0}
   status: 0
   playerIndicator: {fileID: 114018842590632920}

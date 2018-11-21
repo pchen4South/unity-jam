@@ -16,8 +16,6 @@ public class MachineGun : AbstractWeapon
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    Ray ray = new Ray();
-    RaycastHit rayHit = new RaycastHit(); 
     GameObject FlashInstance;
 
 

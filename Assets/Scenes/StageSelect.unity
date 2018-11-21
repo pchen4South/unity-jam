@@ -878,6 +878,7 @@ MonoBehaviour:
   OverlayButton: {fileID: 0}
   CurrentMapImage: {fileID: 1603528974}
   CurrentMapLabel: {fileID: 708640819}
+  inputDelayTimer: 0.25
 --- !u!82 &1637329173
 AudioSource:
   m_ObjectHideFlags: 0

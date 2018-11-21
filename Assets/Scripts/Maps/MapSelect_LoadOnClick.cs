@@ -74,6 +74,7 @@ public class MapSelect_LoadOnClick : MonoBehaviour
                 }
                 if(InputHelpers.MenuAccept(player)){
                     MapClick();
+                    
                 }
 			}
 		}
