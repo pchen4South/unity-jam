@@ -28,7 +28,7 @@ public class Shield : AbstractWeapon
 
     #region Weapon Trigger Overrides
     public override void PullTrigger(Player player){
-        if(shieldState != RiotShieldState.Ready)
+        if(shieldState != RiotShieldState.Ready || !player.IsAlive())
             return;
         swingSound.Play();
         anim.SetBool("swinging", true);

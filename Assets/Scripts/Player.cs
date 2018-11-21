@@ -62,13 +62,13 @@ public class Player : AbstractCharacter
             m.z = dashDir.z * Time.deltaTime * MoveSpeed * SpeedModifier;
             controller.Move(m);
             currentDashTime += Time.deltaTime;
+            moveStatus = MoveSkillStatus.OnCooldown;
         }
 
         //end dash
         if (currentDashTime > DashDuration) 
         {
             isDashing = false;
-            moveStatus = MoveSkillStatus.OnCooldown;
             StartCoroutine(MoveSkillRecovery());
             currentDashTime = 0f;
         }
@@ -188,8 +188,7 @@ public class Player : AbstractCharacter
         if (moveStatus != MoveSkillStatus.Ready)
             return;
 
-        // dashDir = transform.forward;
-        dashDir = direction;
+        dashDir = direction != Vector3.zero ? direction : transform.forward;
         dashSound.Play();
         SpeedModifier = 2.5f;
         isDashing = true;
