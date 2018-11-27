@@ -17,6 +17,7 @@ TagManager:
   - Disable_BossBattle
   - NPCHitbox
   - UI_Resettable
+  - ItemSpawn
   layers:
   - Default
   - TransparentFX

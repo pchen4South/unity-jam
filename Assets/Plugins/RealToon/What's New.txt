@@ -1,0 +1,47 @@
+RealToon V5.0.1 Update (November 2018)
+=====================================
+
+[New]
+
+- Fade Transparency with Outline.
+
+- Reduce Outline Backface (Fade Transparency) [New Option/Feature]
+*Reduce outline's backface to see through.
+
+- Self Shadow Affected By Light Strength [New Option/Feature]
+
+- Environmental Lighthing Intensity [New Option/Feature]
+*Adjust "Environmental Lighthing Intensity" on the object.
+
+- Light Affect Shadow [New Option/Feature]
+*Use this if you want your object shadows to be affected by lights.
+
+- Light Intensity [New Option/Feature]
+
+- Show In Shadow (ShadowT) [New Option/Feature]
+*Show ShadowT in shadow.
+*Use this if you want some shadow details in shadow.
+
+- Show In Ambient Light (ShadowT) [New Option/Feature]
+*Show ShadowT in ambient light.
+*Use this if you want some shadow details in ambient light, just like AO (Ambient Occlusion).
+
+- Show In Ambient Light Intensity (ShadowT) [New Option/Feature]
+- Show In Ambient Light & Shadow Threshold (ShadowT) [New Option/Feature]
+
+- ShadowT Intensity [Readded Option/Feature]
+- Gloss Intensity [Readded Option/Feature]
+- Self Shadow Intensity [Readded Option/Feature]
+- Saturation [Readded Option/Feature]
+
+- Hide Directional Light Shadow [New Option/Feature]
+
+[Others]
+
+- Can now be use in 2D games.
+- Foldout state are now remembered.
+- Fade Transparency can now affect shadow.
+
+[Other Notes]
+*For VTuber use please contact by email for more additional info.
+*If you encounter some problems, report or contact by email. 

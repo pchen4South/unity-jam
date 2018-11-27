@@ -110,7 +110,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] AudioSource BackgroundMusic;
 	[SerializeField] AudioSource CountdownAudio;
 	[SerializeField] AbstractWeapon[] WeaponPrefabs;
-	[SerializeField] Minigame[] MinigamePrefabs;
+	[SerializeField] AbstractMinigame[] MinigamePrefabs;
 	[SerializeField] GameObject WinCamSpawn;
 	[SerializeField] WinningPlayer WinningPlayerModel;
 	[SerializeField] GameObject LeaderboardPanel;
@@ -130,7 +130,7 @@ public class GameMode : MonoBehaviour
 	PlayerState[] playerStates;
 	PlayerHUDManager playerHUDManager;
 	GameState state = GameState.Countdown;
-	Minigame Minigame;
+	AbstractMinigame Minigame;
 	int winningPlayerIndex;
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;

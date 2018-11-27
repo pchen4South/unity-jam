@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5844757875479816119}
-  - component: {fileID: 4905268194496847790}
+  - component: {fileID: 8731042510062148997}
   m_Layer: 0
   m_Name: mg_arenafire
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4905268194496847790
+--- !u!114 &8731042510062148997
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,60 +41,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1422642054524036996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7788a45124cc9341a6d9385c8a0455b, type: 3}
+  m_Script: {fileID: 11500000, guid: b0852d6b91ce95346afcb20b458b08ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinigameDuration: 15
-  MinigameSummaryLengthSeconds: 5
-  MinigameCanvas: {fileID: 2203156609999738126}
-  MinigameIntro: {fileID: 3673396820465386776}
-  MinigameResultsScreen: {fileID: 7835097832306818015}
-  NPCS: []
-  WinnersPrize: 2
-  LosersPenalty: 2
-  PlayerResultsLine: {fileID: 8405972499550572169, guid: 154624109095da045a9885144d1e5532,
-    type: 3}
-  MinigameName: 
-  MinigameNameText: {fileID: 2802704235381882299}
-  Boss: {fileID: 6845824969542982167, guid: 4a03b5a47b084b74a8d4bde7d95ec018, type: 3}
-  StageElementsToModify: []
-  IntroTimer: 5
 --- !u!224 &9205924223393851253 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6655308269292271915, guid: 7077149c12e819e4da82824bdb6e60f6,
     type: 3}
   m_PrefabInstance: {fileID: 2566599692119924318}
   m_PrefabAsset: {fileID: 0}
---- !u!223 &2203156609999738126 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 4399255500424334160, guid: 7077149c12e819e4da82824bdb6e60f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2566599692119924318}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &7835097832306818015 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 847792710537151587, guid: 0afb220d6ad04e04b804236295942191,
-    type: 3}
-  m_PrefabInstance: {fileID: 7455758717400596412}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &3673396820465386776 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1253375224650193734, guid: 7077149c12e819e4da82824bdb6e60f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2566599692119924318}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2802704235381882299 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4727963401773662727, guid: 0afb220d6ad04e04b804236295942191,
-    type: 3}
-  m_PrefabInstance: {fileID: 7455758717400596412}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2566599692119924318
 PrefabInstance:
   m_ObjectHideFlags: 0

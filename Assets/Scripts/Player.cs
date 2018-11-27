@@ -115,7 +115,9 @@ public class Player : AbstractCharacter
         var velocity = v * speed;
 
         controller.Move(velocity);
-        animator.SetFloat("Forward", velocity.magnitude);
+        //could be looked at in future, for now hardcoded to 1 to get the run animation
+        //animator.SetFloat("Forward", velocity.magnitude);
+        animator.SetFloat("Forward", velocity.magnitude > 0 ? 1 : 0);
     }
 
     public void SetWeapon(AbstractWeapon newWeapon)
