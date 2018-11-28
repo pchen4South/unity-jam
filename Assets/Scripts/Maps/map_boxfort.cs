@@ -5,5 +5,4 @@ using UnityEngine.UI;
 
 public class map_boxfort : AbstractMap
 {
-
 }
