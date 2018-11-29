@@ -79,7 +79,7 @@ public abstract class AbstractWeapon : MonoBehaviour
 			NewHit.OriginatingEntityIdentifier = player.ID;
 			NewHit.VictimEntityType = target.ENTITY_TYPE;
 			NewHit.VictimEntity = target; 
-			NewHit.DamageAmount = DamageAmount;
+			NewHit.DamageAmount = Mathf.RoundToInt(DamageAmount * player.damageMultiplier);
 			
         }
 		// if not player or npc then it hit terrain

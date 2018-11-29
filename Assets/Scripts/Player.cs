@@ -30,6 +30,7 @@ public class Player : AbstractCharacter
     public int Health = 1;
     public bool canMove = true;
     public bool canRotate = true;
+    public float damageMultiplier = 1f;
 	
     
     //Moveskill 
@@ -192,7 +193,7 @@ public class Player : AbstractCharacter
 
         dashDir = direction != Vector3.zero ? direction : transform.forward;
         dashSound.Play();
-        SpeedModifier = 2.5f;
+        SpeedModifier = 2.5f * SpeedModifier;
         isDashing = true;
         this.canMove = false;
         this.canRotate = false;
@@ -211,6 +212,24 @@ public class Player : AbstractCharacter
     public void SetAsVictor()
     {
         animator.SetBool("PlayerWins", true);
+    }
+
+    //Buffs
+    public IEnumerator ReturnToNormalSettings(float buffTime){
+        yield return new WaitForSeconds(buffTime);
+        damageMultiplier = 1f;
+        SpeedModifier = Weapon.SpeedModifier;
+    }
+    public void SetDamageMultiplier(float multiplier, float buffTime){
+        damageMultiplier = multiplier;
+        StartCoroutine(ReturnToNormalSettings(buffTime));
+    }
+    public void SetSpeedMultiplier(float multiplier, float buffTime){
+        SpeedModifier = multiplier * Weapon.SpeedModifier;
+        StartCoroutine(ReturnToNormalSettings(buffTime));
+    }
+    public void HealForAmount(int recoverAmount){
+        Health = Mathf.Min(MaxHealth, Health + recoverAmount);
     }
 
 }

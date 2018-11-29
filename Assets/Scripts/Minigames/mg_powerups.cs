@@ -14,12 +14,15 @@ public class mg_powerups : AbstractMinigame
         MinigameAliveTimer = 0f;
 
         ItemSpawnLocations = GameObject.FindGameObjectsWithTag("ItemSpawn");
-        
+        List<GameObject> spawns = new List<GameObject>(ItemSpawnLocations);
+
         for(int i = 0; i < NumSpawns; i++){
+            var spawnindex = Random.Range(0, spawns.Count);
+
             Instantiate(powerups[Random.Range(0, powerups.Length)], 
-                            ItemSpawnLocations[Random.Range(0, 
-                            ItemSpawnLocations.Length)].transform.position, 
+                            spawns[spawnindex].transform.position, 
                             Quaternion.identity);
+            spawns.RemoveAt(spawnindex);
         }
     }
 }
