@@ -5,7 +5,7 @@ using UnityEngine;
 public class mg_powerups : AbstractMinigame
 {
     //temp for testing
-    [SerializeField] GameObject powerup;
+    [SerializeField] GameObject[] powerups;
     [SerializeField] GameObject[] ItemSpawnLocations;
     public int NumSpawns = 4;
 
@@ -16,7 +16,10 @@ public class mg_powerups : AbstractMinigame
         ItemSpawnLocations = GameObject.FindGameObjectsWithTag("ItemSpawn");
         
         for(int i = 0; i < NumSpawns; i++){
-            Instantiate(powerup, ItemSpawnLocations[Random.Range(0, ItemSpawnLocations.Length)].transform.position, Quaternion.identity);
+            Instantiate(powerups[Random.Range(0, powerups.Length)], 
+                            ItemSpawnLocations[Random.Range(0, 
+                            ItemSpawnLocations.Length)].transform.position, 
+                            Quaternion.identity);
         }
     }
 }
