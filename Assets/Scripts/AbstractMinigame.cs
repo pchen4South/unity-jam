@@ -84,7 +84,7 @@ public abstract class AbstractMinigame : MonoBehaviour
     }
 
 
-    void Update(){
+    public virtual void Update(){
         switch(MinigameState){
             case MG_State.Running:
                 MinigameAliveTimer += Time.deltaTime;
