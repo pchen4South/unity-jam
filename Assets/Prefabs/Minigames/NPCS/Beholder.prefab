@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 5181001389799460572}
   - component: {fileID: 7718803579752130018}
   - component: {fileID: 4998048271027318706}
+  - component: {fileID: 4084157558622419532}
   m_Layer: 15
   m_Name: Projectiles
   m_TagString: Untagged
@@ -3864,7 +3865,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
+    - serializedVersion: 3
       emitter: {fileID: 0}
       type: 0
       properties: 0
@@ -4860,6 +4861,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &4084157558622419532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145319555070728734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0075b63c83764ea489387e530b1f684a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2490703288579948466
 GameObject:
   m_ObjectHideFlags: 0
@@ -8730,7 +8743,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
+    - serializedVersion: 3
       emitter: {fileID: 0}
       type: 0
       properties: 0
@@ -13542,7 +13555,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
+    - serializedVersion: 3
       emitter: {fileID: 0}
       type: 0
       properties: 0
@@ -18339,7 +18352,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
+    - serializedVersion: 3
       emitter: {fileID: 0}
       type: 0
       properties: 0
