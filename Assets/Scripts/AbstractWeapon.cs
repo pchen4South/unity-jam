@@ -10,6 +10,7 @@ public abstract class AbstractWeapon : MonoBehaviour
 	[SerializeField] public AudioSource fireSound;
 
 	[SerializeField] public AudioSource reloadSound;
+	[SerializeField] ParticleSystem HitPlayerParticlePrefab;
 	public string WeaponName = "gun";
 	public float SpeedModifier = 1f;
 	public int AmmoCount = 0;
@@ -49,17 +50,17 @@ public abstract class AbstractWeapon : MonoBehaviour
 		ray.direction = weaponDir;
 
         var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
-		        
-        bulletTracer.SetPosition(0, muzzle);
-        bulletTracer.SetPosition(1, rayHit.point);
-        bulletTracer.enabled = true;
-
+		if(bulletTracer != null){
+        	bulletTracer.SetPosition(0, muzzle);
+        	bulletTracer.SetPosition(1, rayHit.point);
+        	bulletTracer.enabled = true;
+		}
         if (!didHit)
             return;
 
+
         var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
 		var isNPC = rayHit.collider.CompareTag("NPCHitbox");
-		ValidHit NewHit = new ValidHit();
 
 		//Can prob refactor if player / npc have common baseclass
         if (isPlayer || isNPC)
@@ -75,12 +76,8 @@ public abstract class AbstractWeapon : MonoBehaviour
 			//reject targets that are not alive
 			if(!target.IsAlive()) return;
 
-			NewHit.OriginatingEntityType = player.ENTITY_TYPE;
-			NewHit.OriginatingEntityIdentifier = player.ID;
-			NewHit.VictimEntityType = target.ENTITY_TYPE;
-			NewHit.VictimEntity = target; 
-			NewHit.DamageAmount = Mathf.RoundToInt(DamageAmount * player.damageMultiplier);
-			
+			RegisterNewValidHit(player, target);
+			CreateBloodSpray(rayHit.point, transform.rotation);
         }
 		// if not player or npc then it hit terrain
 		else {
@@ -91,10 +88,23 @@ public abstract class AbstractWeapon : MonoBehaviour
             	Destroy(bulletHole, 3f);
 			}
 		}
-		if(OnValidHitOccurred != null) OnValidHitOccurred(NewHit);
-
 	}
 	
+	public virtual void CreateBloodSpray(Vector3 location, Quaternion rotation){
+		Instantiate(HitPlayerParticlePrefab, location, rotation);
+	}
+
+	public void RegisterNewValidHit(Player player, AbstractCharacter target){
+			ValidHit NewHit = new ValidHit();
+			NewHit.OriginatingEntityType = player.ENTITY_TYPE;
+			NewHit.OriginatingEntityIdentifier = player.ID;
+			NewHit.VictimEntityType = target.ENTITY_TYPE;
+			NewHit.VictimEntity = target; 
+			NewHit.DamageAmount = Mathf.RoundToInt(DamageAmount * player.damageMultiplier);
+			
+			if(OnValidHitOccurred != null && NewHit != null) OnValidHitOccurred(NewHit);
+	}
+
 	void Update(){
 		reloadtimer += Time.deltaTime;
 	}
