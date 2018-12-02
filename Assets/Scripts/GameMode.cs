@@ -218,6 +218,8 @@ public class GameMode : MonoBehaviour
 					foreach(var n in Minigame.NPCS){
 						if(!NPCS.Contains(n)){
 							NPCS.Add(n);
+							if(n.OnValidHitOccurred == null)
+								n.OnValidHitOccurred += AddValidHit;
 						}
 					}
 				} else if (Minigame.MinigameResultsReady()){
@@ -339,6 +341,26 @@ public class GameMode : MonoBehaviour
 		}
 	}
 
+	void HandleNPCDamage(int attackerIndex, int victimIndex, int damageAmount)
+	{
+		var victim = playerStates[victimIndex];
+		var victimShouldDie = damageAmount >= victim.player.Health && !victim.player.IsDead();
+		
+
+		if (victimShouldDie)
+		{
+			Time.timeScale = .1f;
+			victim.player.Kill();
+			shakeable.AddIntensity(1f);
+			StartCoroutine(RespawnAfter(victim, RespawnTimer));
+		}
+		else
+		{
+			victim.player.Damage(damageAmount);
+			shakeable.AddIntensity(.3f);
+		}
+	}
+
 	IEnumerator HandleVictory(Player winningPlayer)
 	{
 		yield return new WaitForSeconds(2f);
@@ -409,7 +431,8 @@ public class GameMode : MonoBehaviour
 			} 
 			else if (Newhit.OriginatingEntityType == "NPC")
 			{
-
+				//TODO fix the id of monster
+				HandleNPCDamage(0,Newhit.VictimEntity.ID, Newhit.DamageAmount);
 			}
 			// all other sources of damage
 			else 

@@ -42,7 +42,7 @@ public abstract class AbstractCharacter : MonoBehaviour
 			NewHit.VictimEntityType = target.ENTITY_TYPE;
 			NewHit.VictimEntity = target; 
 			NewHit.DamageAmount = Mathf.RoundToInt(DamageAmount * originator.damageMultiplier);
-			
+
 			if(OnValidHitOccurred != null && NewHit != null) OnValidHitOccurred(NewHit);
 	}
 }
