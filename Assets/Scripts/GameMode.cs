@@ -106,7 +106,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] RectTransform PlayerUIArea;
 
 	[SerializeField] ColorScheme colorScheme;
-	[SerializeField] Shakeable shakeable;
+	[SerializeField] public Shakeable shakeable;
 	[SerializeField] UI ui;
 	[SerializeField] Canvas screenSpaceUICanvas;
 	[SerializeField] AudioSource BackgroundMusic;
@@ -130,7 +130,7 @@ public class GameMode : MonoBehaviour
 	public float killHeight = -1000f;
 
 	GameObject[] spawnPoints;
-	PlayerState[] playerStates;
+	public PlayerState[] playerStates;
 	PlayerHUDManager playerHUDManager;
 	GameState state = GameState.Countdown;
 	AbstractMinigame Minigame;
@@ -141,11 +141,9 @@ public class GameMode : MonoBehaviour
 	bool didSpawnMinigame = false;
 	MinigameResults ActiveMinigameResults;
 
-	//hit processing
-	// TODO: could pack these into structs perhaps? Maybe pre-allocate?
-	List<ValidHit> HitsToBeProcessed = new List<ValidHit>();
-	List<ValidHit> ProcessedHits = new List<ValidHit>();
-	List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
+	public List<ValidHit> HitsToBeProcessed = new List<ValidHit>();
+	public List<ValidHit> ProcessedHits = new List<ValidHit>();
+	public List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
 
 	#endregion
 
@@ -173,8 +171,8 @@ public class GameMode : MonoBehaviour
 			ps.player.SetColor(colorScheme.playerColors[i]);
 			playerStates[i] = ps;
 		}
-		
 	}
+
 	void Update()
 	{
 		if (state == GameState.Countdown)
@@ -203,9 +201,19 @@ public class GameMode : MonoBehaviour
 			UpdateGameClock(GameTimer);
 			ProcessNewValidHits();
 
+			/* 
+			How do we decide how players should move on a given frame?
+
+			!player.moveStatus.Dashing
+			player.canMove
+			minigame.canMove(player)
+				
+			*/
+
 			if (Minigame)
 			{
-				if (Minigame.MinigameIsRunning()){
+				if (Minigame.MinigameIsRunning())
+				{
 					for (var i = 0; i < playerStates.Length; i++)
 					{
 						Minigame.HandleMove(playerStates[i]);
@@ -213,18 +221,25 @@ public class GameMode : MonoBehaviour
 						Minigame.HandleRotate(playerStates[i]);
 						Minigame.HandleFire(playerStates[i]);
 					}
+
 					//prob need to figure out where to put this so it doesnt get processed over and over
-					foreach(var n in Minigame.NPCS){
-						if(!NPCS.Contains(n)){
+					foreach(var n in Minigame.NPCS)
+					{
+						if(!NPCS.Contains(n))
+						{
 							NPCS.Add(n);
 						}
 					}
-				} else if (Minigame.MinigameResultsReady()){
+				} 
+				else if (Minigame.MinigameResultsReady())
+				{
 					//collect the results from the minigame in order to process them and apply prize/penalty to players
-					if(ActiveMinigameResults == null)
+					if (ActiveMinigameResults == null)
 						ActiveMinigameResults = Minigame.Results;
 					
-				} else if(Minigame.MinigameShouldDestroy()){
+				} 
+				else if(Minigame.MinigameShouldDestroy())
+				{
 					//wanted to ensure that the minigame results were collected / score screen shown before removing
 					Destroy(Minigame.gameObject);
 				}
@@ -232,11 +247,13 @@ public class GameMode : MonoBehaviour
 			else
 			{
 				// Temp code for testing
-				if(GameTimer >= 5f && didSpawnMinigame == false && MinigamePrefabs.Length > 0){ 
+				if (GameTimer >= 5f && didSpawnMinigame == false && MinigamePrefabs.Length > 0)
+				{ 
 					Minigame = Instantiate(MinigamePrefabs[0]);
 					Minigame.BeginMinigame(playerStates);
 					didSpawnMinigame = true;
 				}
+
 				// These are the "default" behaviors when no minigames are present
 				for (var i = 0; i < playerStates.Length; i++)
 				{
@@ -247,6 +264,7 @@ public class GameMode : MonoBehaviour
 					InputHelpers.BasicReleaseTrigger(playerStates[i]);
 				}
 			}
+
 			// kill players that have fallen off the map
 			for (var i = 0; i < playerStates.Length; i++)
 			{
@@ -318,8 +336,8 @@ public class GameMode : MonoBehaviour
 		if (victimShouldDie)
 		{
 			Time.timeScale = .1f;
-			victim.player.Kill();
 			shakeable.AddIntensity(1f);
+			victim.player.Kill();
 			StartCoroutine(RespawnAfter(victim, RespawnTimer));
 
 			if (attackerShouldWin)
@@ -388,7 +406,7 @@ public class GameMode : MonoBehaviour
 	{
 		foreach(var Newhit in HitsToBeProcessed)
 		{
-			//player originated damage
+			// player originated damage
 			if (Newhit.OriginatingEntityType == "PLAYERCHARACTER")
 			{
 				var shooterPlayerNumber = Newhit.OriginatingEntityIdentifier;
@@ -404,8 +422,8 @@ public class GameMode : MonoBehaviour
 				}
 				else
 				{}
-			//npc originated damage
 			} 
+			// npc originated damage
 			else if (Newhit.OriginatingEntityType == "NPC")
 			{
 
