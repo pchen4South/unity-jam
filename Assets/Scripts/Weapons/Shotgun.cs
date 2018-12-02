@@ -8,8 +8,7 @@ public class Shotgun : AbstractWeapon {
 
     [SerializeField]
     ParticleSystem HitParticlePrefab;
-    [SerializeField]
-    ParticleSystem HitPlayerParticlePrefab;
+    
     [SerializeField]
     public GameObject muzzleFlash;
 

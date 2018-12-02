@@ -7,6 +7,10 @@ public class BossMonster : AbstractCharacter
     public int Health = 0;
     public RectTransform HPBar;
 
+        //Event Broadcasting
+	public delegate void ValidHitOccurredEvent(ValidHit NewHit);
+	public event ValidHitOccurredEvent OnValidHitOccurred;
+
     public void Initialize()
     {
         Health = MaxHealth;    

@@ -8,7 +8,7 @@ public class SniperRifle : AbstractWeapon
     [SerializeField] LineRenderer laserSight;
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] ParticleSystem HitParticlePrefab;
-    [SerializeField] ParticleSystem HitPlayerParticlePrefab;
+    
     [SerializeField] GameObject ProjectilePrefab;
 
     public float PreFireDuration = 1f;
@@ -65,22 +65,7 @@ public class SniperRifle : AbstractWeapon
         muzzleFlash.Play();
         fireSound.Play();
 
-        ray.origin = Muzzle.transform.position;
-        ray.direction = Muzzle.transform.forward;
-
-        if (!Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask))
-            return;
-
-        // TODO: should move some of this code to player
-        if (rayHit.collider.CompareTag("PlayerHitbox"))
-        {
-            //var target = rayHit.collider.GetComponent<Player>();
-            var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
-            var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
-
-            // TODO: Must fix
-            // target.OnDamage(player.ID, target.ID, DamageAmount);
-            Destroy(hitParticles.gameObject, 2f);
-        }
+        var muzzle = transform.position + transform.forward * muzzleOffset;
+        CheckForValidHitscan(muzzle, transform.forward, layerMask);
     }
 }

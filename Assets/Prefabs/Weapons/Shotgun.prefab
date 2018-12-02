@@ -5784,6 +5784,7 @@ MonoBehaviour:
   shotgunPellets: {fileID: 578506019405434}
   HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
     type: 3}
+  shotgun: {fileID: 114247967539548830}
 --- !u!1 &2119658951617409568
 GameObject:
   m_ObjectHideFlags: 0

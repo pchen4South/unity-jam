@@ -6,7 +6,6 @@ public class Deagle : AbstractWeapon
 {
     [Header("Cached references")]
     [SerializeField]    ParticleSystem HitParticlePrefab;
-    [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
     [SerializeField]    GameObject muzzleFlash;
     [SerializeField]    Light muzzleFlashLight;
 

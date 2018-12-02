@@ -8,7 +8,6 @@ public class MachineGun : AbstractWeapon
     [SerializeField]    AudioSource hitSound;
     [SerializeField]    AudioSource hitPlayerSound;
     [SerializeField]    GameObject HitParticlePrefab;
-    [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
 
     [Header("Config")]
     public float kickBackGrowthRate = 1f;

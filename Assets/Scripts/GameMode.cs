@@ -167,8 +167,9 @@ public class GameMode : MonoBehaviour
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;
 			ps.player.Spawn(spawnpoint.transform);
-			ps.player.SetWeapon(WeaponPrefab, AddValidHit);
+			ps.player.SetWeapon(WeaponPrefab);
 			ps.player.SetColor(colorScheme.playerColors[i]);
+			ps.player.OnValidHitOccurred += AddValidHit;
 			playerStates[i] = ps;
 		}
 	}
@@ -228,6 +229,8 @@ public class GameMode : MonoBehaviour
 						if(!NPCS.Contains(n))
 						{
 							NPCS.Add(n);
+							if(n.OnValidHitOccurred == null)
+								n.OnValidHitOccurred += AddValidHit;
 						}
 					}
 				} 
@@ -346,13 +349,31 @@ public class GameMode : MonoBehaviour
 			}
 			else
 			{
-				attacker.player.SetWeapon(WeaponPrefabs[++attacker.weaponIndex], AddValidHit);
+				attacker.player.SetWeapon(WeaponPrefabs[++attacker.weaponIndex]);
 			}
 		}
 		else
 		{
 			victim.player.Damage(damageAmount);
 			shakeable.AddIntensity(.3f);
+		}
+	}
+
+	void HandleNPCDamage(int attackerIndex, int victimIndex, int damageAmount)
+	{
+		var victim = playerStates[victimIndex];
+		var victimShouldDie = damageAmount >= victim.player.Health && !victim.player.IsDead();
+		
+
+		if (victimShouldDie)
+		{
+			victim.player.Kill();
+			shakeable.AddIntensity(.5f);
+			StartCoroutine(RespawnAfter(victim, RespawnTimer));
+		}
+		else
+		{
+			victim.player.Damage(damageAmount);
 		}
 	}
 
@@ -426,7 +447,8 @@ public class GameMode : MonoBehaviour
 			// npc originated damage
 			else if (Newhit.OriginatingEntityType == "NPC")
 			{
-
+				//TODO fix the id of monster
+				HandleNPCDamage(0,Newhit.VictimEntity.ID, Newhit.DamageAmount);
 			}
 			// all other sources of damage
 			else 

@@ -7,8 +7,8 @@ public class ShotgunHitDetect : MonoBehaviour
     public ParticleSystem shotgunPellets;
     List<ParticleCollisionEvent> collisionEvents;
     int firingPlayerNumber;
-    [SerializeField]
-    ParticleSystem HitPlayerParticlePrefab;
+    [SerializeField] ParticleSystem HitPlayerParticlePrefab;
+    [SerializeField] Shotgun shotgun;
 
     void Start()
     {
@@ -29,9 +29,12 @@ public class ShotgunHitDetect : MonoBehaviour
                 var targetPlayerNumber = target.ID;
                 if(targetPlayerNumber != firingPlayerNumber)
                 {
-                    // TODO: handle on weapon
-                    // target.OnDamage(firingPlayerNumber, target.ID, 1);
+                    shotgun.player.RegisterNewValidHit(shotgun.player, target, shotgun.DamageAmount);
+                    shotgun.CreateBloodSpray(target.transform.position, transform.rotation);
                 }
+            } else if (other.tag == "NPCHitbox"){
+                var target = other.gameObject.GetComponent<AbstractCharacter>();
+                shotgun.player.RegisterNewValidHit(shotgun.player, target, shotgun.DamageAmount);
             }
             i++;
         }

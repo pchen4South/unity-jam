@@ -13,13 +13,12 @@ public class Shield : AbstractWeapon
     [SerializeField]    ParticleSystem hitBoxActiveParticles;
     [SerializeField]    AudioSource swingSound;
     [SerializeField]    BoxCollider hitBox;
-    [SerializeField]    ParticleSystem HitPlayerParticlePrefab;
     float DamageCooldown;
 
     void Start()
     {
         WeaponName = "Shield";
-        SpeedModifier = 0.5f;        
+        //SpeedModifier = 0.5f;        
         player.SpeedModifier = SpeedModifier;
         DamageCooldown = swingTime;
         hitBoxActiveParticles.Stop();
@@ -62,11 +61,8 @@ public class Shield : AbstractWeapon
         var hitPlayer = other.gameObject.GetComponent<Player>();
 
         if(hitPlayer.ID != player.ID){
-            // TODO: must handle properly
-            // hitPlayer.OnDamage(player.ID, hitPlayer.ID, DamageAmount);
-
-            var hitParticles = Instantiate(HitPlayerParticlePrefab, hitPlayer.transform.position, player.transform.rotation);
-            Destroy(hitParticles.gameObject, 2f);
+            player.RegisterNewValidHit(player, hitPlayer, DamageAmount);
+            CreateBloodSpray(hitPlayer.transform.position, transform.rotation);
 
             //set shieldstate into Damaging here so that only 1 hit per swing is applied as damage
             shieldState = RiotShieldState.Damaging;
