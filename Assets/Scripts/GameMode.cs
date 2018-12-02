@@ -303,29 +303,17 @@ public class GameMode : MonoBehaviour
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 	}
 
-	void HandlePVEDamage(int attackerIndex, int npc_index, int damageAmount){
-		var victim = NPCS[npc_index];
-		
-		//TODO: this needs to be looked at, should not always have to be boss monster
-		var victimGO = victim.gameObject;
-
-		if(victimGO != null)
-		{
-			var victimChar = victimGO.GetComponent<BossMonster>();
-			victimChar.DamageMonster(attackerIndex, damageAmount);
-		}
+	void HandlePVEDamage(int attackerIndex, int npc_index, int damageAmount)
+	{
+		NPCS[npc_index]?.gameObject?.GetComponent<BossMonster>().DamageMonster(attackerIndex, damageAmount);
 	}
 
 	void HandlePVPDamage(int attackerIndex, int victimIndex, int damageAmount)
 	{
-		// TODO: This is an event that probably should be handled by a minigame.. consider how to do this
-		var validVictim = victimIndex >= 0 && victimIndex < playerStates.Length;
-		var validAttacker = victimIndex >= 0 && victimIndex < playerStates.Length;
-
-		if (!validVictim) return;
-
 		var victim = playerStates[victimIndex];
+		var attacker = playerStates[attackerIndex];
 		var victimShouldDie = damageAmount >= victim.player.Health && !victim.player.IsDead();
+		var attackerShouldWin = attacker.weaponIndex >= WeaponPrefabs.Length - 1;
 
 		if (victimShouldDie)
 		{
@@ -334,20 +322,13 @@ public class GameMode : MonoBehaviour
 			shakeable.AddIntensity(1f);
 			StartCoroutine(RespawnAfter(victim, RespawnTimer));
 
-			if (validAttacker)
+			if (attackerShouldWin)
 			{
-				var attacker = playerStates[attackerIndex];
-				var attackerShouldWin = attacker.weaponIndex >= WeaponPrefabs.Length - 1;
-				
-				if (attackerShouldWin)
-				{
-					StartCoroutine(HandleVictory(attacker.player));
-				}
-				else
-				{
-					attacker.weaponIndex++;
-					attacker.player.SetWeapon(WeaponPrefabs[attacker.weaponIndex], AddValidHit);
-				}
+				StartCoroutine(HandleVictory(attacker.player));
+			}
+			else
+			{
+				attacker.player.SetWeapon(WeaponPrefabs[++attacker.weaponIndex], AddValidHit);
 			}
 		}
 		else
@@ -379,7 +360,11 @@ public class GameMode : MonoBehaviour
 	IEnumerator RespawnAfter(PlayerState ps, float seconds)
 	{
 		yield return new WaitForSeconds(seconds);
-		ps.player.Spawn(spawnPoints[Random.Range(0, spawnPoints.Length)].transform);
+
+		if (state == GameState.Live)
+		{
+			ps.player.Spawn(spawnPoints[Random.Range(0, spawnPoints.Length)].transform);
+		}
 	}
 
 	void UpdateGameClock(float GameTimer)
@@ -394,7 +379,8 @@ public class GameMode : MonoBehaviour
 		TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / GameLengthInSeconds, 0);
 	}
 
-	public void AddValidHit(ValidHit NewHit){
+	public void AddValidHit(ValidHit NewHit)
+	{
 		HitsToBeProcessed.Add(NewHit);
 	}
 
