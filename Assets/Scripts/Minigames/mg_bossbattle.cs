@@ -13,7 +13,8 @@ public class mg_bossbattle : AbstractMinigame
 
     public override void PrepareMinigameObjects(){
         StageElementsToModify = GameObject.FindGameObjectsWithTag("Disable_BossBattle");
-        foreach(var ele in StageElementsToModify){
+        foreach(var ele in StageElementsToModify)
+        {
             ele.SetActive(false);
         }
         BossMonster boss_instance = Instantiate(Boss);
@@ -21,7 +22,8 @@ public class mg_bossbattle : AbstractMinigame
         NPCS.Add(boss_instance.GetComponent<BossMonster>());
     }
     public override void HandleMinigameCompleted(){
-        foreach(var ele in StageElementsToModify){
+        foreach(var ele in StageElementsToModify)
+        {
             ele.SetActive(true);
         }
     }
@@ -29,10 +31,13 @@ public class mg_bossbattle : AbstractMinigame
     public override void TabulateResults(){
         foreach(var npc in NPCS){
             var hitList = npc.HitCounter;
-            foreach(var mgPlayer in Results.MinigamePlayersArray){
+            foreach(var mgPlayer in Results.MinigamePlayersArray)
+            {
                 var HitsForPlayer = hitList.FindAll(i => i.attackerIndex == mgPlayer.PlayerNumber);
-                int totalDamageForPlayer = 0;
-                foreach(var hit in HitsForPlayer){
+                var totalDamageForPlayer = 0;
+
+                foreach(var hit in HitsForPlayer)
+                {
                     totalDamageForPlayer += hit.damageAmount;
                 }
                 mgPlayer.TotalScoreEarned = totalDamageForPlayer;
