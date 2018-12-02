@@ -31,7 +31,6 @@ public abstract class AbstractWeapon : MonoBehaviour
 
 	float reloadtimer = 0f;
 
-	//Event Broadcasting
 	public System.Action<ValidHit> OnValidHitOccurred;
 	
 	public virtual void PullTrigger(Player player){
