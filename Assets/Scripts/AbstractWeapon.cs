@@ -23,29 +23,29 @@ public abstract class AbstractWeapon : MonoBehaviour
 	public float ReloadTime = 1f;
 	public bool isReloading = false;
 	[SerializeField] public LineRenderer bulletTracer;
-	[SerializeField]  public GameObject BulletHole;
+	[SerializeField] public GameObject BulletHole;
 	[SerializeField] public LayerMask layerMask = new LayerMask();
-	[SerializeField]  public Transform IKTarget_L;
-    [SerializeField]  public Transform IKTarget_R;
+	[SerializeField] public Transform IKTarget_L;
+    [SerializeField] public Transform IKTarget_R;
 
 	float reloadtimer = 0f;
 
 	//Event Broadcasting
-	public delegate void ValidHitOccurredEvent(ValidHit NewHit);
-	public event ValidHitOccurredEvent OnValidHitOccurred;
+	public System.Action<ValidHit> OnValidHitOccurred;
 	
 	public virtual void PullTrigger(Player player){
 		if(!player.IsAlive()) return;
 	}
+
 	public virtual void ReleaseTrigger(Player player){
 		if(!player.IsAlive()) return;
 	}
+
 	public virtual void CheckForValidHitscan(Vector3 muzzle, Vector3 weaponDir, LayerMask layerMask){
 		Ray ray = new Ray();
 		RaycastHit rayHit = new RaycastHit();
+
 		ray.origin = muzzle;
-        //ray.direction = transform.forward;
-		//test spray
 		ray.direction = weaponDir;
 
         var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);

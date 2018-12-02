@@ -82,9 +82,11 @@ public class PlayerHUDManager : Object
 			i++;
 		}
 	}
+
 	public void DisableUI(PlayerState[] playerStates){
 		
 		var i = 0;
+
 		while (i < playerStates.Length)
 		{
 			playerUIPool[i].HUD.gameObject.SetActive(false);
@@ -121,6 +123,7 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Text TimelineIndicator;
 	[SerializeField] RectTransform textParent;
 	[SerializeField] FloatingText PopupTextPrefab;
+
 	public int GameLengthInSeconds = 600;
 	public float RespawnTimer = 3f;
 	public float CountdownDuration = 3f;
@@ -139,7 +142,7 @@ public class GameMode : MonoBehaviour
 	MinigameResults ActiveMinigameResults;
 
 	//hit processing
-	List<ValidHit> NewHits = new List<ValidHit>();
+	// TODO: could pack these into structs perhaps? Maybe pre-allocate?
 	List<ValidHit> HitsToBeProcessed = new List<ValidHit>();
 	List<ValidHit> ProcessedHits = new List<ValidHit>();
 	List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
@@ -158,7 +161,6 @@ public class GameMode : MonoBehaviour
 
 		for (var i = 0; i < playerCount; i++)
 		{
-			//spawn a player and PlayerState, initialize Player's values
 			var spawnpoint = spawnPoints[i % spawnPoints.Length];
 			var player = Instantiate(PlayerPrefab);
 			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
@@ -167,14 +169,9 @@ public class GameMode : MonoBehaviour
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;
 			ps.player.Spawn(spawnpoint.transform);
-			ps.player.SetWeapon(WeaponPrefab);
-			ps.player.OnDamage = HandlePVPDamage;
+			ps.player.SetWeapon(WeaponPrefab, AddValidHit);
 			ps.player.SetColor(colorScheme.playerColors[i]);
-			
 			playerStates[i] = ps;
-
-			//added valid hit event registration here
-			ps.player.Weapon.OnValidHitOccurred += AddValidHit;
 		}
 		
 	}
@@ -220,7 +217,6 @@ public class GameMode : MonoBehaviour
 					foreach(var n in Minigame.NPCS){
 						if(!NPCS.Contains(n)){
 							NPCS.Add(n);
-							n.OnDamage += HandlePVEDamage;
 						}
 					}
 				} else if (Minigame.MinigameResultsReady()){
@@ -271,6 +267,7 @@ public class GameMode : MonoBehaviour
 			{
 				topLevel = Mathf.Max(topLevel, playerStates[i].weaponIndex + 1);
 			}
+
 			// find all current leaders
 			var leaders = "";
 			for (var i = 0; i < playerStates.Length; i++)
@@ -286,11 +283,8 @@ public class GameMode : MonoBehaviour
 			leaders = leaders.TrimEnd(',');
 			PlayerNumbers.text = leaders;
 
-			
 			playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, 
 				screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
-			
-			
 		}
 		else if (state == GameState.Victory)
 		{
@@ -308,16 +302,20 @@ public class GameMode : MonoBehaviour
 		// always push timescale back towards full-speed
 		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
 	}
+
 	void HandlePVEDamage(int attackerIndex, int npc_index, int damageAmount){
 		var victim = NPCS[npc_index];
 		
 		//TODO: this needs to be looked at, should not always have to be boss monster
 		var victimGO = victim.gameObject;
-		if(victimGO != null){
+
+		if(victimGO != null)
+		{
 			var victimChar = victimGO.GetComponent<BossMonster>();
 			victimChar.DamageMonster(attackerIndex, damageAmount);
 		}
 	}
+
 	void HandlePVPDamage(int attackerIndex, int victimIndex, int damageAmount)
 	{
 		// TODO: This is an event that probably should be handled by a minigame.. consider how to do this
@@ -348,9 +346,7 @@ public class GameMode : MonoBehaviour
 				else
 				{
 					attacker.weaponIndex++;
-					attacker.player.SetWeapon(WeaponPrefabs[attacker.weaponIndex]);
-					//added valid hit event registration here
-					attacker.player.Weapon.OnValidHitOccurred += AddValidHit;
+					attacker.player.SetWeapon(WeaponPrefabs[attacker.weaponIndex], AddValidHit);
 				}
 			}
 		}
@@ -360,6 +356,7 @@ public class GameMode : MonoBehaviour
 			shakeable.AddIntensity(.3f);
 		}
 	}
+
 	IEnumerator HandleVictory(Player winningPlayer)
 	{
 		yield return new WaitForSeconds(2f);
@@ -378,41 +375,62 @@ public class GameMode : MonoBehaviour
 		shakeable.transform.position = WinCamSpawn.transform.position;
 		shakeable.transform.rotation = WinCamSpawn.transform.rotation;
 	}
+
 	IEnumerator RespawnAfter(PlayerState ps, float seconds)
 	{
 		yield return new WaitForSeconds(seconds);
 		ps.player.Spawn(spawnPoints[Random.Range(0, spawnPoints.Length)].transform);
 	}
-	void UpdateGameClock(float GameTimer){
-			int gameElapsedSeconds = Mathf.RoundToInt(GameTimer);
-			int timerLeft = GameLengthInSeconds - gameElapsedSeconds;
-			int minutesLeft = Mathf.FloorToInt(timerLeft /60);
-			int secondsLeft = timerLeft % 60;
-			ClockText.gameObject.SetActive(true);
-			ClockText.text = minutesLeft.ToString("00") + ":" + secondsLeft.ToString("00");
-			TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / GameLengthInSeconds, 0);
+
+	void UpdateGameClock(float GameTimer)
+	{
+		int gameElapsedSeconds = Mathf.RoundToInt(GameTimer);
+		int timerLeft = GameLengthInSeconds - gameElapsedSeconds;
+		int minutesLeft = Mathf.FloorToInt(timerLeft /60);
+		int secondsLeft = timerLeft % 60;
+
+		ClockText.gameObject.SetActive(true);
+		ClockText.text = minutesLeft.ToString("00") + ":" + secondsLeft.ToString("00");
+		TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / GameLengthInSeconds, 0);
 	}
+
 	public void AddValidHit(ValidHit NewHit){
 		HitsToBeProcessed.Add(NewHit);
 	}
-	void ProcessNewValidHits(){
-		//make a copy of the Hits array because more hits can be added before processing is done
-		var HitArrayCopy = new List<ValidHit>(HitsToBeProcessed);
 
-		if( HitsToBeProcessed.Count == 0) return;
-		foreach(var Newhit in HitArrayCopy){
+	void ProcessNewValidHits()
+	{
+		foreach(var Newhit in HitsToBeProcessed)
+		{
 			//player originated damage
-			if(Newhit.OriginatingEntityType == "PLAYERCHARACTER"){
-				int shooterPlayerNumber = Newhit.OriginatingEntityIdentifier;
-				//if player caused the hit on a player or NPC
+			if (Newhit.OriginatingEntityType == "PLAYERCHARACTER")
+			{
+				var shooterPlayerNumber = Newhit.OriginatingEntityIdentifier;
 				var target = Newhit.VictimEntity;
-				Newhit.VictimEntity.OnDamage.Invoke(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
+
+				if (Newhit.VictimEntityType == "PLAYERCHARACTER")
+				{
+					HandlePVPDamage(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
+				}
+				else if (Newhit.VictimEntityType == "NPC")
+				{
+					HandlePVEDamage(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
+				}
+				else
+				{}
 			//npc originated damage
-			} else if(Newhit.OriginatingEntityType == "NPC"){}
+			} 
+			else if (Newhit.OriginatingEntityType == "NPC")
+			{
+
+			}
 			// all other sources of damage
-			else {}
+			else 
+			{
+
+			}
 			ProcessedHits.Add(Newhit);
-			HitsToBeProcessed.Remove(Newhit);
 		}
+		HitsToBeProcessed.Clear();
 	}
 }

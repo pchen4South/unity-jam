@@ -83,7 +83,6 @@ public abstract class AbstractMinigame : MonoBehaviour
         }
     }
 
-
     public virtual void Update(){
         switch(MinigameState){
             case MG_State.Running:

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitCounter{
+public struct HitCounter
+{
     public int attackerIndex;
     public int damageAmount;
-    public HitCounter(int index, int dmg){
+    public HitCounter(int index, int dmg)
+    {
         attackerIndex = index;
         damageAmount = dmg;
     }
@@ -21,9 +23,6 @@ public abstract class AbstractCharacter : MonoBehaviour
     public CharacterStatus status = CharacterStatus.Alive;
     public List<HitCounter> HitCounter = new List<HitCounter>();
 
-    //ONDAMAGE Action
-    //attackerIndex victimIndex amountOfDamage
-    public System.Action<int, int, int> OnDamage;
     public bool IsDead(){
         return status == CharacterStatus.Dead;
     }
@@ -33,5 +32,4 @@ public abstract class AbstractCharacter : MonoBehaviour
     public bool IsSpawning(){
         return status == CharacterStatus.Spawning;
     }
-
 }

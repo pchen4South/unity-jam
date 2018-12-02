@@ -78,7 +78,8 @@ public class SniperRifle : AbstractWeapon
             var target = rayHit.collider.GetComponentInParent<PlayerHitbox>().player;
             var hitParticles = Instantiate(HitPlayerParticlePrefab, rayHit.point, transform.rotation);
 
-            target.OnDamage(player.ID, target.ID, DamageAmount);
+            // TODO: Must fix
+            // target.OnDamage(player.ID, target.ID, DamageAmount);
             Destroy(hitParticles.gameObject, 2f);
         }
     }

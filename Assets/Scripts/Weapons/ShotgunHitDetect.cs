@@ -29,7 +29,8 @@ public class ShotgunHitDetect : MonoBehaviour
                 var targetPlayerNumber = target.ID;
                 if(targetPlayerNumber != firingPlayerNumber)
                 {
-                    target.OnDamage(firingPlayerNumber, target.ID, 1);
+                    // TODO: handle on weapon
+                    // target.OnDamage(firingPlayerNumber, target.ID, 1);
                 }
             }
             i++;

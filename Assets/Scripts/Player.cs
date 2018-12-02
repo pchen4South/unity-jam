@@ -121,7 +121,7 @@ public class Player : AbstractCharacter
         animator.SetFloat("Forward", velocity.magnitude > 0 ? 1 : 0);
     }
 
-    public void SetWeapon(AbstractWeapon newWeapon)
+    public void SetWeapon(AbstractWeapon newWeapon, System.Action<ValidHit> OnValidHit)
     {
         if (Weapon)
         {
@@ -131,10 +131,10 @@ public class Player : AbstractCharacter
         canMove = true;
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
-
+        Weapon.OnValidHitOccurred = OnValidHit;
         FloatingTextController.CreateFloatingText("+" + Weapon.WeaponName, transform);
-
     }
+
     public void Damage(int damageAmount)
     {
         Health = Mathf.Max(0, Health - damageAmount);
