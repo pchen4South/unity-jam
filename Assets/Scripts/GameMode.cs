@@ -169,8 +169,9 @@ public class GameMode : MonoBehaviour
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;
 			ps.player.Spawn(spawnpoint.transform);
-			ps.player.SetWeapon(WeaponPrefab, AddValidHit);
+			ps.player.SetWeapon(WeaponPrefab);
 			ps.player.SetColor(colorScheme.playerColors[i]);
+			ps.player.OnValidHitOccurred += AddValidHit;
 			playerStates[i] = ps;
 		}
 		
@@ -328,7 +329,7 @@ public class GameMode : MonoBehaviour
 			}
 			else
 			{
-				attacker.player.SetWeapon(WeaponPrefabs[++attacker.weaponIndex], AddValidHit);
+				attacker.player.SetWeapon(WeaponPrefabs[++attacker.weaponIndex]);
 			}
 		}
 		else

@@ -29,12 +29,12 @@ public class ShotgunHitDetect : MonoBehaviour
                 var targetPlayerNumber = target.ID;
                 if(targetPlayerNumber != firingPlayerNumber)
                 {
-                    shotgun.RegisterNewValidHit(shotgun.player, target);
+                    shotgun.player.RegisterNewValidHit(shotgun.player, target, shotgun.DamageAmount);
                     shotgun.CreateBloodSpray(target.transform.position, transform.rotation);
                 }
             } else if (other.tag == "NPCHitbox"){
                 var target = other.gameObject.GetComponent<AbstractCharacter>();
-                shotgun.RegisterNewValidHit(shotgun.player, target);
+                shotgun.player.RegisterNewValidHit(shotgun.player, target, shotgun.DamageAmount);
             }
             i++;
         }

@@ -30,8 +30,7 @@ public class Player : AbstractCharacter
     public int Health = 1;
     public bool canMove = true;
     public bool canRotate = true;
-    public float damageMultiplier = 1f;
-	
+    	
     
     //Moveskill 
     public MoveSkillStatus moveStatus = MoveSkillStatus.Ready;
@@ -121,7 +120,8 @@ public class Player : AbstractCharacter
         animator.SetFloat("Forward", velocity.magnitude > 0 ? 1 : 0);
     }
 
-    public void SetWeapon(AbstractWeapon newWeapon, System.Action<ValidHit> OnValidHit)
+    //public void SetWeapon(AbstractWeapon newWeapon, System.Action<ValidHit> OnValidHit)
+    public void SetWeapon(AbstractWeapon newWeapon)
     {
         if (Weapon)
         {
@@ -131,7 +131,7 @@ public class Player : AbstractCharacter
         canMove = true;
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
-        Weapon.OnValidHitOccurred = OnValidHit;
+        //Weapon.OnValidHitOccurred = OnValidHit;
         FloatingTextController.CreateFloatingText("+" + Weapon.WeaponName, transform);
     }
 

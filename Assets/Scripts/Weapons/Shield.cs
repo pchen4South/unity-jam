@@ -18,7 +18,7 @@ public class Shield : AbstractWeapon
     void Start()
     {
         WeaponName = "Shield";
-        SpeedModifier = 0.5f;        
+        //SpeedModifier = 0.5f;        
         player.SpeedModifier = SpeedModifier;
         DamageCooldown = swingTime;
         hitBoxActiveParticles.Stop();
@@ -61,7 +61,7 @@ public class Shield : AbstractWeapon
         var hitPlayer = other.gameObject.GetComponent<Player>();
 
         if(hitPlayer.ID != player.ID){
-            RegisterNewValidHit(player, hitPlayer);
+            player.RegisterNewValidHit(player, hitPlayer, DamageAmount);
             CreateBloodSpray(hitPlayer.transform.position, transform.rotation);
 
             //set shieldstate into Damaging here so that only 1 hit per swing is applied as damage

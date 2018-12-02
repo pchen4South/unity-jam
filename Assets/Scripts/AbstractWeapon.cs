@@ -30,8 +30,6 @@ public abstract class AbstractWeapon : MonoBehaviour
     [SerializeField] public Transform IKTarget_R;
 
 	float reloadtimer = 0f;
-
-	public System.Action<ValidHit> OnValidHitOccurred;
 	
 	public virtual void PullTrigger(Player player){
 		if(!player.IsAlive()) return;
@@ -75,7 +73,7 @@ public abstract class AbstractWeapon : MonoBehaviour
 			//reject targets that are not alive
 			if(!target.IsAlive()) return;
 
-			RegisterNewValidHit(player, target);
+			player.RegisterNewValidHit(player, target, DamageAmount);
 			CreateBloodSpray(rayHit.point, transform.rotation);
         }
 		// if not player or npc then it hit terrain
@@ -93,16 +91,6 @@ public abstract class AbstractWeapon : MonoBehaviour
 		Instantiate(HitPlayerParticlePrefab, location, rotation);
 	}
 
-	public void RegisterNewValidHit(Player player, AbstractCharacter target){
-			ValidHit NewHit = new ValidHit();
-			NewHit.OriginatingEntityType = player.ENTITY_TYPE;
-			NewHit.OriginatingEntityIdentifier = player.ID;
-			NewHit.VictimEntityType = target.ENTITY_TYPE;
-			NewHit.VictimEntity = target; 
-			NewHit.DamageAmount = Mathf.RoundToInt(DamageAmount * player.damageMultiplier);
-			
-			if(OnValidHitOccurred != null && NewHit != null) OnValidHitOccurred(NewHit);
-	}
 
 	void Update(){
 		reloadtimer += Time.deltaTime;

@@ -22,6 +22,8 @@ public abstract class AbstractCharacter : MonoBehaviour
     public Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
     public CharacterStatus status = CharacterStatus.Alive;
     public List<HitCounter> HitCounter = new List<HitCounter>();
+    public float damageMultiplier = 1f;
+    public System.Action<ValidHit> OnValidHitOccurred;
 
     public bool IsDead(){
         return status == CharacterStatus.Dead;
@@ -32,4 +34,15 @@ public abstract class AbstractCharacter : MonoBehaviour
     public bool IsSpawning(){
         return status == CharacterStatus.Spawning;
     }
+
+	public void RegisterNewValidHit(AbstractCharacter originator, AbstractCharacter target, int DamageAmount){
+			ValidHit NewHit = new ValidHit();
+			NewHit.OriginatingEntityType = originator.ENTITY_TYPE;
+			NewHit.OriginatingEntityIdentifier = originator.ID;
+			NewHit.VictimEntityType = target.ENTITY_TYPE;
+			NewHit.VictimEntity = target; 
+			NewHit.DamageAmount = Mathf.RoundToInt(DamageAmount * originator.damageMultiplier);
+			
+			if(OnValidHitOccurred != null && NewHit != null) OnValidHitOccurred(NewHit);
+	}
 }
