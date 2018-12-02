@@ -349,15 +349,13 @@ public class GameMode : MonoBehaviour
 
 		if (victimShouldDie)
 		{
-			Time.timeScale = .1f;
 			victim.player.Kill();
-			shakeable.AddIntensity(1f);
+			shakeable.AddIntensity(.5f);
 			StartCoroutine(RespawnAfter(victim, RespawnTimer));
 		}
 		else
 		{
 			victim.player.Damage(damageAmount);
-			shakeable.AddIntensity(.3f);
 		}
 	}
 
