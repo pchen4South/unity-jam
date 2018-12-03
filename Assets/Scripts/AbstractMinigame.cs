@@ -149,7 +149,7 @@ public abstract class AbstractMinigame : MonoBehaviour
         InputHelpers.BasicReleaseTrigger(p);
     }
 
-    public virtual void HandlePlayerDamage(PlayerState attacker, PlayerState victim) {}
+    public virtual void HandlePlayerDamage(PlayerState attacker, PlayerState victim, int amountOfDamage) {}
     
     public virtual void RunMinigame()
     {
