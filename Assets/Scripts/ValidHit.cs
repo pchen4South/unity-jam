@@ -1,23 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ValidHit
+public struct ValidHit
 {
-    //player, npc, level hazard
-    public string OriginatingEntityType { get; set; }
-    //player number, etc.
-    public int OriginatingEntityIdentifier { get; set; }
-    public string VictimEntityType{get;set;}
-    public AbstractCharacter VictimEntity {get; set;}
-    //name of weapon if applicable
-    public string WeaponName{ get; set; }
-    //amount of dmg
-    public int DamageAmount{ get; set; }
-    
-
-    
-    // if want damage types, burn, pierce, fall, drown, etc
-    // public string DamageType{get;set;}
-       
+    public AbstractCharacter victim;
+    public AbstractCharacter attacker;
+    public AbstractWeapon weapon;
+    public GameObject projectile;
+    public int damageAmount;
 }

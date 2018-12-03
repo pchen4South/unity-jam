@@ -13,36 +13,62 @@ public struct HitCounter
     }
 }
 
+public enum CharacterStatus { Alive, Dead, Spawning }
+
 public abstract class AbstractCharacter : MonoBehaviour
 {
-    public enum CharacterStatus { Alive, Dead, Spawning }
-    public int ID = 0;
-    public string ENTITY_TYPE;
-    public int MaxHealth = 3;
     public Vector3 GROUNDED_DOWNWARD_VELOCITY = new Vector3(0, -10f, 0);
+    public int MaxHealth = 3;
+
+    public int ID = 0;
     public CharacterStatus status = CharacterStatus.Alive;
     public List<HitCounter> HitCounter = new List<HitCounter>();
+    public int Health = 1;
     public float damageMultiplier = 1f;
     public System.Action<ValidHit> OnValidHitOccurred;
 
-    public bool IsDead(){
+    public bool IsDead()
+    {
         return status == CharacterStatus.Dead;
     }
-    public bool IsAlive(){
+
+    public bool IsAlive()
+    {
         return status == CharacterStatus.Alive;
     }
-    public bool IsSpawning(){
+
+    public bool IsSpawning()
+    {
         return status == CharacterStatus.Spawning;
     }
 
-	public void RegisterNewValidHit(AbstractCharacter originator, AbstractCharacter target, int DamageAmount){
-			ValidHit NewHit = new ValidHit();
-			NewHit.OriginatingEntityType = originator.ENTITY_TYPE;
-			NewHit.OriginatingEntityIdentifier = originator.ID;
-			NewHit.VictimEntityType = target.ENTITY_TYPE;
-			NewHit.VictimEntity = target; 
-			NewHit.DamageAmount = Mathf.RoundToInt(DamageAmount * originator.damageMultiplier);
+    public virtual void Damage(int damageAmount)
+    {
+        if (Health <= damageAmount)
+        {
+            status = CharacterStatus.Dead;
+            Health = 0;
+        }
+        else
+        {
+            Health -= damageAmount;
+        }
+    }
 
-			if(OnValidHitOccurred != null && NewHit != null) OnValidHitOccurred(NewHit);
+	public void RegisterNewValidHit(AbstractCharacter attacker, AbstractCharacter victim, int damageAmount)
+    {
+        ValidHit h = new ValidHit
+        {
+            attacker = attacker,
+            victim = victim,
+        };
+
+        if (attacker is Player p)
+        {
+            h.weapon = p.Weapon; 
+            h.damageAmount = Mathf.RoundToInt(damageAmount * p.damageMultiplier);
+        }
+
+        OnValidHitOccurred(h);
 	}
 }

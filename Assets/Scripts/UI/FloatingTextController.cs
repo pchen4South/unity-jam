@@ -1,23 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class FloatingTextController : MonoBehaviour {
-    private static FloatingText popupText;
-    private static RectTransform textParent;
-
-    public static void Initialize(RectTransform TextParent, FloatingText PopupTextPrefab)
+public class FloatingTextController : Object
+{
+    public static void CreateFloatingText(string text, FloatingText PopupTextPrefab, RectTransform parent, Transform location)
     {
-        textParent = TextParent;
-        if (!popupText)
-            popupText = PopupTextPrefab;
-    }
+        Vector3 worldPosition = new Vector3(location.position.x, 0, location.position.z);
+        Vector2 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+        FloatingText instance = Instantiate(PopupTextPrefab, parent, false);
 
-    public static void CreateFloatingText(string text, Transform location)
-    {
-        FloatingText instance = Instantiate(popupText);
-        Vector2 screenPosition = Camera.main.WorldToScreenPoint(new Vector3(-.5f + location.position.x + Random.Range(-.2f, .2f),0, .5f + location.position.z + Random.Range(-.2f, .2f)));
-
-        instance.transform.SetParent(textParent.transform, false);
         instance.transform.position = screenPosition;
         instance.SetText(text);
     }

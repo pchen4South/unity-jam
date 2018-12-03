@@ -9755,7 +9755,7 @@ GameObject:
   - component: {fileID: 7760923947934015661}
   - component: {fileID: 6845824969542982167}
   m_Layer: 15
-  m_Name: Beholder
+  m_Name: Lord Prokop
   m_TagString: NPCHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9848,13 +9848,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e34ee44a19e96e743bcff3467b612cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
-  ENTITY_TYPE: NPC
-  MaxHealth: 100
   GROUNDED_DOWNWARD_VELOCITY: {x: 0, y: -10, z: 0}
+  MaxHealth: 25
+  ID: 0
   status: 0
+  Health: 25
   damageMultiplier: 1
-  Health: 3
   HPBar: {fileID: 5350271482008839685}
 --- !u!1 &3171349279305959237
 GameObject:

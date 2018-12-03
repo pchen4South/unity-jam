@@ -4,26 +4,13 @@ using UnityEngine;
 
 public class BossMonster : AbstractCharacter
 {
-    public int Health = 0;
     public RectTransform HPBar;
 
-        //Event Broadcasting
-	public delegate void ValidHitOccurredEvent(ValidHit NewHit);
-	public event ValidHitOccurredEvent OnValidHitOccurred;
-
-    public void Initialize()
+    public override void Damage(int damageAmount)
     {
-        Health = MaxHealth;    
-        ENTITY_TYPE = "NPC";
-    }
+        base.Damage(damageAmount);
+        float hp = (float)Health / (float)MaxHealth;
 
-    public void DamageMonster(int attackerIndex, int damageAmount)
-    {
-        if(IsAlive())
-        {
-            Health = Mathf.Max(0, Health - damageAmount);
-            HPBar.sizeDelta = new Vector2 (300 * Health / MaxHealth, HPBar.rect.height);
-            HitCounter.Add(new HitCounter(attackerIndex, damageAmount));
-        }
+        HPBar.sizeDelta = new Vector2(300 * hp, HPBar.rect.height);
     }
 }

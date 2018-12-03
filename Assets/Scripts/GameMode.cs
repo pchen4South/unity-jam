@@ -8,9 +8,6 @@ using Rewired;
 [System.Serializable]
 public class PlayerState
 {
-	public int weaponIndex = 0;
-	public int killCount = 0;
-	public int deathCount = 0;
 	public Player player;
 	public Rewired.Player playerController;
 	public PlayerState(Player Player, Rewired.Player PlayerController)
@@ -22,8 +19,8 @@ public class PlayerState
 
 public class PlayerUI: Object
 {
-	public PlayerHUD HUD { get; set; }
-	public PlayerStatusUI PSUI { get; set; }
+	public PlayerHUD HUD;
+	public PlayerStatusUI PSUI;
 }
 
 [System.Serializable]
@@ -51,7 +48,7 @@ public class PlayerHUDManager : Object
 		}
 	}
 
-	public void UpdatePlayerHUDs(PlayerState[] playerStates, AbstractWeapon[] WeaponPrefabs, Camera camera, RectTransform parent, RectTransform bottomUIContainer )
+	public void UpdatePlayerHUDs(PlayerState[] playerStates, AbstractWeapon[] WeaponPrefabs, Camera camera, RectTransform parent, RectTransform bottomUIContainer)
 	{
 		var i = 0;
 
@@ -71,7 +68,7 @@ public class PlayerHUDManager : Object
 			playerUIPool[i].PSUI.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
 			playerUIPool[i].PSUI.UpdateHealth(playerStates[i].player.Health, playerStates[i].player.MaxHealth);
 			playerUIPool[i].PSUI.UpdatePlayerIdentity(playerStates[i].player.ID, playerStates[i].player.meshRenderer.material.color);
-			playerUIPool[i].PSUI.UpdateWeaponProgress(playerStates[i].weaponIndex, WeaponPrefabs);
+			playerUIPool[i].PSUI.UpdateWeaponProgress(playerStates[i].player.weaponIndex, WeaponPrefabs);
 			playerUIPool[i].PSUI.UpdateDashCooldown(playerStates[i].player.MoveSkillCooldown, playerStates[i].player.MoveSkillTimer);
 			i++;
 		}
@@ -83,8 +80,8 @@ public class PlayerHUDManager : Object
 		}
 	}
 
-	public void DisableUI(PlayerState[] playerStates){
-		
+	public void DisableUI(PlayerState[] playerStates)
+	{
 		var i = 0;
 
 		while (i < playerStates.Length)
@@ -98,364 +95,258 @@ public class PlayerHUDManager : Object
 
 public class GameMode : MonoBehaviour 
 {
-	#region GameMode Variables
-	public enum GameState { Countdown, Live, Victory };
-	[SerializeField] Player PlayerPrefab;
-	[SerializeField] PlayerHUD PlayerHUDPrefab;
-	[SerializeField] PlayerStatusUI PlayerStatusUIPrefab;
-	[SerializeField] RectTransform PlayerUIArea;
+	[Header("Runtime-instantiated Prefabs")]
+	public Player PlayerPrefab;
+	public PlayerHUD PlayerHUDPrefab;
+	public PlayerStatusUI PlayerStatusUIPrefab;
+	public RectTransform PlayerUIArea;
+	public FloatingText PopupTextPrefab;
 
-	[SerializeField] ColorScheme colorScheme;
-	[SerializeField] public Shakeable shakeable;
-	[SerializeField] UI ui;
-	[SerializeField] Canvas screenSpaceUICanvas;
-	[SerializeField] AudioSource BackgroundMusic;
-	[SerializeField] AudioSource CountdownAudio;
-	[SerializeField] AbstractWeapon[] WeaponPrefabs;
-	[SerializeField] AbstractMinigame[] MinigamePrefabs;
-	[SerializeField] GameObject WinCamSpawn;
-	[SerializeField] WinningPlayer WinningPlayerModel;
-	[SerializeField] GameObject LeaderboardPanel;
-	[SerializeField] Text LeaderboardLabel;
-	[SerializeField] Text PlayerNumbers;
-	[SerializeField] Text GuncountText;
-	[SerializeField] Text ClockText;
-	[SerializeField] Text TimelineIndicator;
-	[SerializeField] RectTransform textParent;
-	[SerializeField] FloatingText PopupTextPrefab;
 
-	public int GameLengthInSeconds = 600;
-	public float RespawnTimer = 3f;
+	[Header("Art Configuration")]
+	public ColorScheme colorScheme;
+	public AudioSource BackgroundMusic;
+	public AudioSource CountdownAudio;
+	public WinningPlayer WinningPlayerModel;
+
+
+	[Header("Game Configuration")]
+	[Range(1, 4)]
+	public int playerCount = 4;
+	public float MatchDuration = 600f;
 	public float CountdownDuration = 3f;
+	public float RespawnDuration = 3f;
 	public float killHeight = -1000f;
+	public AbstractWeapon[] WeaponPrefabs;
+	public AbstractMinigame[] MinigamePrefabs;
 
-	GameObject[] spawnPoints;
-	public PlayerState[] playerStates;
-	PlayerHUDManager playerHUDManager;
-	GameState state = GameState.Countdown;
-	AbstractMinigame Minigame;
-	int winningPlayerIndex;
-	float remainingCountdownDuration;
-	bool CountdownStarted = false;
-	float GameTimer = 0;
-	bool didSpawnMinigame = false;
-	MinigameResults ActiveMinigameResults;
 
-	public List<ValidHit> HitsToBeProcessed = new List<ValidHit>();
-	public List<ValidHit> ProcessedHits = new List<ValidHit>();
-	public List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
+	[Header("Game Objects")]
+	public GameObject WinCamSpawn;
+	public Shakeable shakeable;
+	public UI ui;
+	public Canvas screenSpaceUICanvas;
+	public GameObject LeaderboardPanel;
+	public Text LeaderboardLabel;
+	public Text PlayerNumbers;
+	public Text GuncountText;
+	public Text ClockText;
+	public Text TimelineIndicator;
+	public RectTransform textParent;
+	public GameObject[] spawnPoints;
 
-	#endregion
+
+	[Header("State")]
+	public MatchState matchState;
+	// TODO: This should be created statically with the prefab heirarchy... no need for the pooling thing anymore
+	// TODO: should be moved up among the prefabs 
+	public PlayerHUDManager playerHUDManager;
+	public List<ValidHit> HitsToBeProcessed = new List<ValidHit>(512);
 
 	void Start()
 	{
-		FloatingTextController.Initialize(textParent, PopupTextPrefab);
-		var playerCount = 2;
-
-        spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
-		remainingCountdownDuration = CountdownDuration;
-		playerStates = new PlayerState[playerCount];
 		playerHUDManager = new PlayerHUDManager(PlayerHUDPrefab, PlayerStatusUIPrefab, 8);
-
+        spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+		matchState = new MatchState();
+		matchState.playerStates = new PlayerState[playerCount];
+		matchState.matchStatus = MatchStatus.Active;
+		matchState.countdownTimeRemaining = CountdownDuration;
+		matchState.matchTimeRemaining = MatchDuration;
 		for (var i = 0; i < playerCount; i++)
 		{
 			var spawnpoint = spawnPoints[i % spawnPoints.Length];
 			var player = Instantiate(PlayerPrefab);
 			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
-			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
+			var WeaponPrefab = WeaponPrefabs[ps.player.weaponIndex];
 
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;
 			ps.player.Spawn(spawnpoint.transform);
 			ps.player.SetWeapon(WeaponPrefab);
 			ps.player.SetColor(colorScheme.playerColors[i]);
-			ps.player.OnValidHitOccurred += AddValidHit;
-			playerStates[i] = ps;
+			ps.player.OnValidHitOccurred = HitsToBeProcessed.Add;
+			matchState.playerStates[i] = ps;
+		}
+
+		matchState.minigame = MinigamePrefabs.Length > 0 ? Instantiate(MinigamePrefabs[0]) : null;
+		if (matchState.minigame)
+		{
+			matchState.minigame.gameMode = this;
+			matchState.minigame.BeginMinigame(matchState.playerStates);
 		}
 	}
 
 	void Update()
 	{
-		if (state == GameState.Countdown)
+		var dt = Time.deltaTime;
+
+		UpdateGameTime(dt);
+		ProcessNewValidHits();
+
+		// -------- Process Input ---------
+		for (var i = 0; i < matchState.playerStates.Length; i++)
 		{
-			LeaderboardPanel.SetActive(false);
-			playerHUDManager.DisableUI(playerStates);
-			if(!CountdownStarted)
-			{
-				CountdownStarted = true;
-				CountdownAudio.Play();
-			}
+			var ps = matchState.playerStates[i];
 
-			remainingCountdownDuration -= Time.deltaTime;
-			ui.countdownNumber.text = Mathf.CeilToInt(remainingCountdownDuration).ToString();
+			InputHelpers.BasicMove(ps);
+			InputHelpers.BasicRotate(ps);
+			InputHelpers.BasicDash(ps);
+			InputHelpers.BasicPullTrigger(ps);
+			InputHelpers.BasicReleaseTrigger(ps);
+		}
 
-			if (remainingCountdownDuration <= 0f)
+		// TODO: this is written naively and won't fairly handle ties...
+		// check if any player has won
+		for (var i = 0; i < matchState.playerStates.Length; i++)
+		{
+			var ps = matchState.playerStates[i];
+
+			// GAME OVER!!!!!!!!!!!!!!!
+			if (ps.player.weaponIndex >= WeaponPrefabs.Length)
 			{
-				CountdownStarted = false;
-				state = GameState.Live;
-				ui.animator.SetTrigger("Close");
+				BackgroundMusic.Stop();
+				matchState.matchStatus = MatchStatus.Victory;
+
+				ps.player.SetAsVictor();
+				WinningPlayerModel.StartWinSequence(ps.player);
+
+				ui.countdownNumber.fontSize = 50;
+				ui.countdownNumber.text = "\n\n\nPlayer " + (ps.player.ID + 1).ToString() + " Wins!";
+				ui.animator.SetTrigger("Open");
+				ui.PanelImage.color = new Color(0, 0, 0, 0);
+
+				shakeable.transform.position = WinCamSpawn.transform.position;
+				shakeable.transform.rotation = WinCamSpawn.transform.rotation;
+				break;
 			}
 		}
-		else if (state == GameState.Live)
+
+		// kill players that have fallen off the map
+		for (var i = 0; i < matchState.playerStates.Length; i++)
 		{
-			GameTimer += Time.deltaTime;
-			UpdateGameClock(GameTimer);
-			ProcessNewValidHits();
+			var ps = matchState.playerStates[i];
+			var notDead = ps.player.status != CharacterStatus.Dead;
+			var belowKillHeight = ps.player.transform.position.y < killHeight;
 
-			/* 
-			How do we decide how players should move on a given frame?
-
-			!player.moveStatus.Dashing
-			player.canMove
-			minigame.canMove(player)
-				
-			*/
-
-			if (Minigame)
+			if (notDead && belowKillHeight)
 			{
-				if (Minigame.MinigameIsRunning())
-				{
-					for (var i = 0; i < playerStates.Length; i++)
-					{
-						Minigame.HandleMove(playerStates[i]);
-						Minigame.HandleDash(playerStates[i]);
-						Minigame.HandleRotate(playerStates[i]);
-						Minigame.HandleFire(playerStates[i]);
-					}
-
-					//prob need to figure out where to put this so it doesnt get processed over and over
-					foreach(var n in Minigame.NPCS)
-					{
-						if(!NPCS.Contains(n))
-						{
-							NPCS.Add(n);
-							if(n.OnValidHitOccurred == null)
-								n.OnValidHitOccurred += AddValidHit;
-						}
-					}
-				} 
-				else if (Minigame.MinigameResultsReady())
-				{
-					//collect the results from the minigame in order to process them and apply prize/penalty to players
-					if (ActiveMinigameResults == null)
-						ActiveMinigameResults = Minigame.Results;
-					
-				} 
-				else if(Minigame.MinigameShouldDestroy())
-				{
-					//wanted to ensure that the minigame results were collected / score screen shown before removing
-					Destroy(Minigame.gameObject);
-				}
+				ps.player.Damage(1000000);
+				ps.player.fallDeathSound.Play();
 			}
-			else
-			{
-				// Temp code for testing
-				if (GameTimer >= 5f && didSpawnMinigame == false && MinigamePrefabs.Length > 0)
-				{ 
-					Minigame = Instantiate(MinigamePrefabs[0]);
-					Minigame.BeginMinigame(playerStates);
-					didSpawnMinigame = true;
-				}
+		}
 
-				// These are the "default" behaviors when no minigames are present
-				for (var i = 0; i < playerStates.Length; i++)
-				{
-					InputHelpers.BasicMove(playerStates[i]);
-					InputHelpers.BasicDash(playerStates[i]);
-					InputHelpers.BasicRotate(playerStates[i]);
-					InputHelpers.BasicPullTrigger(playerStates[i]);
-					InputHelpers.BasicReleaseTrigger(playerStates[i]);
-				}
-			}
+		// respawn eligible dead players
+		for (var i = 0; i < matchState.playerStates.Length; i++)
+		{
+			var ps = matchState.playerStates[i];
+			var isDead = ps.player.status == CharacterStatus.Dead;
 
-			// kill players that have fallen off the map
-			for (var i = 0; i < playerStates.Length; i++)
-			{
-				var notDead = !playerStates[i].player.IsDead();
-				var belowKillHeight = playerStates[i].player.transform.position.y < killHeight;
+			// not a dead player
+			if (!isDead)
+				continue;
 
-				if (notDead && belowKillHeight)
-				{
-					playerStates[i].player.KillByFalling();
-					StartCoroutine(RespawnAfter(playerStates[i], RespawnTimer));
-				}
-			}
+			ps.player.respawnTimeRemaining -= dt;
+
+			var eligibleForRespawn = ps.player.respawnTimeRemaining <= 0f;
+
+			// still not eligible to respawn
+			if (!eligibleForRespawn)
+				continue;
 			
-			// calculate current top level
-			LeaderboardPanel.SetActive(true);
-			var topLevel = 1;
-			for (var i = 0; i < playerStates.Length; i++)
-			{
-				topLevel = Mathf.Max(topLevel, playerStates[i].weaponIndex + 1);
-			}
-
-			// find all current leaders
-			var leaders = "";
-			for (var i = 0; i < playerStates.Length; i++)
-			{
-				leaders += (playerStates[i].weaponIndex + 1) == topLevel 
-					? "P" + (i + 1) + ", "
-					: "";
-			}
-			LeaderboardLabel.text = "Current Leaders";
-			GuncountText.text = topLevel + " / " + WeaponPrefabs.Length;
-
-			leaders = leaders.TrimEnd(' ');
-			leaders = leaders.TrimEnd(',');
-			PlayerNumbers.text = leaders;
-
-			playerHUDManager.UpdatePlayerHUDs(playerStates, WeaponPrefabs, shakeable.shakyCamera, 
-				screenSpaceUICanvas.transform as RectTransform, PlayerUIArea.transform as RectTransform);
-		}
-		else if (state == GameState.Victory)
-		{
-			playerHUDManager.DisableUI(playerStates);
-			LeaderboardPanel.SetActive(false);
-
-			for (var i = 0; i < playerStates.Length; i++)
-			{
-				if (playerStates[i].playerController.GetButtonDown("Fire"))
-				{
-					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-				}
-			}
-		}
-		// always push timescale back towards full-speed
-		Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
-	}
-
-	void HandlePVEDamage(int attackerIndex, int npc_index, int damageAmount)
-	{
-		NPCS[npc_index]?.gameObject?.GetComponent<BossMonster>().DamageMonster(attackerIndex, damageAmount);
-	}
-
-	void HandlePVPDamage(int attackerIndex, int victimIndex, int damageAmount)
-	{
-		var victim = playerStates[victimIndex];
-		var attacker = playerStates[attackerIndex];
-		var victimShouldDie = damageAmount >= victim.player.Health && !victim.player.IsDead();
-		var attackerShouldWin = attacker.weaponIndex >= WeaponPrefabs.Length - 1;
-
-		if (victimShouldDie)
-		{
-			Time.timeScale = .1f;
-			shakeable.AddIntensity(1f);
-			victim.player.Kill();
-			StartCoroutine(RespawnAfter(victim, RespawnTimer));
-
-			if (attackerShouldWin)
-			{
-				StartCoroutine(HandleVictory(attacker.player));
-			}
-			else
-			{
-				attacker.player.SetWeapon(WeaponPrefabs[++attacker.weaponIndex]);
-			}
-		}
-		else
-		{
-			victim.player.Damage(damageAmount);
-			shakeable.AddIntensity(.3f);
-		}
-	}
-
-	void HandleNPCDamage(int attackerIndex, int victimIndex, int damageAmount)
-	{
-		var victim = playerStates[victimIndex];
-		var victimShouldDie = damageAmount >= victim.player.Health && !victim.player.IsDead();
-		
-
-		if (victimShouldDie)
-		{
-			victim.player.Kill();
-			shakeable.AddIntensity(.5f);
-			StartCoroutine(RespawnAfter(victim, RespawnTimer));
-		}
-		else
-		{
-			victim.player.Damage(damageAmount);
-		}
-	}
-
-	IEnumerator HandleVictory(Player winningPlayer)
-	{
-		yield return new WaitForSeconds(2f);
-		BackgroundMusic.Stop();
-		winningPlayerIndex = winningPlayer.ID;
-		state = GameState.Victory;
-
-		winningPlayer.SetAsVictor();
-		WinningPlayerModel.StartWinSequence(winningPlayer);
-
-		ui.countdownNumber.fontSize = 50;
-		ui.countdownNumber.text = "\n\n\nPlayer " + (winningPlayerIndex + 1).ToString() + " Wins!";
-		ui.animator.SetTrigger("Open");
-		ui.PanelImage.color = new Color(0, 0, 0, 0);
-
-		shakeable.transform.position = WinCamSpawn.transform.position;
-		shakeable.transform.rotation = WinCamSpawn.transform.rotation;
-	}
-
-	IEnumerator RespawnAfter(PlayerState ps, float seconds)
-	{
-		yield return new WaitForSeconds(seconds);
-
-		if (state == GameState.Live)
-		{
+			// respawn this player if appropriate
 			ps.player.Spawn(spawnPoints[Random.Range(0, spawnPoints.Length)].transform);
 		}
+			
+		// ------- UI stuff ----------
+		UpdateGameClock(matchState.matchTimeRemaining);
+
+		// calculate current top level
+		LeaderboardPanel.SetActive(true);
+		var topLevel = 1;
+		for (var i = 0; i < matchState.playerStates.Length; i++)
+		{
+			topLevel = Mathf.Max(topLevel, matchState.playerStates[i].player.weaponIndex + 1);
+		}
+
+		// find all current leaders
+		var leaders = "";
+		for (var i = 0; i < matchState.playerStates.Length; i++)
+		{
+			leaders += (matchState.playerStates[i].player.weaponIndex + 1) == topLevel 
+				? "P" + (i + 1) + ", "
+				: "";
+		}
+		LeaderboardLabel.text = "Current Leaders";
+		GuncountText.text = topLevel + " / " + WeaponPrefabs.Length;
+
+		leaders = leaders.TrimEnd(' ');
+		leaders = leaders.TrimEnd(',');
+		PlayerNumbers.text = leaders;
+
+		playerHUDManager.UpdatePlayerHUDs(
+			matchState.playerStates, 
+			WeaponPrefabs, 
+			shakeable.shakyCamera, 
+			screenSpaceUICanvas.transform as RectTransform, 
+			PlayerUIArea.transform as RectTransform);
 	}
 
-	void UpdateGameClock(float GameTimer)
+	void UpdateGameTime(float dt)
 	{
-		int gameElapsedSeconds = Mathf.RoundToInt(GameTimer);
-		int timerLeft = GameLengthInSeconds - gameElapsedSeconds;
-		int minutesLeft = Mathf.FloorToInt(timerLeft /60);
-		int secondsLeft = timerLeft % 60;
+		if (matchState.matchStatus == MatchStatus.Active)
+		{
+			matchState.matchTimeRemaining -= dt;
+			Time.timeScale += (1 - Time.timeScale) * .1f * Time.timeScale;
+		}
+		else
+		{
+			Time.timeScale = 1f;
+		}
+	}
+
+	void UpdateGameClock(float remainingTime)
+	{
+		int gameElapsedSeconds = Mathf.RoundToInt(remainingTime);
+		int minutesLeft = gameElapsedSeconds / 60;
+		int secondsLeft = gameElapsedSeconds % 60;
 
 		ClockText.gameObject.SetActive(true);
 		ClockText.text = minutesLeft.ToString("00") + ":" + secondsLeft.ToString("00");
-		TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / GameLengthInSeconds, 0);
-	}
-
-	public void AddValidHit(ValidHit NewHit)
-	{
-		HitsToBeProcessed.Add(NewHit);
+		TimelineIndicator.rectTransform.anchoredPosition = new Vector2(1600 * gameElapsedSeconds / MatchDuration, 0);
 	}
 
 	void ProcessNewValidHits()
 	{
-		foreach(var Newhit in HitsToBeProcessed)
+		foreach(var h in HitsToBeProcessed)
 		{
-			// player originated damage
-			if (Newhit.OriginatingEntityType == "PLAYERCHARACTER")
-			{
-				var shooterPlayerNumber = Newhit.OriginatingEntityIdentifier;
-				var target = Newhit.VictimEntity;
+			h.victim.Damage(h.damageAmount);
+			h.victim.HitCounter.Add(new HitCounter(h.attacker.ID, h.damageAmount));
 
-				if (Newhit.VictimEntityType == "PLAYERCHARACTER")
-				{
-					HandlePVPDamage(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
-				}
-				else if (Newhit.VictimEntityType == "NPC")
-				{
-					HandlePVEDamage(shooterPlayerNumber, target.ID, Newhit.DamageAmount);
-				}
-				else
-				{}
-			} 
-			// npc originated damage
-			else if (Newhit.OriginatingEntityType == "NPC")
+			if (h.victim.status == CharacterStatus.Dead)
 			{
-				//TODO fix the id of monster
-				HandleNPCDamage(0,Newhit.VictimEntity.ID, Newhit.DamageAmount);
+				// Player attacks Player
+				if (h.attacker is Player attacker)
+				{
+					if (h.victim is Player victim)
+					{
+						attacker.weaponIndex++;
+						if (attacker.weaponIndex < WeaponPrefabs.Length)
+						{
+							attacker.SetWeapon(WeaponPrefabs[attacker.weaponIndex]);
+						}
+						if (victim.status == CharacterStatus.Dead)
+						{
+							victim.respawnTimeRemaining = RespawnDuration;	
+						}
+					}
+				}
+				shakeable.AddIntensity(1f);
+				Time.timeScale = .1f;
 			}
-			// all other sources of damage
 			else 
 			{
-
+				shakeable.AddIntensity(.3f);
 			}
-			ProcessedHits.Add(Newhit);
 		}
 		HitsToBeProcessed.Clear();
 	}

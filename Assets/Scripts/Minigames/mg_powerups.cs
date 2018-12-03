@@ -9,9 +9,9 @@ public class mg_powerups : AbstractMinigame
     [SerializeField] GameObject[] ItemSpawnLocations;
     public int NumSpawns = 4;
 
-    public override void RunMinigame(){
-        SetMinigameToRunning();
-        MinigameAliveTimer = 0f;
+    public override void RunMinigame()
+    {
+        base.RunMinigame();
 
         ItemSpawnLocations = GameObject.FindGameObjectsWithTag("ItemSpawn");
         List<GameObject> spawns = new List<GameObject>(ItemSpawnLocations);

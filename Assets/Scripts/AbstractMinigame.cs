@@ -41,97 +41,90 @@ public class MinigameResults
     }
 }
 
+public enum MG_State { Ready, Intro, Running, ResultsReady, Destroy}
+
 public abstract class AbstractMinigame : MonoBehaviour
 {
-    // Ready = ready to run minigame, running = game is running, ended = game is done but needs to calculate results / effects, 
-    // ResultsReady = Ready for main loop to consume results and set the minigame to MG_State.Ready
-    enum MG_State { Ready, Intro, Running, Ended, ResultsReady, Destroy}
-    [SerializeField] public bool hasIntro = false;
-    [SerializeField] public bool hasSummary = false;
-    [SerializeField] public float MinigameDuration = 5f;
-    public float MinigameAliveTimer = 0f;
-    [SerializeField] public float MinigameSummaryLengthSeconds = 5f;    
-    float MinigameSummaryTimer = 0f;
-    [SerializeField] public Canvas MinigameCanvas;
-    [SerializeField] public RectTransform MinigameIntro;
-    [SerializeField] RectTransform MinigameResultsScreen;
-    [SerializeField] public List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
-    [SerializeField] public int WinnersPrize = 2;
-    [SerializeField] public int LosersPenalty = 2;    
-    [SerializeField] RectTransform PlayerResultsLine;
-    [SerializeField] public string MinigameName = "";
-    [SerializeField] Text MinigameNameText;
-    [SerializeField] public GameObject[] StageElementsToModify;
-    MG_State MinigameState = MG_State.Ready;
-    public float IntroTimer = 10f;
+    public bool hasIntro = false;
+    public bool hasSummary = false;
+    public float introDuration = 10f;
+    public float runningDuration = 60f;
+    public float summaryDuration = 3f;    
+
+    public Canvas MinigameCanvas;
+    public RectTransform MinigameIntro;
+    public RectTransform MinigameResultsScreen;
+    public int WinnersPrize = 2;
+    public int LosersPenalty = 2;    
+    public RectTransform PlayerResultsLine;
+    public MG_State MinigameState = MG_State.Ready;
     public MinigameResults Results = new MinigameResults();
+    public GameMode gameMode;
 
-    public virtual void ShowIntro()
+    public virtual void Update()
     {
-        MinigameIntro.gameObject.SetActive(true);
-        StartCoroutine(Introscreen());
+        switch (MinigameState)
+        {
+            case MG_State.Intro:
+                introDuration -= Time.deltaTime;
+                MinigameIntro.gameObject.SetActive(true);
+
+                if (introDuration <= 0)
+                {
+                    MinigameIntro.gameObject.SetActive(false);
+                    RunMinigame();
+                }
+            break;
+
+            case MG_State.Running:
+                runningDuration -= Time.deltaTime;
+
+                if (runningDuration <= 0)
+                {
+                    HandleMinigameCompleted();
+                    TabulateResults();
+                    MinigameState = MG_State.ResultsReady;
+                }
+            break;
+
+            case MG_State.ResultsReady:
+                if (hasSummary)
+                {
+                    summaryDuration -= Time.deltaTime;
+                    ShowResultsScreen();
+
+                    if (summaryDuration <= 0)
+                    {
+                        MinigameState = MG_State.Destroy;
+                        MinigameResultsScreen.gameObject.SetActive(false);
+                    }
+                } 
+                else 
+                {
+                    MinigameState = MG_State.Destroy;
+                    gameMode = null;
+                    Destroy(gameObject);
+                }
+            break;
+        }
     }
-        
-    IEnumerator Introscreen()
+
+    public virtual void RunMinigame()
     {
-        yield return new WaitForSeconds(IntroTimer);
-        MinigameIntro.gameObject.SetActive(false);
         PrepareMinigameObjects();
+        MinigameState = MG_State.Running;
     }
 
-    public void BeginMinigame(PlayerState[] playerstates)
+    public virtual void BeginMinigame(PlayerState[] playerstates)
     {
-        if (MinigameState != MG_State.Ready)
-            return;
-
         for (var i = 0; i < playerstates.Length; i++)
         {
             var mg_player = new MinigamePlayer(playerstates[i].player.ID);
 
             Results.MinigamePlayersArray.Add(mg_player);
         }
-        if(hasIntro)
-        {
-            ShowIntro();
-        }
-        RunMinigame();
-    }
-
-    public virtual void Update()
-    {
-        switch (MinigameState)
-        {
-            case MG_State.Running:
-                MinigameAliveTimer += Time.deltaTime;
-                if(MinigameAliveTimer >= MinigameDuration)
-                {
-                    MinigameState = MG_State.Ended;
-                    HandleMinigameCompleted();
-                }
-                break;
-            case MG_State.Ended:
-                TabulateResults();
-                break;
-            case MG_State.ResultsReady:
-                if (hasSummary)
-                {
-                    MinigameSummaryTimer += Time.deltaTime;
-                    ShowResultsScreen();
-                    if(MinigameSummaryTimer >= MinigameSummaryLengthSeconds)
-                    {
-                        MinigameState = MG_State.Destroy;
-                    }
-                } 
-                else 
-                {
-                    MinigameState = MG_State.Destroy;
-                }
-                break;
-            case MG_State.Destroy:
-                break;
-            default:
-                break;
-        }
+        introDuration = hasIntro ? introDuration : 0;
+        MinigameState = MG_State.Intro;
     }
 
     public virtual void HandleMove(PlayerState p) {
@@ -151,20 +144,9 @@ public abstract class AbstractMinigame : MonoBehaviour
         InputHelpers.BasicReleaseTrigger(p);
     }
 
-    public virtual void HandlePlayerDamage(PlayerState attacker, PlayerState victim, int amountOfDamage) {}
-    
-    public virtual void RunMinigame()
-    {
-        MinigameState = MG_State.Running;
-        MinigameAliveTimer = 0f;
-    }
-
     public virtual void HandleMinigameCompleted() {}
 
-    public virtual void TabulateResults()
-    {
-        SetMinigameToResultsReady();
-    }
+    public virtual void TabulateResults() {}
 
     public virtual void PrepareMinigameObjects() {}
 
@@ -174,7 +156,6 @@ public abstract class AbstractMinigame : MonoBehaviour
             return;
 
         MinigameResultsScreen.gameObject.SetActive(true);
-        ResetLines();
         var mgPlayers = Results.MinigamePlayersArray;
         var posYIncrement = 50;    
 
@@ -185,8 +166,10 @@ public abstract class AbstractMinigame : MonoBehaviour
             
             line_transform.SetParent(MinigameResultsScreen.transform, false);
             line_transform.anchoredPosition = new Vector2(PlayerResultsLine.rect.x, - posYIncrement * i);
+
             result_line_script.Playername.text = "P" + (1 + mgPlayers[i].PlayerNumber).ToString();
             result_line_script.Playerscore.text = mgPlayers[i].TotalScoreEarned.ToString();
+
             if (mgPlayers[i].MinigamePlacing == 1)
             {
                 result_line_script.Playerprize.text = "+" + WinnersPrize.ToString();
@@ -196,45 +179,5 @@ public abstract class AbstractMinigame : MonoBehaviour
                 result_line_script.Playerprize.text = "-" + LosersPenalty.ToString();
             }   
         }
-    }
-
-    void ResetLines()
-    {
-        var lines = GameObject.FindGameObjectsWithTag("UI_Resettable");
-
-        foreach (var item in lines)
-        {   
-            Destroy(item);
-        }
-    }
-
-    public void SetMinigameToReady()
-    {
-        MinigameState = MG_State.Ready; 
-    }
-
-    public void SetMinigameToResultsReady()
-    { 
-        MinigameState = MG_State.ResultsReady; 
-    }
-
-    public void SetMinigameToRunning()
-    { 
-        MinigameState = MG_State.Running; 
-    }
-
-    public bool MinigameIsRunning()
-    { 
-        return MinigameState == MG_State.Running;
-    }
-
-    public bool MinigameResultsReady()
-    { 
-        return MinigameState == MG_State.ResultsReady;
-    }
-
-    public bool MinigameShouldDestroy()
-    {
-        return MinigameState == MG_State.Destroy;
     }
 }

@@ -46,22 +46,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasIntro: 1
   hasSummary: 1
-  MinigameDuration: 15
-  MinigameAliveTimer: 0
-  MinigameSummaryLengthSeconds: 5
+  runningDuration: 60
+  summaryDuration: 2
+  introDuration: 2
   MinigameCanvas: {fileID: 2203156609999738126}
   MinigameIntro: {fileID: 3673396820465386776}
   MinigameResultsScreen: {fileID: 7835097832306818015}
-  NPCS: []
   WinnersPrize: 2
-  LosersPenalty: 2
+  LosersPenalty: 1
   PlayerResultsLine: {fileID: 8405972499550572169, guid: 154624109095da045a9885144d1e5532,
     type: 3}
-  MinigameName: 
-  MinigameNameText: {fileID: 2802704235381882299}
-  StageElementsToModify: []
-  IntroTimer: 5
-  Boss: {fileID: 6845824969542982167, guid: 4a03b5a47b084b74a8d4bde7d95ec018, type: 3}
+  MinigameState: 0
+  gameMode: {fileID: 0}
+  Boss: {fileID: 0}
+  BossPrefab: {fileID: 6845824969542982167, guid: 4a03b5a47b084b74a8d4bde7d95ec018,
+    type: 3}
 --- !u!1001 &2566599692119924318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 8283971860201354625, guid: 7077149c12e819e4da82824bdb6e60f6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8283971860201354625, guid: 7077149c12e819e4da82824bdb6e60f6,
         type: 3}
@@ -239,15 +238,3 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 7455758717400596412}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2802704235381882299 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4727963401773662727, guid: 0afb220d6ad04e04b804236295942191,
-    type: 3}
-  m_PrefabInstance: {fileID: 7455758717400596412}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

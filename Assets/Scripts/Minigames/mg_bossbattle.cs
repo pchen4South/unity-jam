@@ -5,48 +5,34 @@ using UnityEngine.UI;
 
 public class mg_bossbattle : AbstractMinigame
 {
-    [SerializeField] public BossMonster Boss;
+    public BossMonster Boss;
+    public BossMonster BossPrefab;
 
-    void Awake(){
-        MinigameName = "BossBattle";
+    public override void PrepareMinigameObjects()
+    {
+        Boss = Instantiate(BossPrefab);
+        Boss.OnValidHitOccurred = gameMode.HitsToBeProcessed.Add;
     }
 
-    public override void PrepareMinigameObjects(){
-        StageElementsToModify = GameObject.FindGameObjectsWithTag("Disable_BossBattle");
-        foreach(var ele in StageElementsToModify)
+    public override void Update()
+    {
+        base.Update();
+
+        if (MinigameState == MG_State.Running && Boss.status == CharacterStatus.Dead)
         {
-            ele.SetActive(false);
+            MinigameState = MG_State.ResultsReady;
+            TabulateResults();
+            HandleMinigameCompleted();
+            Destroy(Boss.gameObject);
         }
-        BossMonster boss_instance = Instantiate(Boss);
-        boss_instance.Initialize();
-        NPCS.Add(boss_instance.GetComponent<BossMonster>());
     }
-    public override void HandleMinigameCompleted(){
-        foreach(var ele in StageElementsToModify)
+
+    public override void TabulateResults()
+    {
+        foreach (var h in Boss.HitCounter)
         {
-            ele.SetActive(true);
+            Results.MinigamePlayersArray[h.attackerIndex].TotalScoreEarned += h.damageAmount;
         }
+        Results.CalculatePlayerPlacement();
     }
-
-    public override void TabulateResults(){
-        foreach(var npc in NPCS){
-            var hitList = npc.HitCounter;
-            foreach(var mgPlayer in Results.MinigamePlayersArray)
-            {
-                var HitsForPlayer = hitList.FindAll(i => i.attackerIndex == mgPlayer.PlayerNumber);
-                var totalDamageForPlayer = 0;
-
-                foreach(var hit in HitsForPlayer)
-                {
-                    totalDamageForPlayer += hit.damageAmount;
-                }
-                mgPlayer.TotalScoreEarned = totalDamageForPlayer;
-            }
-            Results.CalculatePlayerPlacement();
-            Destroy(npc.gameObject);
-        }
-        SetMinigameToResultsReady();
-    }
-
-
 }

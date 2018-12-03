@@ -1,23 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+public enum MoveSkillStatus { Ready, OnCooldown }
+
 public class Player : AbstractCharacter 
 {
-    #region variables
-    public enum MoveSkillStatus { Ready, OnCooldown }
-
-    [SerializeField] PlayerIndicator playerIndicator;
-    [SerializeField] public SkinnedMeshRenderer meshRenderer;
-    [SerializeField] CharacterController controller;
-    [SerializeField] Animator animator;
-    [SerializeField] AudioSource takeDamageSound;
-    [SerializeField] AudioSource fallDeathSound;
-    [SerializeField] AudioSource deathSound;
-    [SerializeField] AudioSource spawnSound;
-    [SerializeField] AudioSource dashSound;
-    [SerializeField] ParticleSystem PlayerSpawnParticles;
-    [SerializeField] SpriteRenderer Crosshair;
-    [SerializeField] PlayerHitbox hitbox;
+    public PlayerIndicator playerIndicator;
+    public SkinnedMeshRenderer meshRenderer;
+    public CharacterController controller;
+    public Animator animator;
+    public AudioSource takeDamageSound;
+    public AudioSource fallDeathSound;
+    public AudioSource deathSound;
+    public AudioSource spawnSound;
+    public AudioSource dashSound;
+    public ParticleSystem PlayerSpawnParticles;
+    public SpriteRenderer Crosshair;
+    public PlayerHitbox hitbox;
 
     public float MoveSpeed = 2f;
     public float SpeedModifier = 1f;
@@ -27,12 +27,11 @@ public class Player : AbstractCharacter
 
     public AbstractWeapon Weapon;
 
-    public int Health = 1;
     public bool canMove = true;
     public bool canRotate = true;
-    	
+    public float respawnTimeRemaining = 0f;
+    public int weaponIndex;
     
-    //Moveskill 
     public MoveSkillStatus moveStatus = MoveSkillStatus.Ready;
     float currentDashTime = 0f;
     public bool isDashing = false;
@@ -40,12 +39,6 @@ public class Player : AbstractCharacter
     Vector3 dashDir = Vector3.zero;
 
     public float IkWeight = 1f;
-    
-    #endregion
-
-    Player(){
-        ENTITY_TYPE = "PLAYERCHARACTER";
-    }
 
     void Update() 
     {
@@ -115,12 +108,27 @@ public class Player : AbstractCharacter
         var velocity = v * speed;
 
         controller.Move(velocity);
-        //could be looked at in future, for now hardcoded to 1 to get the run animation
-        //animator.SetFloat("Forward", velocity.magnitude);
         animator.SetFloat("Forward", velocity.magnitude > 0 ? 1 : 0);
     }
 
-    //public void SetWeapon(AbstractWeapon newWeapon, System.Action<ValidHit> OnValidHit)
+    public override void Damage(int damageAmount)
+    {
+        base.Damage(damageAmount);
+
+        if (status == CharacterStatus.Dead)
+        {
+            canMove = false;
+            canRotate = false;
+            animator.SetBool("PlayDeathAnimation", true);
+            deathSound.Play();
+        }
+        else 
+        {
+            animator.SetTrigger("Hit");
+            takeDamageSound.Play();
+        }
+    }
+
     public void SetWeapon(AbstractWeapon newWeapon)
     {
         if (Weapon)
@@ -131,31 +139,6 @@ public class Player : AbstractCharacter
         canMove = true;
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
-        //Weapon.OnValidHitOccurred = OnValidHit;
-        FloatingTextController.CreateFloatingText("+" + Weapon.WeaponName, transform);
-    }
-
-    public void Damage(int damageAmount)
-    {
-        Health = Mathf.Max(0, Health - damageAmount);
-        animator.SetTrigger("Hit");
-        takeDamageSound.Play();
-    }
-
-    public void Kill()
-    {
-        status = CharacterStatus.Dead;
-        Health = 0;
-        canMove = false;
-        canRotate = false;
-        animator.SetBool("PlayDeathAnimation", true);
-        deathSound.Play();
-    }
-
-    public void KillByFalling()
-    {
-        status = CharacterStatus.Dead;
-        fallDeathSound.Play();
     }
 
 	public void Spawn(Transform t)

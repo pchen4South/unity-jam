@@ -20,7 +20,7 @@ public class mg_arenafire : AbstractMinigame
     public override void Update()
     {
         base.Update();
-        if(Mathf.RoundToInt(MinigameAliveTimer) % FireSpawnTimer == 0 && MinigameAliveTimer > 0 && !waveSpawned){
+        if(Mathf.RoundToInt(runningDuration) % FireSpawnTimer == 0 && runningDuration > 0 && !waveSpawned){
             waveSpawned = true;
             for(int i = 0; i < FirePerWave; i++){
                 if(verticesCopy.Count >= 0){
@@ -30,7 +30,7 @@ public class mg_arenafire : AbstractMinigame
                 }
             }
         }
-        if(Mathf.RoundToInt(MinigameAliveTimer) % FireSpawnTimer != 0)
+        if(Mathf.RoundToInt(runningDuration) % FireSpawnTimer != 0)
             waveSpawned = false;
     }
 
@@ -58,8 +58,7 @@ public class mg_arenafire : AbstractMinigame
 
         Generate(xs, zs);
         verticesCopy = new List<Vector3>(vertices);
-        SetMinigameToRunning();
-        MinigameAliveTimer = 0f;
+        MinigameState = MG_State.Running;
     }
 
 	private void Generate (int xs, int zs) {
