@@ -72,6 +72,15 @@ public static class InputHelpers
             p.player.Weapon.ReleaseTrigger(p.player);
         }
     }
+    public static void BasicReload(PlayerState p){
+        if(!p.player.IsAlive()) return;
+        
+        if (p.playerController.GetButtonDown("Reload"))
+        {
+            p.player.Weapon.Reload();
+        }
+    }
+
 
     public static bool MenuDownOrRight(Rewired.Player p){
         if (p.GetAxis(0) > .5f || p.GetAxis(1) < -.5f){

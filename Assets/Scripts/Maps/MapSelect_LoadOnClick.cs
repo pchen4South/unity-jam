@@ -8,13 +8,12 @@ using Rewired;
 public class MapSelect_LoadOnClick : MonoBehaviour
 {
     public GameObject LoadingScreen;
-	[SerializeField] AbstractMap[] Maps;
-    [SerializeField] Button UpArrow;
-    [SerializeField] Button DownArrow;
-    [SerializeField] Button OverlayButton;
-    public Image CurrentMapImage;
-    public Text CurrentMapLabel;
-    AbstractMap currentMap;
+	[SerializeField] AbstractMap[] Maps = null;
+    [SerializeField] Button UpArrow = null;
+    [SerializeField] Button DownArrow = null;
+    public Image CurrentMapImage = null;
+    public Text CurrentMapLabel = null;
+    AbstractMap currentMap = null;
     int mapIndex = 0;
     // need a timer to delay inputs or else it will scroll thru all the choices instantly
     [SerializeField] float inputDelayTimer = .25f;

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class WinningPlayer : MonoBehaviour
 {
-    [SerializeField] ParticleSystem[] WinParticles;
-    [SerializeField] Animator anim;
-    [SerializeField] AudioSource WinMusic;
-    [SerializeField] Material mat;
+    [SerializeField] ParticleSystem[] WinParticles = null;
+    [SerializeField] Animator anim = null;
+    [SerializeField] AudioSource WinMusic = null;
+    [SerializeField] Material mat = null;
     public void StartWinSequence(Player winningPlayer){
         anim.SetTrigger("PlayWinAnimation");
         mat.color = winningPlayer.meshRenderer.material.color;

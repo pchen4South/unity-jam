@@ -3,13 +3,9 @@
 public class SniperRifle : AbstractWeapon
 {
     enum SniperRifleState { Ready, Prefire, Reload };
-
-    [SerializeField] Animator animator;
-    [SerializeField] LineRenderer laserSight;
-    [SerializeField] ParticleSystem muzzleFlash;
-    [SerializeField] ParticleSystem HitParticlePrefab;
-    
-    [SerializeField] GameObject ProjectilePrefab;
+    [SerializeField] Animator animator  = null;
+    [SerializeField] ParticleSystem muzzleFlash = null;
+    [SerializeField] GameObject ProjectilePrefab = null;
 
     public float PreFireDuration = 1f;
     public float ReloadDuration = 1f;
@@ -17,8 +13,6 @@ public class SniperRifle : AbstractWeapon
     SniperRifleState state = SniperRifleState.Ready;
     float remainingReloadTime = 0f;
     float remainingPrefireTime = 0f;
-    Ray ray = new Ray();
-    RaycastHit rayHit = new RaycastHit();
 
     private void Awake() {
         WeaponName = "Sniper"; 

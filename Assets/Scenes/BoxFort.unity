@@ -5351,7 +5351,7 @@ PrefabInstance:
     - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
       propertyPath: MinigamePrefabs.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
@@ -6109,7 +6109,7 @@ GameObject:
   m_Layer: 9
   m_Name: Spawn3
   m_TagString: SpawnPoint
-  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -7753,7 +7753,7 @@ GameObject:
   m_Layer: 14
   m_Name: WinCamSpawn
   m_TagString: SecondaryCamera
-  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -8177,6 +8177,61 @@ PrefabInstance:
     - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actions.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actionCategoryMap.list.Array.data[0].actionIds.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actions.Array.data[11]._id
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actions.Array.data[11]._name
+      value: Reload
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actions.Array.data[11]._type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actions.Array.data[11]._descriptiveName
+      value: Reload
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actions.Array.data[11]._userAssignable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actionCategoryMap.list.Array.data[0].actionIds.Array.data[11]
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.actionIdCounter
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.joystickMaps.Array.data[0].actionElementMaps.Array.data[8]._actionId
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
+        type: 3}
+      propertyPath: _userData.joystickMaps.Array.data[1].actionElementMaps.Array.data[9]._actionId
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
@@ -14953,7 +15008,7 @@ GameObject:
   m_Layer: 9
   m_Name: Spawn1
   m_TagString: SpawnPoint
-  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

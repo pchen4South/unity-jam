@@ -3,5 +3,5 @@
 [CreateAssetMenu]
 public class ColorScheme : ScriptableObject
 {
-    public Color[] playerColors;
+    public Color[] playerColors = null;
 }

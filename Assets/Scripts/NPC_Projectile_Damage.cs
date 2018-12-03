@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPC_Projectile_Damage : MonoBehaviour
 {
-    [SerializeField] AbstractCharacter NPC;
+    [SerializeField] AbstractCharacter NPC = null;
     [SerializeField] int DamageAmount = 1;
     
 

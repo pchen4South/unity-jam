@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class SMG : AbstractWeapon {
     [Header("Cached references")]
-    [SerializeField]    ParticleSystem HitParticlePrefab;
-    [SerializeField]    GameObject muzzleFlash;
-    [SerializeField]    Light muzzleFlashLight;
-    [SerializeField]    ParticleSystem BulletCasings;
+    [SerializeField]    GameObject muzzleFlash = null;
+    [SerializeField]    Light muzzleFlashLight = null;
+    [SerializeField]    ParticleSystem BulletCasings = null;
 
     [Header("Config")]
     public float maxBulletSpread;
@@ -15,8 +14,8 @@ public class SMG : AbstractWeapon {
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    private GameObject FlashInstance;
-    ParticleSystem CasingsInstance;
+    private GameObject FlashInstance = null;
+    ParticleSystem CasingsInstance = null;
     ParticleSystem.EmissionModule em;
     float fireTime;
 

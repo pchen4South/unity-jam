@@ -3,24 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Blaster : AbstractWeapon {
-//  public Transform Muzzle;
-// 	public Player player;
-// 	public string WeaponName = "gun";
-// 	public float SpeedModifier = 1f;
-// 	public int AmmoCount = 0;
-// 	public int MagazineSize = 0;
-// 	public Transform LeftHandIKTarget;
-// 	public Transform RightHandIKTarget;
-// 	public virtual void PullTrigger(Player player){}
-// 	public virtual void ReleaseTrigger(Player player){}
 
     [Header("Cached references")]
-    [SerializeField]    GameObject muzzleFlash;
-    [SerializeField]    Light muzzleFlashLight;
+    [SerializeField]    GameObject muzzleFlash = null;
+    [SerializeField]    Light muzzleFlashLight = null;
 
     [Header("State")]
     float timeTillNextShot = 0f;
-	private GameObject FlashInstance;
+	private GameObject FlashInstance = null;
     void Awake(){
         MagazineSize = 12;
         AmmoCount = MagazineSize;   

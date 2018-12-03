@@ -5,8 +5,8 @@ public class PlayerIndicator : MonoBehaviour
 	public float rotationSpeed = 100f;
 	public Color color;
 
-	[SerializeField] MeshRenderer MeshRenderer;
-	[SerializeField] float IndicatorAlpha;
+	[SerializeField] MeshRenderer MeshRenderer  = null;
+	[SerializeField] float IndicatorAlpha = .8f;
 
 	void Update()
 	{

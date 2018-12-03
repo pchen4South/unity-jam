@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 public abstract class AbstractWeapon : MonoBehaviour 
 {
-	public Transform Muzzle;
 	public Player player;
 	
 	[Header("Config")]
-	[SerializeField] public AudioSource fireSound;
-
-	[SerializeField] public AudioSource reloadSound;
-	[SerializeField] ParticleSystem HitPlayerParticlePrefab;
+	[SerializeField] public AudioSource fireSound= null;
+	[SerializeField] public AudioSource reloadSound = null;
+	[SerializeField] ParticleSystem HitPlayerParticlePrefab = null;
 	public string WeaponName = "gun";
 	public float SpeedModifier = 1f;
 	public int AmmoCount = 0;
@@ -97,6 +95,8 @@ public abstract class AbstractWeapon : MonoBehaviour
 	}
 
     public void Reload(){
+		if(AmmoCount == MagazineSize || isReloading) return;
+
         isReloading = true;
 		reloadtimer = 0;
         reloadSound.Play();

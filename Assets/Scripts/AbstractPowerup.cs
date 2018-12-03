@@ -4,10 +4,10 @@ using UnityEngine;
 
 public abstract class AbstractPowerup : MonoBehaviour
 {
-    [SerializeField] AudioSource PickupSound;
-    [SerializeField] ParticleSystem particles;
-    [SerializeField] MeshRenderer buffContainer;
-    [SerializeField] GameObject innerParent;
+    [SerializeField] AudioSource PickupSound  = null;
+    [SerializeField] ParticleSystem particles = null;
+    [SerializeField] MeshRenderer buffContainer = null;
+    [SerializeField] GameObject innerParent = null;
     public float EffectMultiplier = 2f;
     public float BuffTimer = 10f;
 

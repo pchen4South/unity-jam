@@ -8,11 +8,11 @@ public class Shield : AbstractWeapon
     RiotShieldState shieldState = RiotShieldState.Ready;
 
     [Header("Cached References")]
-    [SerializeField]    Animator anim;
+    [SerializeField]    Animator anim = null;
     [SerializeField]    public float swingTime = 1f;
-    [SerializeField]    ParticleSystem hitBoxActiveParticles;
-    [SerializeField]    AudioSource swingSound;
-    [SerializeField]    BoxCollider hitBox;
+    [SerializeField]    ParticleSystem hitBoxActiveParticles = null;
+    [SerializeField]    AudioSource swingSound = null;
+    
     float DamageCooldown;
 
     void Start()

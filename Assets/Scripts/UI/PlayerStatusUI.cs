@@ -50,8 +50,6 @@ public class PlayerStatusUI : MonoBehaviour
     float timecounter = 0f;
     List<Image> AmmoArray = new List<Image>();
     List<Image> GunsArray = new List<Image>();
-
-    bool WeaponDidChange = false;
     bool InitializedGuns = false;
 
     void Update(){

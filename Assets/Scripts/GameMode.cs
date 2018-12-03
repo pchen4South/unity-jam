@@ -100,29 +100,29 @@ public class GameMode : MonoBehaviour
 {
 	#region GameMode Variables
 	public enum GameState { Countdown, Live, Victory };
-	[SerializeField] Player PlayerPrefab;
-	[SerializeField] PlayerHUD PlayerHUDPrefab;
-	[SerializeField] PlayerStatusUI PlayerStatusUIPrefab;
-	[SerializeField] RectTransform PlayerUIArea;
+	[SerializeField] Player PlayerPrefab = null;
+	[SerializeField] PlayerHUD PlayerHUDPrefab = null;
+	[SerializeField] PlayerStatusUI PlayerStatusUIPrefab = null;
+	[SerializeField] RectTransform PlayerUIArea = null;
 
-	[SerializeField] ColorScheme colorScheme;
-	[SerializeField] Shakeable shakeable;
-	[SerializeField] UI ui;
-	[SerializeField] Canvas screenSpaceUICanvas;
-	[SerializeField] AudioSource BackgroundMusic;
-	[SerializeField] AudioSource CountdownAudio;
-	[SerializeField] AbstractWeapon[] WeaponPrefabs;
-	[SerializeField] AbstractMinigame[] MinigamePrefabs;
-	[SerializeField] GameObject WinCamSpawn;
-	[SerializeField] WinningPlayer WinningPlayerModel;
-	[SerializeField] GameObject LeaderboardPanel;
-	[SerializeField] Text LeaderboardLabel;
-	[SerializeField] Text PlayerNumbers;
-	[SerializeField] Text GuncountText;
-	[SerializeField] Text ClockText;
-	[SerializeField] Text TimelineIndicator;
-	[SerializeField] RectTransform textParent;
-	[SerializeField] FloatingText PopupTextPrefab;
+	[SerializeField] ColorScheme colorScheme = null;
+	[SerializeField] Shakeable shakeable = null;
+	[SerializeField] UI ui = null;
+	[SerializeField] Canvas screenSpaceUICanvas = null;
+	[SerializeField] AudioSource BackgroundMusic = null;
+	[SerializeField] AudioSource CountdownAudio = null;
+	[SerializeField] AbstractWeapon[] WeaponPrefabs = null;
+	[SerializeField] AbstractMinigame[] MinigamePrefabs = null;
+	[SerializeField] GameObject WinCamSpawn = null;
+	[SerializeField] WinningPlayer WinningPlayerModel = null;
+	[SerializeField] GameObject LeaderboardPanel = null;
+	[SerializeField] Text LeaderboardLabel = null;
+	[SerializeField] Text PlayerNumbers = null;
+	[SerializeField] Text GuncountText = null;
+	[SerializeField] Text ClockText = null;
+	[SerializeField] Text TimelineIndicator = null;
+	[SerializeField] RectTransform textParent = null;
+	[SerializeField] FloatingText PopupTextPrefab = null;
 
 	public int GameLengthInSeconds = 600;
 	public float RespawnTimer = 3f;
@@ -131,15 +131,15 @@ public class GameMode : MonoBehaviour
 
 	GameObject[] spawnPoints;
 	PlayerState[] playerStates;
-	PlayerHUDManager playerHUDManager;
+	PlayerHUDManager playerHUDManager = null;
 	GameState state = GameState.Countdown;
-	AbstractMinigame Minigame;
+	AbstractMinigame Minigame = null;
 	int winningPlayerIndex;
 	float remainingCountdownDuration;
 	bool CountdownStarted = false;
 	float GameTimer = 0;
 	bool didSpawnMinigame = false;
-	MinigameResults ActiveMinigameResults;
+	MinigameResults ActiveMinigameResults = null;
 
 	//hit processing
 	// TODO: could pack these into structs perhaps? Maybe pre-allocate?
@@ -213,6 +213,7 @@ public class GameMode : MonoBehaviour
 						Minigame.HandleDash(playerStates[i]);
 						Minigame.HandleRotate(playerStates[i]);
 						Minigame.HandleFire(playerStates[i]);
+						InputHelpers.BasicReload(playerStates[i]);
 					}
 					//prob need to figure out where to put this so it doesnt get processed over and over
 					foreach(var n in Minigame.NPCS){
@@ -248,6 +249,7 @@ public class GameMode : MonoBehaviour
 					InputHelpers.BasicRotate(playerStates[i]);
 					InputHelpers.BasicPullTrigger(playerStates[i]);
 					InputHelpers.BasicReleaseTrigger(playerStates[i]);
+					InputHelpers.BasicReload(playerStates[i]);
 				}
 			}
 			// kill players that have fallen off the map
@@ -373,6 +375,7 @@ public class GameMode : MonoBehaviour
 		ui.countdownNumber.text = "\n\n\nPlayer " + (winningPlayerIndex + 1).ToString() + " Wins!";
 		ui.animator.SetTrigger("Open");
 		ui.PanelImage.color = new Color(0, 0, 0, 0);
+
 
 		shakeable.transform.position = WinCamSpawn.transform.position;
 		shakeable.transform.rotation = WinCamSpawn.transform.rotation;

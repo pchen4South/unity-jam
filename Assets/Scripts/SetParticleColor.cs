@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SetParticleColor : MonoBehaviour
 {
-    [SerializeField] ParticleSystem particles;
+    [SerializeField] ParticleSystem particles = null;
     public Color startColor;
 
 

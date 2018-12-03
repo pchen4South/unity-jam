@@ -11,7 +11,7 @@ public class mg_arenafire : AbstractMinigame
 
     [SerializeField] int FirePerWave = 5;
     [SerializeField] int FireSpawnTimer = 5;
-    [SerializeField] GameObject Fire;
+    [SerializeField] GameObject Fire  = null;
 
     private List<Vector3> vertices = new List<Vector3>();
     private List<Vector3> verticesCopy;

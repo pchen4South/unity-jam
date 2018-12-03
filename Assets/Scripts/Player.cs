@@ -6,19 +6,18 @@ public class Player : AbstractCharacter
     #region variables
     public enum MoveSkillStatus { Ready, OnCooldown }
 
-    [SerializeField] PlayerIndicator playerIndicator;
-    [SerializeField] public SkinnedMeshRenderer meshRenderer;
-    [SerializeField] CharacterController controller;
-    [SerializeField] Animator animator;
-    [SerializeField] AudioSource takeDamageSound;
-    [SerializeField] AudioSource fallDeathSound;
-    [SerializeField] AudioSource deathSound;
-    [SerializeField] AudioSource spawnSound;
-    [SerializeField] AudioSource dashSound;
-    [SerializeField] ParticleSystem PlayerSpawnParticles;
-    [SerializeField] SpriteRenderer Crosshair;
-    [SerializeField] PlayerHitbox hitbox;
-
+    [SerializeField] PlayerIndicator playerIndicator = null;
+    [SerializeField] public SkinnedMeshRenderer meshRenderer = null;
+    [SerializeField] CharacterController controller = null;
+    [SerializeField] Animator animator = null;
+    [SerializeField] AudioSource takeDamageSound= null;
+    [SerializeField] AudioSource fallDeathSound = null;
+    [SerializeField] AudioSource deathSound = null;
+    [SerializeField] AudioSource spawnSound= null;
+    [SerializeField] AudioSource dashSound = null;
+    [SerializeField] ParticleSystem PlayerSpawnParticles = null;
+    [SerializeField] SpriteRenderer Crosshair = null;
+    
     public float MoveSpeed = 2f;
     public float SpeedModifier = 1f;
     public float DashDuration = 0.25f;

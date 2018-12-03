@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class MachineGun : AbstractWeapon 
 {
-    [Header("Cached references")]
-    [SerializeField]    AudioSource hitSound;
-    [SerializeField]    AudioSource hitPlayerSound;
-    [SerializeField]    GameObject HitParticlePrefab;
-
     [Header("Config")]
     public float kickBackGrowthRate = 1f;
     public float kickBackDecayRate = -2f;
 
     [Header("State")]
     float timeTillNextShot = 0f;
-    GameObject FlashInstance;
+    //GameObject FlashInstance = null;
 
 
     void Awake()

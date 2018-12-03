@@ -5,11 +5,6 @@ using UnityEngine;
 public class ProjectileMove : MonoBehaviour {
 
 	public float travelSpeed = 5f;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {

@@ -7,18 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class TitleController : MonoBehaviour 
 {
-	[SerializeField] Text startText;
-	[SerializeField] SpriteRenderer TitleText;
-	[SerializeField] ParticleSystem BulletTrail;
-
-	Rewired.Player playerController;
-	public Gradient TitleColor;
+	[SerializeField] Text startText = null;
+	[SerializeField] SpriteRenderer TitleText = null;
+	[SerializeField] ParticleSystem BulletTrail = null;
+	public Gradient TitleColor = null;
 	private bool IsFlashing = false;
 	public float textFlashTime = .25f;
 	public float buildingFadeInTime = 2f;
-	public AudioSource StartPressedSound;
-
-	private Image Buildings;
+	public AudioSource StartPressedSound= null;
+	private Image Buildings = null;
 	private float titleRunTime = 0f;
 
     public float strobeDuration = 2f;

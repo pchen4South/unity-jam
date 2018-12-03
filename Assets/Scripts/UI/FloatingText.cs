@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class FloatingText : MonoBehaviour
 {
-    [SerializeField] Animator animator;
-    [SerializeField] Text floatingText;
+    [SerializeField] Animator animator = null;
+    [SerializeField] Text floatingText = null;
 
     void Start(){
         AnimatorClipInfo[] clipinfo = animator.GetCurrentAnimatorClipInfo(0);

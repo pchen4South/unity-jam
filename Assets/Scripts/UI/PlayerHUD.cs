@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour 
 {
-	[SerializeField]	RectTransform rectTransform;
-	[SerializeField]    RectTransform GreenHPBar;
-	[SerializeField]    Slider ReloadIndicator;
-	[SerializeField]    GameObject ReloadBar;
+	[SerializeField]	RectTransform rectTransform  = null;
+	[SerializeField]    RectTransform GreenHPBar = null;
+	[SerializeField]    Slider ReloadIndicator = null;
+	[SerializeField]    GameObject ReloadBar = null;
 
 
 	public Vector2 screenSpaceOffset = Vector2.zero;

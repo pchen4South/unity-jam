@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class ShotgunHitDetect : MonoBehaviour
 {
-    public ParticleSystem shotgunPellets;
-    List<ParticleCollisionEvent> collisionEvents;
+    public ParticleSystem shotgunPellets = null;
+    List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
     int firingPlayerNumber;
-    [SerializeField] ParticleSystem HitPlayerParticlePrefab;
-    [SerializeField] Shotgun shotgun;
+    [SerializeField] Shotgun shotgun = null;
 
     void Start()
     {
-        collisionEvents = new List<ParticleCollisionEvent> ();
         firingPlayerNumber = this.GetComponentInParent<Player>().ID;
     }
 

@@ -5,15 +5,10 @@ using UnityEngine;
 public class Shotgun : AbstractWeapon {
 
  	[Header("Cached references")]
-
-    [SerializeField]
-    ParticleSystem HitParticlePrefab;
     
-    [SerializeField]
-    public GameObject muzzleFlash;
+    [SerializeField]    public GameObject muzzleFlash = null;
 
-    [SerializeField]
-    Light muzzleFlashLight;
+    [SerializeField]    Light muzzleFlashLight = null;
     [SerializeField]	ParticleSystem BlastRadius = null;
 
     [Header("State")]

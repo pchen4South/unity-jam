@@ -5,9 +5,8 @@ using UnityEngine;
 public class Deagle : AbstractWeapon
 {
     [Header("Cached references")]
-    [SerializeField]    ParticleSystem HitParticlePrefab;
-    [SerializeField]    GameObject muzzleFlash;
-    [SerializeField]    Light muzzleFlashLight;
+    [SerializeField]    GameObject muzzleFlash = null;
+    [SerializeField]    Light muzzleFlashLight = null;
 
     [Header("State")]
     float timeTillNextShot = 0f;

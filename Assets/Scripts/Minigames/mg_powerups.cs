@@ -5,8 +5,8 @@ using UnityEngine;
 public class mg_powerups : AbstractMinigame
 {
     //temp for testing
-    [SerializeField] GameObject[] powerups;
-    [SerializeField] GameObject[] ItemSpawnLocations;
+    [SerializeField] GameObject[] powerups = null;
+    [SerializeField] GameObject[] ItemSpawnLocations = null;
     public int NumSpawns = 4;
 
     public override void RunMinigame(){
