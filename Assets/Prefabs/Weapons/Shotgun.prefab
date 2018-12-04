@@ -520,10 +520,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf8afa7da899fb44ae48f5b34529728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Muzzle: {fileID: 0}
   player: {fileID: 0}
   fireSound: {fileID: 82043888457751424}
   reloadSound: {fileID: 82530650906356306}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
   WeaponName: Shotgun
   SpeedModifier: 1
   AmmoCount: 0
@@ -543,10 +544,6 @@ MonoBehaviour:
     m_Bits: 1024
   IKTarget_L: {fileID: 9166273811160500689}
   IKTarget_R: {fileID: 6803092744379794515}
-  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
-    type: 3}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
-    type: 3}
   muzzleFlash: {fileID: 1956061264784194, guid: 0c8832a2e0bc8c944969fe1a480bb84c,
     type: 3}
   muzzleFlashLight: {fileID: 108913146903628442}
@@ -1024,7 +1021,7 @@ GameObject:
   - component: {fileID: 578506019405434}
   - component: {fileID: 4756010685808353939}
   - component: {fileID: 731567325624508755}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: BlastRadiusParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1297,7 +1294,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.15
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4749,7 +4746,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 99328
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -5782,8 +5779,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotgunPellets: {fileID: 578506019405434}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
-    type: 3}
   shotgun: {fileID: 114247967539548830}
 --- !u!1 &2119658951617409568
 GameObject:

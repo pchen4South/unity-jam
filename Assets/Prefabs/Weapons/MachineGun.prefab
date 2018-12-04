@@ -14216,8 +14216,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7872973ab0257e4abbddad7cccacf4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Muzzle: {fileID: 2315545633511347624}
   player: {fileID: 0}
+  fireSound: {fileID: 8107039379890543543}
+  reloadSound: {fileID: 0}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
   WeaponName: Machinegun
   SpeedModifier: 1
   AmmoCount: 0
@@ -14229,20 +14232,14 @@ MonoBehaviour:
   shotTime: 0.01
   muzzleOffset: 0.5
   ReloadTime: 1
+  isReloading: 0
   bulletTracer: {fileID: 889717787902743453}
   BulletHole: {fileID: 0}
   layerMask:
     serializedVersion: 2
-    m_Bits: 33793
+    m_Bits: 99328
   IKTarget_L: {fileID: 4423406839948450669}
   IKTarget_R: {fileID: 7591128385553925945}
-  fireSound: {fileID: 8107039379890543543}
-  hitSound: {fileID: 8107039379890543543}
-  hitPlayerSound: {fileID: 8107039379890543543}
-  HitParticlePrefab: {fileID: 1880468109313604, guid: cff46989bc6ae2041904a8c347b4b806,
-    type: 3}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
-    type: 3}
   kickBackGrowthRate: 1
   kickBackDecayRate: -2
 --- !u!82 &8107039379890543543

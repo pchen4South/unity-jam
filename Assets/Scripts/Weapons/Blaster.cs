@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Blaster : AbstractWeapon {
+    enum BlasterState {Firing, Ready}
+
+    BlasterState state = BlasterState.Ready;
 
     [Header("Cached references")]
     [SerializeField]    GameObject muzzleFlash = null;
@@ -10,7 +13,11 @@ public class Blaster : AbstractWeapon {
 
     [Header("State")]
     float timeTillNextShot = 0f;
-	private GameObject FlashInstance = null;
+    private GameObject FlashInstance = null;
+    Ray ray = new Ray();
+    RaycastHit rayHit = new RaycastHit();
+    Vector3 muzzle = new Vector3();
+    LineRenderer CurrentLine = null;
     void Awake(){
         MagazineSize = 12;
         AmmoCount = MagazineSize;   
@@ -20,38 +27,42 @@ public class Blaster : AbstractWeapon {
         RightHandIKTarget = IKTarget_R;
     }
 
-    void LateUpdate()
+    void Update()
     {
-        timeTillNextShot -= Time.deltaTime;   
+        timeTillNextShot -= Time.deltaTime;
+        muzzle = transform.position + transform.forward * muzzleOffset;
+        if (state == BlasterState.Firing)   
+            DrawLine();
     }
 
       public override void PullTrigger(Player player)
     {
-        if (timeTillNextShot > 0 || isReloading || AmmoCount == 0) return;
+        if (timeTillNextShot > 0) return;
 
-        var muzzle = transform.position + transform.forward * muzzleOffset;
-        StartCoroutine(PostShotCleanup());
+        if(!fireSound.isPlaying)
+            fireSound.Play();
 
-        AmmoCount -= 1;        
         timeTillNextShot = fireRate;
-        
-		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
-        FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
-        muzzleFlashLight.enabled = true;
-        fireSound.Play();
-    
-        CheckForValidHitscan(muzzle, transform.forward, layerMask);
-        
-        if (AmmoCount == 0)
-            Reload();
+        bulletTracer.enabled = true;
+        state = BlasterState.Firing;
+        DrawLine();
     }
 
-
-    IEnumerator PostShotCleanup()
-    {
-        yield return new WaitForSeconds(shotTime);
+    public override void ReleaseTrigger(Player player){
         bulletTracer.enabled = false;
-        muzzleFlashLight.enabled = false;
+        state = BlasterState.Ready;
+        fireSound.Stop();
     }
 
+    public void DrawLine(){
+		ray.origin = muzzle;
+		ray.direction = transform.forward;
+        var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
+        if (!didHit)
+            return;
+		if(bulletTracer != null){
+        	bulletTracer.SetPosition(0, muzzle);
+        	bulletTracer.SetPosition(1, rayHit.point);
+		}
+    }
 }

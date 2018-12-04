@@ -1,17 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!4 &5550833144999834683 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca,
-    type: 3}
-  m_PrefabInstance: {fileID: 5550833144999702203}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4043574624854644 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4043228244797008105, guid: 401cb21dee144414ebf841079ef879d7,
-    type: 3}
-  m_PrefabInstance: {fileID: 4040348125843458717}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1488442268956616
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +18,7 @@ GameObject:
   - component: {fileID: 108596773343817414}
   - component: {fileID: 82201342655588438}
   - component: {fileID: 82502090231681022}
-  m_Layer: 12
+  m_Layer: 11
   m_Name: DEagle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,10 +113,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3d55526d5a03845a36f848daab63d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Muzzle: {fileID: 0}
   player: {fileID: 0}
   fireSound: {fileID: 82442640702138610}
   reloadSound: {fileID: 82502090231681022}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
   WeaponName: DEagle
   SpeedModifier: 1
   AmmoCount: 0
@@ -145,13 +134,9 @@ MonoBehaviour:
   BulletHole: {fileID: 1175364153175438, guid: 85ce419632c40ad4fbf2fc5173dfafe3, type: 3}
   layerMask:
     serializedVersion: 2
-    m_Bits: 33793
+    m_Bits: 99328
   IKTarget_L: {fileID: 2501237701852715752}
   IKTarget_R: {fileID: 4964906307463415829}
-  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
-    type: 3}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
-    type: 3}
   muzzleFlash: {fileID: 1956061264784194, guid: e7f33db831994c84ea2e51f2f4cbc166,
     type: 3}
   muzzleFlashLight: {fileID: 108596773343817414}
@@ -594,7 +579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4964906307463415829}
-  m_Layer: 12
+  m_Layer: 11
   m_Name: RightIKTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +609,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2501237701852715752}
-  m_Layer: 12
+  m_Layer: 11
   m_Name: LeftIKTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,6 +637,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4354227693998282}
     m_Modifications:
+    - target: {fileID: 4041660580506541239, guid: 401cb21dee144414ebf841079ef879d7,
+        type: 3}
+      propertyPath: m_Name
+      value: LaserSight
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041660580506541239, guid: 401cb21dee144414ebf841079ef879d7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041660580506541239, guid: 401cb21dee144414ebf841079ef879d7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 4043228244797008105, guid: 401cb21dee144414ebf841079ef879d7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -707,18 +707,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4041660580506541239, guid: 401cb21dee144414ebf841079ef879d7,
-        type: 3}
-      propertyPath: m_Name
-      value: LaserSight
-      objectReference: {fileID: 0}
-    - target: {fileID: 4041660580506541239, guid: 401cb21dee144414ebf841079ef879d7,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 401cb21dee144414ebf841079ef879d7, type: 3}
+--- !u!4 &4043574624854644 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4043228244797008105, guid: 401cb21dee144414ebf841079ef879d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 4040348125843458717}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5550833144999702203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -726,6 +722,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4354227693998282}
     m_Modifications:
+    - target: {fileID: 100000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
+      propertyPath: m_Name
+      value: deagle
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -770,9 +778,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
-      propertyPath: m_Name
-      value: deagle
+    - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_LocalScale.x
@@ -786,21 +798,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
+--- !u!4 &5550833144999834683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca,
+    type: 3}
+  m_PrefabInstance: {fileID: 5550833144999702203}
+  m_PrefabAsset: {fileID: 0}

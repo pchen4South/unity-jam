@@ -898,8 +898,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493db06963f0b4940b256f758dfb72f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Muzzle: {fileID: 0}
   player: {fileID: 0}
+  fireSound: {fileID: 82152436067349864}
+  reloadSound: {fileID: 82005801961391834}
+  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
+    type: 3}
   WeaponName: SMG
   SpeedModifier: 1
   AmmoCount: 0
@@ -911,19 +914,14 @@ MonoBehaviour:
   shotTime: 0.01
   muzzleOffset: 0.5
   ReloadTime: 2
+  isReloading: 0
   bulletTracer: {fileID: 120487154917152990}
   BulletHole: {fileID: 0}
   layerMask:
     serializedVersion: 2
-    m_Bits: 33793
+    m_Bits: 99328
   IKTarget_L: {fileID: 1268313550}
   IKTarget_R: {fileID: 1468077176}
-  fireSound: {fileID: 82152436067349864}
-  reloadSound: {fileID: 82005801961391834}
-  HitParticlePrefab: {fileID: 198828956911120832, guid: 1bca0a1c5f83b314a86186b8aa7782ef,
-    type: 3}
-  HitPlayerParticlePrefab: {fileID: 198508298681376598, guid: 6306b105cc5ff481cafc9007c9b1da77,
-    type: 3}
   muzzleFlash: {fileID: 1956061264784194, guid: 352c41eb01257e1479ae3f003f5284ea,
     type: 3}
   muzzleFlashLight: {fileID: 108538391535675490}
