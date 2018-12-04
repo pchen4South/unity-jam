@@ -26,6 +26,7 @@ public abstract class AbstractWeapon : MonoBehaviour
 	[SerializeField] public LayerMask layerMask = new LayerMask();
 	[SerializeField] public Transform IKTarget_L;
     [SerializeField] public Transform IKTarget_R;
+	[SerializeField] public Light MuzzleFlashLight;
 
 	float reloadtimer = 0f;
 	
@@ -45,15 +46,10 @@ public abstract class AbstractWeapon : MonoBehaviour
 		ray.direction = weaponDir;
 
         var didHit = Physics.Raycast(ray, out rayHit, Mathf.Infinity, layerMask);
-		if(bulletTracer != null){
-        	bulletTracer.SetPosition(0, muzzle);
-        	bulletTracer.SetPosition(1, rayHit.point);
-        	bulletTracer.enabled = true;
-		}
         if (!didHit)
             return;
 
-
+		DrawTracer(muzzle, rayHit);
         var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
 		var isNPC = rayHit.collider.CompareTag("NPCHitbox");
 
@@ -84,6 +80,15 @@ public abstract class AbstractWeapon : MonoBehaviour
 			}
 		}
 	}
+
+	public virtual void DrawTracer(Vector3 muzzle, RaycastHit rayHit){
+		if(bulletTracer != null){
+        	bulletTracer.SetPosition(0, muzzle);
+        	bulletTracer.SetPosition(1, rayHit.point);
+        	bulletTracer.enabled = true;
+		}
+	}
+
 	
 	public virtual void CreateBloodSpray(Vector3 location, Quaternion rotation){
 		Instantiate(HitPlayerParticlePrefab, location, rotation);
