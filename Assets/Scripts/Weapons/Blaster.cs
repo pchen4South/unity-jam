@@ -8,7 +8,7 @@ public class Blaster : AbstractWeapon {
     BlasterState state = BlasterState.Ready;
 
     [Header("Cached references")]
-    [SerializeField]    GameObject muzzleFlash = null;
+    [SerializeField] ParticleSystem MuzzleEffect = null;
     public float pulseSpeed = 5f;
 
     [Header("State")]
@@ -20,10 +20,11 @@ public class Blaster : AbstractWeapon {
     LineRenderer CurrentLine = null;
     GameObject HitPlayerEffect = null;
     Color origEmissionColor;
+    
+    
     void Awake(){
         MagazineSize = 12;
         AmmoCount = MagazineSize;   
-        FlashInstance = Instantiate(muzzleFlash, transform);     
         WeaponName = "Blaster";
         LeftHandIKTarget = IKTarget_L;
         RightHandIKTarget = IKTarget_R;
@@ -67,6 +68,8 @@ public class Blaster : AbstractWeapon {
         state = BlasterState.Firing;
         DrawLine();
         MuzzleFlashLight.gameObject.SetActive(true);
+        var meff = MuzzleEffect.emission;
+        meff.enabled = true;
     }
 
     public override void ReleaseTrigger(Player player){
@@ -77,6 +80,8 @@ public class Blaster : AbstractWeapon {
         
         //disable particles
         AllowHitEffect(false);
+        var meff = MuzzleEffect.emission;
+        meff.enabled = false;
     }
 
     public void DrawLine(){
