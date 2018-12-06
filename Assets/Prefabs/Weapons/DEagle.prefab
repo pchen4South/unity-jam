@@ -128,7 +128,7 @@ MonoBehaviour:
   fireRate: 0.5
   shotTime: 0.01
   muzzleOffset: 0.5
-  ReloadTime: 2.5
+  ReloadTime: 1.5
   isReloading: 0
   bulletTracer: {fileID: 120651834082914050}
   BulletHole: {fileID: 1175364153175438, guid: 85ce419632c40ad4fbf2fc5173dfafe3, type: 3}
@@ -137,6 +137,7 @@ MonoBehaviour:
     m_Bits: 99328
   IKTarget_L: {fileID: 2501237701852715752}
   IKTarget_R: {fileID: 4964906307463415829}
+  MuzzleFlashLight: {fileID: 0}
   muzzleFlash: {fileID: 1956061264784194, guid: e7f33db831994c84ea2e51f2f4cbc166,
     type: 3}
   muzzleFlashLight: {fileID: 108596773343817414}

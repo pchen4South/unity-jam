@@ -2620,6 +2620,7 @@ MonoBehaviour:
   MaxHealth: 6
   GROUNDED_DOWNWARD_VELOCITY: {x: 0, y: -10, z: 0}
   status: 0
+  damageMultiplier: 1
   playerIndicator: {fileID: 114018842590632920}
   meshRenderer: {fileID: 137273324432325058}
   controller: {fileID: 143346210529754902}
@@ -2632,10 +2633,9 @@ MonoBehaviour:
   PlayerSpawnParticles: {fileID: 1325223781625550397, guid: 29ea9f641d099be438dea10ab30a287b,
     type: 3}
   Crosshair: {fileID: 4849069467871498262}
-  hitbox: {fileID: 6837660099596985444}
-  MoveSpeed: 8
+  MoveSpeed: 10
   SpeedModifier: 1
-  DashDuration: 0.25
+  DashDuration: 0.35
   MoveSkillCooldown: 1.5
   MoveSkillRecoveryTime: 0.2
   Weapon: {fileID: 0}
