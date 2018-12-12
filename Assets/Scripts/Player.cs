@@ -237,6 +237,7 @@ public class Player : AbstractCharacter
     }
 
     public void DangerIndicatorToggle(bool shouldBeOn){
+        //Debug.Log("player " + ID + " " + shouldBeOn);
         DangerIndicator.gameObject.SetActive(shouldBeOn);
     }
 

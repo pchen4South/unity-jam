@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 108596773343817414}
   - component: {fileID: 82201342655588438}
   - component: {fileID: 82502090231681022}
-  m_Layer: 11
+  m_Layer: 2
   m_Name: DEagle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,8 +33,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488442268956616}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.05, y: 1.2, z: 0.55}
-  m_LocalScale: {x: 0.125, y: 0.125, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 5550833144999834683}
   - {fileID: 2501237701852715752}
@@ -583,7 +583,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4964906307463415829}
-  m_Layer: 11
+  m_Layer: 2
   m_Name: RightIKTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,7 +598,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309928646222320323}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.8, y: -1.05, z: -0.46}
+  m_LocalPosition: {x: 0.75, y: 0.505, z: 0.735}
   m_LocalScale: {x: 0.25000012, y: 1, z: 1.0000005}
   m_Children: []
   m_Father: {fileID: 4354227693998282}
@@ -615,7 +615,7 @@ GameObject:
   - component: {fileID: 3656040851400558597}
   - component: {fileID: 388665243666185919}
   - component: {fileID: 4945272809789612441}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Tracer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -756,7 +756,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2501237701852715752}
-  m_Layer: 11
+  m_Layer: 2
   m_Name: LeftIKTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -771,7 +771,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4637576134093034794}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.42, y: -0.87, z: -0.541}
+  m_LocalPosition: {x: -0.223, y: 0.85, z: 0.558}
   m_LocalScale: {x: 0.25000012, y: 1, z: 1.0000005}
   m_Children: []
   m_Father: {fileID: 4354227693998282}
@@ -790,11 +790,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_LocalPosition.x
@@ -802,11 +802,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.161
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.922
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: bc1c4b13f2103df4f8fab6c98036dbca, type: 3}
       propertyPath: m_LocalRotation.x

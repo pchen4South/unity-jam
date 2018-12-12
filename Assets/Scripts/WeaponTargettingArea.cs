@@ -43,24 +43,24 @@ public class WeaponTargettingArea : MonoBehaviour
     }
     void Update(){
         if(!weapon) return;
-
+        Debug.Log(weapon.player.ID + " " + WeaponTargettingState);
         
         switch (WeaponTargettingState){
+            case (TargettingState.Setup):
+                break;
             case (TargettingState.NoneInRange):
-                DrawTargettingArea();
                 if(playertarget != null)
                     playertarget.DangerIndicatorToggle(false);
+                DrawTargettingArea();
                 break;
             case (TargettingState.TargetsInRange):
-                DrawTargettingArea();
                 if(playertarget != null)
                     playertarget.DangerIndicatorToggle(false);
+                DrawTargettingArea();    
                 break;
             case (TargettingState.TargetsInLOS):
-                DrawTargettingArea();
                 playertarget.DangerIndicatorToggle(true);
-                break;
-            case (TargettingState.Setup):
+                DrawTargettingArea();
                 break;
             default:
                 break;        
@@ -103,13 +103,6 @@ public class WeaponTargettingArea : MonoBehaviour
         int[] tris =new int[]{0,1,2};
         Vector3[] normals = new Vector3[]{ Vector3.up, Vector3.up, Vector3.up};
 
-        if(showverts){
-            foreach(var ve in verts){
-                Debug.Log(ve);
-            }
-        }
-
-
         mesh.Clear();
         mesh.vertices = verts;
         mesh.triangles = tris;
@@ -121,12 +114,15 @@ public class WeaponTargettingArea : MonoBehaviour
         coll.sharedMesh = mesh;
     }
 
+    void OnTriggerExit(Collider other) {
+        WeaponTargettingState = TargettingState.NoneInRange;    
+    }
 
     void OnTriggerStay(Collider other)
     {
         var player = weapon.player;
 
-        if(other.gameObject.tag == "Player"){
+        if(other.gameObject.tag == "Player" && other.gameObject.GetComponent<Player>().ID != player.ID){
             var target = other.gameObject.GetComponent<Player>();
             WeaponTargettingState = TargettingState.TargetsInRange;
 
@@ -141,10 +137,6 @@ public class WeaponTargettingArea : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void OnTriggerExit(Collider other) {
-        WeaponTargettingState = TargettingState.NoneInRange;
     }
 
     // CastRays is called when a target is colliding with teh targetting area
@@ -178,16 +170,16 @@ public class WeaponTargettingArea : MonoBehaviour
             //debug
             Debug.DrawRay(transform.position, dir, Color.green);
             //draw one additional ray at the rightBound
-            // if (i == raycasts - 1){
-            //     Vector3 rightBound =  Quaternion.AngleAxis(rightBoundAngle, Vector3.up) * transform.forward * weaponRange;
-            //     Ray finalRay = new Ray(transform.position, rightBound);
-            //     RaycastBeams finalBeam = new RaycastBeams();
+            if (i == raycasts - 1){
+                Vector3 rightBound =  Quaternion.AngleAxis(rightBoundAngle, Vector3.up) * transform.forward * weaponRange;
+                Ray finalRay = new Ray(transform.position, rightBound);
+                RaycastBeams finalBeam = new RaycastBeams();
 
-            //     Physics.RaycastNonAlloc(finalRay,finalBeam.hits, weaponRange, weapon.layerMask);
-            //     beams[i+1] = finalBeam;
-            //     //debug
-            //     Debug.DrawRay(transform.position, rightBound, Color.green);
-            // }
+                Physics.RaycastNonAlloc(finalRay,finalBeam.hits, weaponRange, weapon.layerMask);
+                beams[i+1] = finalBeam;
+                //debug
+                Debug.DrawRay(transform.position, rightBound, Color.green);
+            }
         }        
     }
 
@@ -227,6 +219,7 @@ public class WeaponTargettingArea : MonoBehaviour
             //Debug.Log("the closest hit is " + closestHit.collider.tag);
             if(closestHit.collider == null) continue;
             
+            
             //if the target is valid
             var isPlayer = closestHit.collider.CompareTag("PlayerHitbox");
 		    var isNPC = closestHit.collider.CompareTag("NPCHitbox");
@@ -247,15 +240,13 @@ public class WeaponTargettingArea : MonoBehaviour
                 closestValidTargetDistance = theBeam.validHit.distance;
                 closestValidRaycastBeam = theBeam;
                 closestValidRaycastBeam.hasValidTarget = true;
+                Debug.Log("hitting player " + theBeam.validHit.collider.GetComponentInParent<Player>().ID);
             }
         }
 
         if(beamsWithValidTargetsAsTheClosest.Count > 0){
             WeaponTargettingState = TargettingState.TargetsInLOS;
-        } else {
-            WeaponTargettingState = TargettingState.TargetsInRange;
-        }
-        
+        }         
 
         return closestValidRaycastBeam;
     }
