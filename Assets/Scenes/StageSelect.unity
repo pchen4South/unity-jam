@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.14581496, g: 0.13377205, b: 0.24863783, a: 1}
+  m_IndirectSpecularColor: {r: 0.018358557, g: 0.01582661, b: 0.04951973, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -466,6 +466,63 @@ RectTransform:
   m_AnchoredPosition: {x: 3.2, y: -123}
   m_SizeDelta: {x: 500, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &838016718
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1925924228150328, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_Name
+      value: Rewired Input Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
 --- !u!1 &1250003492
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,7 +932,6 @@ MonoBehaviour:
   - {fileID: 8853666642501370674, guid: dad68908138fb82409ef821d692bff0e, type: 3}
   UpArrow: {fileID: 1900389979}
   DownArrow: {fileID: 308708304}
-  OverlayButton: {fileID: 0}
   CurrentMapImage: {fileID: 1603528974}
   CurrentMapLabel: {fileID: 708640819}
   inputDelayTimer: 0.25
@@ -1269,63 +1325,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746360147}
   m_CullTransparentMesh: 0
---- !u!1001 &1791697737
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1925924228150328, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
-      propertyPath: m_Name
-      value: Rewired Input Manager
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
 --- !u!1 &1840047864
 GameObject:
   m_ObjectHideFlags: 0

@@ -5067,7 +5067,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 0.9150943, g: 0.113119476, b: 0, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.1
   m_Range: 500
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -5653,7 +5653,7 @@ PrefabInstance:
     - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
       propertyPath: WeaponPrefabs.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
@@ -5676,7 +5676,7 @@ PrefabInstance:
         type: 3}
       propertyPath: WeaponPrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 4657832079556426380, guid: e7b8e96e20837044e9da236353c1ec6d,
+      objectReference: {fileID: 114448926660466218, guid: 9d73e5b707a651543994b25b24e3483d,
         type: 3}
     - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
@@ -5704,7 +5704,7 @@ PrefabInstance:
         type: 3}
       propertyPath: WeaponPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 5760404808585814101, guid: 4aa1abadd20bde44a9766dd34488a6e9,
+      objectReference: {fileID: 4657832079556426380, guid: e7b8e96e20837044e9da236353c1ec6d,
         type: 3}
     - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
@@ -5759,7 +5759,7 @@ PrefabInstance:
         type: 3}
       propertyPath: WeaponPrefabs.Array.data[6]
       value: 
-      objectReference: {fileID: 114448926660466218, guid: 9d73e5b707a651543994b25b24e3483d,
+      objectReference: {fileID: 5760404808585814101, guid: 4aa1abadd20bde44a9766dd34488a6e9,
         type: 3}
     - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
         type: 3}
@@ -5816,6 +5816,12 @@ PrefabInstance:
       propertyPath: WeaponPrefabs.Array.data[11]
       value: 
       objectReference: {fileID: 5760404808585814101, guid: 4aa1abadd20bde44a9766dd34488a6e9,
+        type: 3}
+    - target: {fileID: 114049356793282842, guid: 8bb305f71981048dc97b9974b53a64bc,
+        type: 3}
+      propertyPath: WeaponTargettingAreaPrefab
+      value: 
+      objectReference: {fileID: 1532840333174173105, guid: 143ba5fb2deec27488b4776632e9dacd,
         type: 3}
     - target: {fileID: 4508983614605128, guid: 8bb305f71981048dc97b9974b53a64bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7553,7 +7559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &662977505
 Light:
   m_ObjectHideFlags: 0
@@ -7565,8 +7571,8 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.25
-  m_Range: 50
+  m_Intensity: 0.3
+  m_Range: 60
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -8138,7 +8144,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 0.3820755, g: 0.71830654, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.1
   m_Range: 500
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -8742,61 +8748,6 @@ PrefabInstance:
     - target: {fileID: 4656733831300132, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actions.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actionCategoryMap.list.Array.data[0].actionIds.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actions.Array.data[11]._id
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actions.Array.data[11]._name
-      value: Reload
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actions.Array.data[11]._type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actions.Array.data[11]._descriptiveName
-      value: Reload
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actions.Array.data[11]._userAssignable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actionCategoryMap.list.Array.data[0].actionIds.Array.data[11]
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.actionIdCounter
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.joystickMaps.Array.data[0].actionElementMaps.Array.data[8]._actionId
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 114511553261804474, guid: 0a45ce626b53644268261bf867e298fe,
-        type: 3}
-      propertyPath: _userData.joystickMaps.Array.data[1].actionElementMaps.Array.data[9]._actionId
-      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a45ce626b53644268261bf867e298fe, type: 3}
@@ -9528,7 +9479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1220193636
 Light:
   m_ObjectHideFlags: 0
@@ -9540,8 +9491,8 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.25
-  m_Range: 50
+  m_Intensity: 0.3
+  m_Range: 60
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -9877,7 +9828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1381319216
 Light:
   m_ObjectHideFlags: 0
@@ -9889,8 +9840,8 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.25
-  m_Range: 50
+  m_Intensity: 0.3
+  m_Range: 60
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -9976,7 +9927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1447564929
 Light:
   m_ObjectHideFlags: 0
@@ -9988,8 +9939,8 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.25
-  m_Range: 50
+  m_Intensity: 0.3
+  m_Range: 60
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -21471,7 +21422,7 @@ PrefabInstance:
     - target: {fileID: 6620003556526323001, guid: eaac9e040e44232429a1240f0f8774f2,
         type: 3}
       propertyPath: m_Intensity
-      value: 1
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 6620003556526323001, guid: eaac9e040e44232429a1240f0f8774f2,
         type: 3}

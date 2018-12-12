@@ -123,7 +123,8 @@ public class GameMode : MonoBehaviour
 	[SerializeField] Text TimelineIndicator = null;
 	[SerializeField] RectTransform textParent = null;
 	[SerializeField] FloatingText PopupTextPrefab = null;
-
+	//targetting
+	[SerializeField] WeaponTargettingArea WeaponTargettingAreaPrefab = null;
 
 	public int GameLengthInSeconds = 600;
 	public float RespawnTimer = 3f;
@@ -145,6 +146,8 @@ public class GameMode : MonoBehaviour
 	public List<ValidHit> ProcessedHits = new List<ValidHit>();
 	public List<AbstractCharacter> NPCS = new List<AbstractCharacter>();
 
+	WeaponTargettingArea[] PlayerTargettingAreas = new WeaponTargettingArea[10];
+
 	#endregion
 
 	void Start()
@@ -164,13 +167,19 @@ public class GameMode : MonoBehaviour
 			var ps = new PlayerState(player, ReInput.players.GetPlayer(i));
 			var WeaponPrefab = WeaponPrefabs[ps.weaponIndex];
 
+			//targetting
+			PlayerTargettingAreas[i] = Instantiate(WeaponTargettingAreaPrefab);
+
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;
 			ps.player.Spawn(spawnpoint.transform);
-			ps.player.SetWeapon(WeaponPrefab);
+			ps.player.SetWeapon(WeaponPrefab, PlayerTargettingAreas[i]);
 			ps.player.SetColor(colorScheme.playerColors[i]);
 			ps.player.OnValidHitOccurred += AddValidHit;
 			playerStates[i] = ps;
+
+
+			//PlayerTargettingAreas[i].transform.SetParent(ps.player.Weapon.transform);
 		}
 	}
 
@@ -351,7 +360,7 @@ public class GameMode : MonoBehaviour
 			}
 			else
 			{
-				attacker.player.SetWeapon(WeaponPrefabs[++attacker.weaponIndex]);
+				attacker.player.SetWeapon(WeaponPrefabs[++attacker.weaponIndex], PlayerTargettingAreas[attackerIndex]);
 			}
 		}
 		else

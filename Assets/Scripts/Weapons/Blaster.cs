@@ -10,6 +10,7 @@ public class Blaster : AbstractWeapon {
     [Header("Cached references")]
     [SerializeField] ParticleSystem MuzzleEffect = null;
     public float pulseSpeed = 5f;
+    public float DamageTickTime = 0.5f;
 
     [Header("State")]
     float timeTillNextShot = 0f;
@@ -20,7 +21,9 @@ public class Blaster : AbstractWeapon {
     LineRenderer CurrentLine = null;
     GameObject HitPlayerEffect = null;
     Color origEmissionColor;
-    
+    float HittingValidTargetTime = 0f;
+    AbstractCharacter targetBeingDamaged;
+    bool initialDamageTick = false;
     
     void Awake(){
         MagazineSize = 12;
@@ -42,13 +45,26 @@ public class Blaster : AbstractWeapon {
 
         switch (state){
             case BlasterState.Ready:
+                HittingValidTargetTime = 0;
+                initialDamageTick = false;
                 break;
             case BlasterState.Firing:
+                HittingValidTargetTime = 0;
+                initialDamageTick = false;
                 DrawLine();
                 CheckValidTarget();
                 break;
             case BlasterState.HittingValidTarget:
-                ApplyDamage();
+                if(!initialDamageTick){
+                    ApplyDamage();
+                    initialDamageTick = true;
+                } else {
+                    HittingValidTargetTime += Time.deltaTime;
+                    if(HittingValidTargetTime > DamageTickTime){
+                        ApplyDamage();
+                        HittingValidTargetTime = 0;
+                    }
+                }
                 DrawLine();
                 CheckValidTarget();
                 break;
@@ -122,7 +138,7 @@ public class Blaster : AbstractWeapon {
             }
 			if(!target.IsAlive()) return;
 			
-            
+            targetBeingDamaged = target;
             HitPlayerEffect.transform.rotation = transform.rotation;
             AllowHitEffect(true);
             state = BlasterState.HittingValidTarget;
@@ -142,7 +158,7 @@ public class Blaster : AbstractWeapon {
 
     void ApplyDamage(){
         //calculate damage and apply it here
-        //player.RegisterNewValidHit(player, target, DamageAmount);
+        player.RegisterNewValidHit(player, targetBeingDamaged, DamageAmount);
     }
 
 

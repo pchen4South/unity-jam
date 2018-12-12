@@ -10,7 +10,7 @@ public class PlayerIndicator : MonoBehaviour
 
 	void Update()
 	{
-		transform.rotation = Quaternion.AngleAxis(rotationSpeed * Time.time, Vector3.up);
+		//transform.rotation = Quaternion.AngleAxis(rotationSpeed * Time.time, Vector3.up);
 		Color meshcolor = new Color();
 		meshcolor = color;
 		meshcolor.a = IndicatorAlpha;

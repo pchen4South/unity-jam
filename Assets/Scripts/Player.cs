@@ -17,6 +17,7 @@ public class Player : AbstractCharacter
     [SerializeField] AudioSource dashSound = null;
     [SerializeField] ParticleSystem PlayerSpawnParticles = null;
     [SerializeField] SpriteRenderer Crosshair = null;
+    [SerializeField] GameObject DangerIndicator = null;
     
     public float MoveSpeed = 2f;
     public float SpeedModifier = 1f;
@@ -120,7 +121,7 @@ public class Player : AbstractCharacter
     }
 
     //public void SetWeapon(AbstractWeapon newWeapon, System.Action<ValidHit> OnValidHit)
-    public void SetWeapon(AbstractWeapon newWeapon)
+    public void SetWeapon(AbstractWeapon newWeapon, WeaponTargettingArea targetArea)
     {
         if (Weapon)
         {
@@ -130,6 +131,10 @@ public class Player : AbstractCharacter
         canMove = true;
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
+        if(Weapon.aimAssistOn == true){
+            targetArea.Initialize(Weapon);
+            targetArea.transform.SetParent(Weapon.transform, false);
+        }
         //Weapon.OnValidHitOccurred = OnValidHit;
         FloatingTextController.CreateFloatingText("+" + Weapon.WeaponName, transform);
     }
@@ -229,6 +234,10 @@ public class Player : AbstractCharacter
     }
     public void HealForAmount(int recoverAmount){
         Health = Mathf.Min(MaxHealth, Health + recoverAmount);
+    }
+
+    public void DangerIndicatorToggle(bool shouldBeOn){
+        DangerIndicator.gameObject.SetActive(shouldBeOn);
     }
 
 }

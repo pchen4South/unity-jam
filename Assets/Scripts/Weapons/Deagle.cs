@@ -7,10 +7,8 @@ public class Deagle : AbstractWeapon
     [Header("Cached references")]
     [SerializeField]    GameObject muzzleFlash = null;
     [SerializeField]    Light muzzleFlashLight = null;
-
     [Header("State")]
     float timeTillNextShot = 0f;
-
 	private GameObject FlashInstance;
 
     void Awake(){
@@ -22,6 +20,7 @@ public class Deagle : AbstractWeapon
         RightHandIKTarget = IKTarget_R;
     }
 
+    
     void LateUpdate()
     {
         timeTillNextShot -= Time.deltaTime;   
@@ -29,6 +28,7 @@ public class Deagle : AbstractWeapon
 
     public override void PullTrigger(Player player)
     {
+        base.PullTrigger(player);
         if (timeTillNextShot > 0 || isReloading || AmmoCount == 0) return;
 
         AmmoCount -= 1;        
@@ -41,11 +41,13 @@ public class Deagle : AbstractWeapon
         FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
         muzzleFlashLight.enabled = true;
         fireSound.Play();
-        CheckForValidHitscan(muzzle, transform.forward, layerMask);
-        
+        if(!aimAssistOn)
+            CheckForValidHitscan(muzzle, transform.forward, layerMask);
+        else {
+            //CheckForValidTargetInRange(WeaponTargettingArea, transform.forward, layerMask);
+        }
         if (AmmoCount == 0)
             Reload();
-
     }
 
     IEnumerator PostShotCleanup()

@@ -14240,6 +14240,7 @@ MonoBehaviour:
     m_Bits: 99328
   IKTarget_L: {fileID: 4423406839948450669}
   IKTarget_R: {fileID: 7591128385553925945}
+  MuzzleFlashLight: {fileID: 0}
   kickBackGrowthRate: 1
   kickBackDecayRate: -2
 --- !u!82 &8107039379890543543
@@ -14586,7 +14587,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dc85f9682c7dfc141826f6e8e423d106, type: 2}
+  - {fileID: 2100000, guid: dc31883af27076f429d30b57bd8f1740, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

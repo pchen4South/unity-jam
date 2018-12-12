@@ -6,6 +6,9 @@ public abstract class AbstractWeapon : MonoBehaviour
 	public Player player;
 	
 	[Header("Config")]
+	public bool aimAssistOn = false;
+	public float weaponRange = 20f;
+	public float weaponArc = 20f;
 	[SerializeField] public AudioSource fireSound= null;
 	[SerializeField] public AudioSource reloadSound = null;
 	[SerializeField] ParticleSystem HitPlayerParticlePrefab = null;

@@ -209,7 +209,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CustomLightDirection: {r: 0, g: 0, b: 10, a: 0}
-    - _EmissionColor: {r: 5.701, g: 3.184696, b: 0, a: 1}
+    - _EmissionColor: {r: 1.0586275, g: 0.59227175, b: 0, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 0.7843137, g: 0.7843137, b: 0.7843137, a: 1}
