@@ -36,7 +36,7 @@ public class Deagle : AbstractWeapon
 
         StartCoroutine(PostShotCleanup());
         timeTillNextShot = fireRate;
-        
+        FlashInstance.transform.position = Muzzle.transform.position;
 		FlashInstance.GetComponentInChildren<ParticleSystem>().Stop();
         FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
         muzzleFlashLight.enabled = true;
@@ -44,7 +44,8 @@ public class Deagle : AbstractWeapon
         if(!aimAssistOn)
             CheckForValidHitscan(muzzle, transform.forward, layerMask);
         else {
-            //CheckForValidTargetInRange(WeaponTargettingArea, transform.forward, layerMask);
+            var tArea = GetComponentInChildren<WeaponTargettingArea>();
+            CheckForValidTargetInRange(tArea, transform.forward, layerMask);
         }
         if (AmmoCount == 0)
             Reload();

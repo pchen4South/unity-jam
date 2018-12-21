@@ -8,7 +8,11 @@ public class PlayerHUD : MonoBehaviour
 	[SerializeField]    Slider ReloadIndicator = null;
 	[SerializeField]    GameObject ReloadBar = null;
 
-
+    public Image DashOuter;
+    public Image DashInner;
+	public Text Dashtext;
+	public Text WeaponName;
+	
 	public Vector2 screenSpaceOffset = Vector2.zero;
 	public Color healthyColor = Color.green;
 	public Color deadColor = Color.red;
@@ -44,8 +48,18 @@ public class PlayerHUD : MonoBehaviour
 		rectTransform.anchoredPosition = position;
 	}
 
+    public void UpdateDashCooldown(float MaxCDTime, float CDTimer){
+        float currentCDRatio = CDTimer != 0 ? CDTimer / MaxCDTime : 1;
+        var height = DashOuter.rectTransform.rect.height;
+        int InnerWidth = 0;
+        InnerWidth = Mathf.RoundToInt(DashOuter.rectTransform.rect.width * currentCDRatio);        
+        DashInner.rectTransform.sizeDelta = new Vector2(InnerWidth, height);
+		if(CDTimer != 0) Dashtext.color = Color.red;
+		else Dashtext.color = Color.white;
+        //DashInner.rectTransform.anchoredPosition = new Vector2(InnerWidth / 2, 0);
+    }
 	public void UpdateWeaponText(string weaponName){
-		// WeaponName.text = weaponName;
+		WeaponName.text = weaponName;
 		return;
 	}
 	public void UpdateAmmoCount(int currentAmmo){

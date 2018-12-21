@@ -18,9 +18,11 @@ public class Player : AbstractCharacter
     [SerializeField] ParticleSystem PlayerSpawnParticles = null;
     [SerializeField] SpriteRenderer Crosshair = null;
     [SerializeField] GameObject DangerIndicator = null;
+    [SerializeField] ParticleSystem DashParticles = null;
     
     public float MoveSpeed = 2f;
     public float SpeedModifier = 1f;
+    public float DashMaxSpeed = 2.5f;
     public float DashDuration = 0.25f;
     public float MoveSkillCooldown = 2f;
     public float MoveSkillRecoveryTime = .1f;
@@ -43,7 +45,8 @@ public class Player : AbstractCharacter
     
     #endregion
 
-    Player(){
+    void Start(){
+        DashParticles.gameObject.SetActive(false);
         ENTITY_TYPE = "PLAYERCHARACTER";
     }
 
@@ -69,6 +72,7 @@ public class Player : AbstractCharacter
         if (currentDashTime > DashDuration) 
         {
             isDashing = false;
+            DashParticles.gameObject.SetActive(false);
             StartCoroutine(MoveSkillRecovery());
             currentDashTime = 0f;
         }
@@ -88,6 +92,7 @@ public class Player : AbstractCharacter
     //Inverse Kinematics for guns
     void OnAnimatorIK(int layerIndex) 
     {
+        if(!Weapon) return;
         if (Weapon.LeftHandIKTarget != null && Weapon.RightHandIKTarget != null)
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, IkWeight);
@@ -123,18 +128,35 @@ public class Player : AbstractCharacter
     //public void SetWeapon(AbstractWeapon newWeapon, System.Action<ValidHit> OnValidHit)
     public void SetWeapon(AbstractWeapon newWeapon, WeaponTargettingArea targetArea)
     {
+        bool oldWeaponHadTargettingArea = false;
+
         if (Weapon)
         {
+            if(Weapon.aimAssistOn == true){
+                WeaponTargettingArea temp = GetComponentInChildren<WeaponTargettingArea>();
+                temp.transform.SetParent(null);
+                temp.gameObject.SetActive(false);
+                oldWeaponHadTargettingArea = true;
+            }
             Destroy(Weapon.gameObject);
         }
+
         canRotate = true;
         canMove = true;
+
+        //new weapon
         Weapon = Instantiate(newWeapon, transform);
         Weapon.player = this;
+
         if(Weapon.aimAssistOn == true){
             targetArea.Initialize(Weapon);
             targetArea.transform.SetParent(Weapon.transform, false);
+            targetArea.transform.rotation = Weapon.transform.rotation;
+            targetArea.gameObject.SetActive(true);
+        } else {
+            if (oldWeaponHadTargettingArea) targetArea.gameObject.SetActive(false);
         }
+
         //Weapon.OnValidHitOccurred = OnValidHit;
         FloatingTextController.CreateFloatingText("+" + Weapon.WeaponName, transform);
     }
@@ -170,6 +192,9 @@ public class Player : AbstractCharacter
         canRotate = true;
 		transform.SetPositionAndRotation(t.position, t.rotation);
 
+        //TODO maybe make this state based or more robust
+        DangerIndicator.SetActive(false);
+
         var particles = Instantiate(PlayerSpawnParticles, new Vector3(transform.position.x, transform.position.y + .1f, transform.position.z), transform.rotation);
         var children = particles.GetComponentsInChildren<ParticleSystem>();
 
@@ -194,10 +219,10 @@ public class Player : AbstractCharacter
     {
         if (moveStatus != MoveSkillStatus.Ready)
             return;
-
+        DashParticles.gameObject.SetActive(true);
         dashDir = direction != Vector3.zero ? direction : transform.forward;
         dashSound.Play();
-        SpeedModifier = 2.5f * SpeedModifier;
+        SpeedModifier = DashMaxSpeed * SpeedModifier;
         isDashing = true;
         this.canMove = false;
         this.canRotate = false;

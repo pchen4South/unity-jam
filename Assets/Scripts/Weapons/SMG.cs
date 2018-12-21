@@ -57,6 +57,9 @@ public class SMG : AbstractWeapon {
         FlashInstance.GetComponentInChildren<ParticleSystem>().Play();
         muzzleFlashLight.enabled = true;
         fireSound.Play();
+        
+        //bullet casings, disabled for now cuz they look fucked up
+        //em.enabled = true;
 
         Vector3 fireDirection = player.transform.forward;        
         float currentSpread = Mathf.Lerp(0.0f, maxBulletSpread, fireTime / timeToMaxSpread);
@@ -64,9 +67,13 @@ public class SMG : AbstractWeapon {
 
         //apply random inaccuracy to raycast
         Vector3 shotDir = new Vector3(fireDirection.x  + randomOffsetX, fireDirection.y, fireDirection.z);
-
-        //CheckForValidHitscan(muzzle, ray.direction, layerMask);
-        CheckForValidHitscan(muzzle, shotDir, layerMask);
+        
+        if(!aimAssistOn)
+            CheckForValidHitscan(muzzle, shotDir, layerMask);
+        else {
+            var tArea = GetComponentInChildren<WeaponTargettingArea>();
+            CheckForValidTargetInRange(tArea, transform.forward, layerMask);
+        }
 
         if (AmmoCount == 0)
             Reload();

@@ -55,7 +55,12 @@ public class MachineGun : AbstractWeapon
         timeTillNextShot = fireRate;
         
         fireSound.Play();
-        CheckForValidHitscan(muzzle, transform.forward, layerMask);
+        if(!aimAssistOn)
+            CheckForValidHitscan(muzzle, transform.forward, layerMask);
+        else {
+            var tArea = GetComponentInChildren<WeaponTargettingArea>();
+            CheckForValidTargetInRange(tArea, transform.forward, layerMask);
+        }
     }
     IEnumerator PostShotCleanup()
     {

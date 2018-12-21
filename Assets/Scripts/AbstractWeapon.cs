@@ -9,6 +9,7 @@ public abstract class AbstractWeapon : MonoBehaviour
 	public bool aimAssistOn = false;
 	public float weaponRange = 20f;
 	public float weaponArc = 20f;
+	[SerializeField] public Transform Muzzle;
 	[SerializeField] public AudioSource fireSound= null;
 	[SerializeField] public AudioSource reloadSound = null;
 	[SerializeField] ParticleSystem HitPlayerParticlePrefab = null;
@@ -30,6 +31,7 @@ public abstract class AbstractWeapon : MonoBehaviour
 	[SerializeField] public Transform IKTarget_L;
     [SerializeField] public Transform IKTarget_R;
 	[SerializeField] public Light MuzzleFlashLight;
+	
 
 	float reloadtimer = 0f;
 	
@@ -45,6 +47,9 @@ public abstract class AbstractWeapon : MonoBehaviour
 		Ray ray = new Ray();
 		RaycastHit rayHit = new RaycastHit();
 
+		if( Muzzle != null)
+			muzzle = Muzzle.transform.position;
+		
 		ray.origin = muzzle;
 		ray.direction = weaponDir;
 
@@ -52,7 +57,7 @@ public abstract class AbstractWeapon : MonoBehaviour
         if (!didHit)
             return;
 
-		DrawTracer(muzzle, rayHit);
+		DrawTracer(muzzle, rayHit.point);
         var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
 		var isNPC = rayHit.collider.CompareTag("NPCHitbox");
 
@@ -84,10 +89,31 @@ public abstract class AbstractWeapon : MonoBehaviour
 		}
 	}
 
-	public virtual void DrawTracer(Vector3 muzzle, RaycastHit rayHit){
+
+	public virtual void CheckForValidTargetInRange(WeaponTargettingArea WeaponTargettingArea, Vector3 forward, int layerMask){
+		Player target = WeaponTargettingArea.playertarget;
+		// valid player in target area
+		if(target != null && WeaponTargettingArea.HasValidTarget()){
+			if(!target.IsAlive()) return;
+			DrawTracer(Muzzle.transform.position, target.transform.position);
+			player.RegisterNewValidHit(player, target, DamageAmount);
+			CreateBloodSpray(target.transform.position, transform.rotation);
+		//else miss
+		} else {
+			Ray ray = new Ray();
+
+			ray.origin = Muzzle.transform.position;
+			ray.direction = transform.forward;
+
+			DrawTracer(Muzzle.transform.position, transform.position + transform.forward * weaponRange);
+		}
+	}
+
+
+	public virtual void DrawTracer(Vector3 muzzle, Vector3 destination){
 		if(bulletTracer != null){
         	bulletTracer.SetPosition(0, muzzle);
-        	bulletTracer.SetPosition(1, rayHit.point);
+        	bulletTracer.SetPosition(1, destination);
         	bulletTracer.enabled = true;
 		}
 	}

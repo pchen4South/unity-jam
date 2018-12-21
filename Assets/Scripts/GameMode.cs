@@ -64,6 +64,7 @@ public class PlayerHUDManager : Object
 			playerUIPool[i].HUD.UpdateWeaponText(playerStates[i].player.Weapon.WeaponName);
 			playerUIPool[i].HUD.UpdateAmmoCount(playerStates[i].player.Weapon.AmmoCount);
 			playerUIPool[i].HUD.UpdatePlayerReloadIndicator(playerStates[i].player.Weapon.ReloadProgressPercent());
+			playerUIPool[i].HUD.UpdateDashCooldown(playerStates[i].player.MoveSkillCooldown, playerStates[i].player.MoveSkillTimer);
 			
 			playerUIPool[i].PSUI.gameObject.SetActive(true);
 			playerUIPool[i].PSUI.transform.SetParent(bottomUIContainer.transform, false);
@@ -169,6 +170,7 @@ public class GameMode : MonoBehaviour
 
 			//targetting
 			PlayerTargettingAreas[i] = Instantiate(WeaponTargettingAreaPrefab);
+			PlayerTargettingAreas[i].TestConstruct(i);
 
 			ps.player.ID = i;
 			ps.player.name = "Player " + i;

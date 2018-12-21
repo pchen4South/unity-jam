@@ -38,7 +38,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3607624630101194209}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -239,6 +239,8 @@ MonoBehaviour:
   raycasts: 30
   showverts: 0
   meshfilter: {fileID: 6368814814785095740}
+  playertarget: {fileID: 0}
+  idtest: -100
 --- !u!1 &9162934285277432350
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +279,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9162934285277432350}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

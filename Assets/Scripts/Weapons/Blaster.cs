@@ -121,6 +121,8 @@ public class Blaster : AbstractWeapon {
 		}
     }
     public void CheckValidTarget(){
+        if(!rayHit.collider) return;
+        
         var isPlayer = rayHit.collider.CompareTag("PlayerHitbox");
 		var isNPC = rayHit.collider.CompareTag("NPCHitbox");
 

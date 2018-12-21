@@ -25,11 +25,16 @@ public class WeaponTargettingArea : MonoBehaviour
     Vector3 lb = new Vector3();
     Vector3 rb = new Vector3();
     RaycastBeams[] beams = new RaycastBeams[255];
-    Player playertarget = null;
+    public Player playertarget = null;
 
     [Header("State")]
    
     TargettingState WeaponTargettingState = TargettingState.Setup;
+    public int idtest = -100;
+
+    public void TestConstruct(int id){
+        idtest = id;
+    }
 
     void Start(){
         mesh = meshfilter.mesh;
@@ -43,19 +48,28 @@ public class WeaponTargettingArea : MonoBehaviour
     }
     void Update(){
         if(!weapon) return;
-        Debug.Log(weapon.player.ID + " " + WeaponTargettingState);
+        
+        // if(weapon.player.ID == 0)
+        //     Debug.Log(weapon.player.ID + " " + WeaponTargettingState);
         
         switch (WeaponTargettingState){
             case (TargettingState.Setup):
+                if(mesh){
+                     mesh.Clear();
+                     mesh = meshfilter.mesh;
+                }
+                WeaponTargettingState = TargettingState.NoneInRange;
                 break;
             case (TargettingState.NoneInRange):
                 if(playertarget != null)
                     playertarget.DangerIndicatorToggle(false);
+                playertarget = null;
                 DrawTargettingArea();
                 break;
             case (TargettingState.TargetsInRange):
                 if(playertarget != null)
                     playertarget.DangerIndicatorToggle(false);
+                playertarget = null;
                 DrawTargettingArea();    
                 break;
             case (TargettingState.TargetsInLOS):
@@ -74,7 +88,7 @@ public class WeaponTargettingArea : MonoBehaviour
         transform.localPosition = Vector3.zero;
         weaponRange = weapon.weaponRange;
         weaponArc = weapon.weaponArc;
-        WeaponTargettingState = TargettingState.NoneInRange;
+        WeaponTargettingState = TargettingState.Setup;
     }
 
     void DrawTargettingArea(){
@@ -120,6 +134,8 @@ public class WeaponTargettingArea : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
+        if(weapon == null) return;
+
         var player = weapon.player;
 
         if(other.gameObject.tag == "Player" && other.gameObject.GetComponent<Player>().ID != player.ID){
@@ -151,36 +167,44 @@ public class WeaponTargettingArea : MonoBehaviour
         int rightBoundAngle = Mathf.RoundToInt(weaponArc / 2);
         int leftBoundAngle = -1 * rightBoundAngle;
 
-        for(int i = 0; i < raycasts; i++){
-            Quaternion rotationR = Quaternion.AngleAxis(leftBoundAngle + i * angleBetweenRays, Vector3.up); 
+        for(int i = 0; i < raycasts; i++)
+        {
+            Quaternion rotationR = Quaternion.AngleAxis(leftBoundAngle + i * angleBetweenRays, Vector3.up);
             Vector3 dir = rotationR * transform.forward * weaponRange;
             Ray newRay = new Ray(transform.position, dir);
             //create new struct beam of type RaycastBeams
-            RaycastBeams beam = beams[i];
-            
+            RaycastBeams beam = GetBeam(i);
+            if(beam == null) return;
             //add beam to the beams array at index i      
             //cast the ray and put the results into the hits array
             var hitsArr = beam.hits;
 
             var raybeam = Physics.RaycastNonAlloc(newRay, hitsArr, weaponRange, weapon.layerMask);
-            if(raybeam > 0){            
+            if (raybeam > 0)
+            {
                 beams[i] = beam;
                 beam.shouldBeProcessed = true;
             }
             //debug
             Debug.DrawRay(transform.position, dir, Color.green);
             //draw one additional ray at the rightBound
-            if (i == raycasts - 1){
-                Vector3 rightBound =  Quaternion.AngleAxis(rightBoundAngle, Vector3.up) * transform.forward * weaponRange;
+            if (i == raycasts - 1)
+            {
+                Vector3 rightBound = Quaternion.AngleAxis(rightBoundAngle, Vector3.up) * transform.forward * weaponRange;
                 Ray finalRay = new Ray(transform.position, rightBound);
                 RaycastBeams finalBeam = new RaycastBeams();
 
-                Physics.RaycastNonAlloc(finalRay,finalBeam.hits, weaponRange, weapon.layerMask);
-                beams[i+1] = finalBeam;
+                Physics.RaycastNonAlloc(finalRay, finalBeam.hits, weaponRange, weapon.layerMask);
+                beams[i + 1] = finalBeam;
                 //debug
                 Debug.DrawRay(transform.position, rightBound, Color.green);
             }
-        }        
+        }
+    }
+
+    private RaycastBeams GetBeam(int i)
+    {
+        return beams[i];
     }
 
     // processRays should process all the RaycastHits of every RaycastBeams 
@@ -240,7 +264,7 @@ public class WeaponTargettingArea : MonoBehaviour
                 closestValidTargetDistance = theBeam.validHit.distance;
                 closestValidRaycastBeam = theBeam;
                 closestValidRaycastBeam.hasValidTarget = true;
-                Debug.Log("hitting player " + theBeam.validHit.collider.GetComponentInParent<Player>().ID);
+                //Debug.Log("hitting player " + theBeam.validHit.collider.GetComponentInParent<Player>().ID);
             }
         }
 
@@ -249,6 +273,18 @@ public class WeaponTargettingArea : MonoBehaviour
         }         
 
         return closestValidRaycastBeam;
+    }
+
+    public bool HasValidTarget(){
+        return WeaponTargettingState == TargettingState.TargetsInLOS;
+    }
+
+    /// <summary>
+    /// This function is called when the MonoBehaviour will be destroyed.
+    /// </summary>
+    void OnDestroy()
+    {
+        Debug.Log("ouch");
     }
 
 }
